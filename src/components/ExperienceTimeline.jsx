@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimation } from 'framer-motion'
+import TypedInView from './TypedInView'
 
 function InlineReveal({ children, delay = 0 }) {
   const ref = useRef(null)
@@ -58,7 +59,12 @@ const roles = [
 export default function ExperienceTimeline() {
   return (
     <section id="experience" className="relative mx-auto max-w-6xl px-6 pb-28 text-white scroll-mt-24">
-      <h2 className="text-2xl font-semibold">Experience</h2>
+      <TypedInView
+        as="h2"
+        className="text-2xl font-semibold"
+        text="Experience"
+        speed={40}
+      />
 
       <div className="relative mt-8">
         <div className="absolute left-4 top-0 h-full w-px bg-white/10 md:left-1/2" />
@@ -66,22 +72,27 @@ export default function ExperienceTimeline() {
         <div className="space-y-10">
           {roles.map((r, idx) => (
             <InlineReveal key={`${r.company}-${idx}`} delay={idx * 0.05}>
-              <div
-                className={`relative md:flex md:items-start md:gap-12 ${idx % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
-              >
+              <div className={`relative md:flex md:items-start md:gap-12 ${idx % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                 <div className="absolute left-4 top-2 h-3 w-3 -translate-x-1/2 rounded-full bg-white md:left-1/2" />
+
                 <motion.div
                   initial={{ x: idx % 2 === 0 ? 24 : -24, opacity: 0 }}
                   whileInView={{ x: 0, opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
                   transition={{ duration: 0.6 }}
-                  className="mt-6 w-full rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur md:w-[46%]"
+                  className="mt-6 w-full rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md backdrop-saturate-150 shadow-[0_8px_40px_rgba(0,0,0,0.35)] p-5 md:w-[46%]"
+
                 >
-                  <div className="text-sm text-neutral-400">{r.period}</div>
-                  <div className="mt-1 text-lg font-semibold">{r.title}</div>
-                  <div className="text-neutral-300">{r.company}</div>
+                  <TypedInView as="div" className="text-sm text-neutral-400" text={r.period} speed={20} />
+                  <TypedInView as="div" className="mt-1 text-lg font-semibold" text={r.title} speed={26} startDelay={90} />
+                  <TypedInView as="div" className="text-neutral-300" text={r.company} speed={22} startDelay={160} />
+
                   <ul className="mt-3 space-y-2 text-sm text-neutral-200">
-                    {r.bullets.map((b, i) => <li key={`${r.company}-b-${i}`}>{b}</li>)}
+                    {r.bullets.map((b, i) => (
+                      <li key={`${r.company}-b-${i}`}>
+                        <TypedInView text={b} speed={14} startDelay={220 + i * 120} />
+                      </li>
+                    ))}
                   </ul>
                 </motion.div>
               </div>

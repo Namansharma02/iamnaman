@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Code, BarChart3, Users } from 'lucide-react'
+import TypedInView from './TypedInView'
 
 const items = [
   {
@@ -23,29 +23,14 @@ const items = [
 ]
 
 export default function WhatIDo() {
-  const [text, setText] = useState('')
-  const [done, setDone] = useState(false)
-  const fullText = 'What I Do'
-
-  useEffect(() => {
-    let i = 0
-    const interval = setInterval(() => {
-      setText(prev => prev + fullText[i])
-      i++
-      if (i === fullText.length) {
-        clearInterval(interval)
-        setDone(true)
-      }
-    }, 70) // speed in ms
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <section id="what-i-do" className="relative mx-auto max-w-6xl px-6 py-24 scroll-mt-24">
-      <h2 className="text-2xl font-semibold mb-10">
-        {text}
-        {!done && <span className="typing-caret">|</span>}
-      </h2>
+      <TypedInView
+        as="h2"
+        className="text-2xl font-semibold mb-10"
+        text="What I Do"
+        speed={40}
+      />
 
       <div className="grid gap-10 md:grid-cols-3">
         {items.map((item, i) => (
@@ -55,11 +40,26 @@ export default function WhatIDo() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.45, delay: i * 0.06 }}
-            className="rounded-xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur hover:bg-white/[0.06] transition-colors"
+            className="rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md backdrop-saturate-150 shadow-[0_8px_40px_rgba(0,0,0,0.35)] p-6 transition-colors hover:bg-white/15"
+
           >
             <div className="mb-4">{item.icon}</div>
-            <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-            <p className="text-sm text-neutral-300">{item.body}</p>
+
+            {/* Title types, then body types after a short delay */}
+            <TypedInView
+              as="h3"
+              className="text-lg font-semibold mb-2"
+              text={item.title}
+              speed={28}
+              startDelay={80}
+            />
+            <TypedInView
+              as="p"
+              className="text-sm text-neutral-300"
+              text={item.body}
+              speed={14}
+              startDelay={220}
+            />
           </motion.div>
         ))}
       </div>

@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata = {
-  title: "Naman | Portfolio",
+  title: "Naman's Portfolio",
   description: "Automation & Analytics Portfolio of Naman",
 }
 

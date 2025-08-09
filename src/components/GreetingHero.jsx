@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
 export default function GreetingHero() {
-  const parts = ['Hey,', 'I', 'am', 'Naman.']         // types word by word
+  const parts = ['Hey,', "I'm", 'Naman.']         // types word by word
   const charDelay = 50                               // ms per character
   const gapBetweenWords = 50                         // pause between words
 
@@ -38,15 +38,16 @@ export default function GreetingHero() {
   }, [])
 
   return (
-    <section className="relative mx-auto max-w-6xl px-6 pt-40 pb-28 text-center md:pt-48 md:pb-36">
+   <section className="relative mx-auto max-w-6xl px-6 min-h-[78vh] md:min-h-[86vh] flex items-center justify-center text-center pt-10 pb-16 pt-14 md:pt-10">
+
       
       {/* <p className="mb-3 text-sm tracking-widest text-emerald-300/90">WELCOME</p> */}
 
       {/* typing line */}
       <h1
-        className=" font-bold leading-tight md:text-9xl"
+  className="font-bold leading-tight tracking-tight text-[clamp(70px,9vw,250px)]"
         aria-live="polite"
-        aria-label="Hey, I am Naman"
+        aria-label="Hey, I'm Naman"
       >
         <span>{text}</span>
         <span className="typing-caret" aria-hidden="true">|</span>

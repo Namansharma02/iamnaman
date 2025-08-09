@@ -41,8 +41,9 @@ body {
 }
 
 
-@keyframes caret-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
-.typing-caret { display: inline-block; width: 0.6ch; margin-left: 0px; animation: caret-blink 1s step-end infinite; }
+/* Caret already in your CSS, but here for completeness */
+@keyframes caret-blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.typing-caret{ display:inline-block; width:.6ch; animation:caret-blink 1s step-end infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .typing-caret { animation: none }
@@ -50,4 +51,30 @@ body {
 
 
 html { scroll-behavior: smooth;  }
+
+html, body { overflow-x: hidden; }
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+@keyframes heroPulse { 0%,100% { transform: scale(1); opacity: .65 } 50% { transform: scale(1.05); opacity: .9 } }
+.animate-heroPulse { animation: heroPulse 8s ease-in-out infinite; }
+
+@keyframes heroSheen { 
+  0% { transform: translateX(-120%); opacity: .0 }
+  20% { opacity: .25 }
+  60% { opacity: .25 }
+  100% { transform: translateX(120%); opacity: 0 }
+}
+.animate-heroSheen { animation: heroSheen 2.6s ease-in-out 0.6s 1; }
+
+
+/* Text rendering */
+body{ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
 
