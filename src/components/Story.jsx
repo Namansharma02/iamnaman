@@ -7,7 +7,7 @@ export default function Story() {
   const [start, setStart] = useState(false)
 
   // Heading typing state
-  const headingFull = 'My story'
+  const headingFull = 'My Story'
   const [headingText, setHeadingText] = useState('')
   const [headingDone, setHeadingDone] = useState(false)
 
