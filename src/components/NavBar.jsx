@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Sun, Moon } from "lucide-react"
 
 export default function NavBar({ theme, onToggleTheme }) {
   const links = [
@@ -28,21 +28,21 @@ export default function NavBar({ theme, onToggleTheme }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-[100]">
-      <div className="mx-auto max-w-6xl mt-4">
-        <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] nav-surface px-3 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+      <div className="mx-auto w-full max-w-7xl px-2 md:px-3 mt-3 md:mt-4">
+        <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] nav-surface px-2 md:px-3 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)] overflow-hidden">
           <a href="#hero" className="text-sm font-medium tracking-wide">Top</a>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             {links.map(l => (
-              <a key={l.id} href={l.href} className="nav-link">{l.label}</a>
+              <a key={l.id} href={l.href} className="nav-link text-[15px] lg:text-sm">{l.label}</a>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
             {/* Mobile hamburger */}
             <button
-              className="md:hidden btn-toggle"
+              className="md:hidden btn-toggle w-9 h-9 grid place-items-center"
               onClick={toggle}
               aria-expanded={open}
               aria-controls="mobileMenu"
@@ -50,8 +50,19 @@ export default function NavBar({ theme, onToggleTheme }) {
             >
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
-            <button className="btn-toggle" onClick={onToggleTheme} aria-label="Toggle theme">
-              {mounted ? (theme === "dark" ? "Light" : "Dark") : "Theme"}
+
+            {/* Theme icon toggle */}
+            <button
+              className="btn-toggle w-9 h-9 grid place-items-center"
+              onClick={onToggleTheme}
+              aria-label={mounted ? (theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode') : 'Toggle theme'}
+              title={mounted ? (theme === 'dark' ? 'Light' : 'Dark') : 'Theme'}
+            >
+              {mounted ? (
+                theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />
+              ) : (
+                <Sun className="h-4 w-4" />
+              )}
             </button>
           </div>
         </div>

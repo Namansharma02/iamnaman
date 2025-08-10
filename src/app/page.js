@@ -144,7 +144,8 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
 
       <main id="top" className="h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]">
         {/* HERO */}
-        <section id="hero" className="snap-start h-auto md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center">
+        <section id="hero" className="snap-start min-h-[100svh] md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center">
+
           <div className="mx-auto w-full max-w-6xl">
             <HeroSplit imgSrc="/naman-avatar.png" imgAlt="Naman avatar" />
           </div>
