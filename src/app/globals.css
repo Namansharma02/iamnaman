@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @reference "tailwindcss";
 
+/* Theme tokens */
 :root {
   --bg: #0b0b0c;
   --fg: #e8e9ea;
@@ -9,11 +10,17 @@
   --border: rgba(255,255,255,0.08);
   --accent: #7c4dff;
   --translucent: rgba(17,18,21,0.6);
+
   --nav-h: 72px;
-  --nav-bg: #0b0b0c; /* page background for dark theme */
-  /* Invert navbar: white bar on dark theme */
+  /* Page background color for dark theme */
+  --nav-bg: #0b0b0c;
+
+  /* Inverted navbar on dark page: white bar with dark text */
   --nav-surface-bg: #ffffff;
   --nav-surface-fg: #111418;
+
+  /* Code overlay ink defaults for dark */
+  --code-ink: rgba(255,255,255,0.18);
 }
 
 .light {
@@ -24,63 +31,133 @@
   --border: rgba(17,20,24,0.08);
   --accent: #5b7cfa;
   --translucent: rgba(255,255,255,0.7);
-  --nav-bg: #ffffff; /* page background for light theme */
-  /* Invert navbar: black bar on light theme */
+
+  /* Page background color for light theme */
+  --nav-bg: #ffffff;
+
+  /* Inverted navbar on light page: black bar with light text */
   --nav-surface-bg: #0b0b0c;
   --nav-surface-fg: #e8e9ea;
+
+  /* Code overlay ink for light */
+  --code-ink: rgba(76,111,255,0.22);
 }
 
+/* Base */
 html { background: var(--bg); color: var(--fg); }
+html, body, main { scroll-behavior: smooth; }
 
+/* Reusable UI bits */
 .btn-primary { @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition; background: var(--fg); color: var(--bg); }
-.btn-ghost { @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium border transition; border-color: var(--border); }
-.btn-toggle { @apply text-xs px-3 py-1 rounded-lg border transition; border-color: var(--border); }
-.nav-link { @apply px-3 py-1 text-sm rounded-lg transition; color: var(--muted); }
+.btn-ghost   { @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium border transition; border-color: var(--border); }
+.btn-toggle  { @apply text-xs rounded-lg border transition; border-color: var(--border); padding: 0; }
+
+.nav-link { @apply px-3 py-1 rounded-lg transition; font-weight: 500; }
 .nav-link:hover { color: var(--fg); background: color-mix(in srgb, var(--fg) 8%, transparent); }
+
 .card { @apply rounded-2xl p-5 transition border; background: var(--translucent); border-color: var(--border); }
-.tag { @apply inline-flex items-center rounded-xl px-3 py-1 text-xs transition border; color: var(--muted); border-color: var(--border); }
+.tag  { @apply inline-flex items-center rounded-xl px-3 py-1 text-xs transition border; color: var(--muted); border-color: var(--border); }
 .tag:hover { color: var(--fg); border-color: var(--fg); }
 
 .section-title { letter-spacing: -0.02em; }
 
-html, body, main { scroll-behavior: smooth; }
-
-/* Head at top under navbar */
+/* Section heading visibility under navbar */
 .section-head { display: grid; place-items: center; }
 .section-head.is-inactive { display: none; }
 
-/* solid navbar surface, inverted vs page theme */
+/* Solid navbar surface that inverts against page theme */
 .nav-surface { background: var(--nav-surface-bg); color: var(--nav-surface-fg); }
 .nav-surface a, .nav-surface .text { color: var(--nav-surface-fg); }
-.nav-surface .nav-link { color: color-mix(in srgb, var(--nav-surface-fg) 70%, transparent); }
-.nav-surface .nav-link:hover { color: var(--nav-surface-fg); background: color-mix(in srgb, var(--nav-surface-fg) 10%, transparent); }
+.nav-surface .nav-link { color: var(--nav-surface-fg); opacity: .95; }
+.nav-surface .nav-link:hover { opacity: 1; background: color-mix(in srgb, var(--nav-surface-fg) 12%, transparent); }
 .nav-surface .btn-toggle { border-color: color-mix(in srgb, var(--nav-surface-fg) 24%, transparent); color: var(--nav-surface-fg); }
 .nav-surface .btn-toggle:hover { background: color-mix(in srgb, var(--nav-surface-fg) 8%, transparent); }
 
-/* slide down animation for mobile nav */
+/* Mobile nav slide-down */
 .mobile-menu { max-height: 0; opacity: 0; transform: translateY(-8px); transition: max-height .35s ease, opacity .25s ease, transform .35s ease; }
 .mobile-menu.open { max-height: 420px; opacity: 1; transform: translateY(0); }
 
-/* Hero tweaks for small screens */
+/* Micro interaction for navbar links */
+.nav-anim { position: relative; transform: translateZ(0); transition: color .2s ease, background .2s ease, transform .18s ease, opacity .2s ease; transform-origin: center; }
+.nav-anim:hover { transform: translateY(-1px) scale(1.06); }
+.nav-anim:active { transform: translateY(0) scale(0.98); }
+.nav-anim::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 6px; height: 2px; background: currentColor; opacity: 0; transform: scaleX(0.4); transform-origin: center; transition: transform .2s ease, opacity .2s ease; }
+.nav-anim:hover::after { opacity: .65; transform: scaleX(1); }
+
+/* Small screen hero tweaks */
 @media (max-width: 640px) {
-  /* remove previous hero-scope scaling which nudged content right */
+  /* make sure we are not scaling the hero weirdly on mobile */
   .hero-scope { transform: none; transform-origin: center; }
 }
 
-/* Blinking caret for the hero typed heading */
+/* Blinking caret for typed headings */
 .typing-caret { display: inline-block; margin-left: 6px; animation: caret-blink 1s steps(1, end) infinite; }
 @keyframes caret-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
 
-
-/* Shimmer reveal */
-.shimmer-wrap { position: relative; overflow: hidden; display: block; }
-.shimmer-wrap .shimmer-bar {
-  position: absolute;
-  top: 0; left: -35%;
-  width: 30%; height: 100%;
-  background: linear-gradient(115deg, transparent 0%, color-mix(in srgb, var(--fg) 6%, transparent) 35%, color-mix(in srgb, var(--fg) 28%, transparent) 52%, color-mix(in srgb, var(--fg) 6%, transparent) 69%, transparent 100%);
-  filter: blur(6px);
-  transform: translateX(0);
-  animation: shimmer-sweep 0.9s ease forwards;
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nav-anim { transition: none; transform: none !important; }
+  .nav-anim:hover::after { transition: none; }
 }
-@keyframes shimmer-sweep { to { left: 135%; } }
+
+/* Code peephole overlay with feathered edge and slight magnify */
+.code-peep {
+  position: fixed; inset: 0; z-index: 60; pointer-events: none; color: var(--code-ink);
+  /* Peephole variables */
+  --peepR: 120px;            /* default radius */
+  --peepFeather: 28px;       /* feather width */
+  --zoom: 1.06;              /* magnification inside */
+  /* Feathered circular mask that follows pointer */
+  -webkit-mask-image: radial-gradient(circle at var(--peepX, 50vw) var(--peepY, 50vh), black 0, black calc(var(--peepR) - var(--peepFeather)), transparent var(--peepR));
+  mask-image: radial-gradient(circle at var(--peepX, 50vw) var(--peepY, 50vh), black 0, black calc(var(--peepR) - var(--peepFeather)), transparent var(--peepR));
+  opacity: 0; transition: opacity .18s ease;
+}
+.code-peep.is-open { opacity: 1; }
+.code-peep .inner {
+  position: absolute; inset: 0; padding: 48px 56px; white-space: pre-wrap;
+  line-height: 1.55; font-size: 14px; /* bigger */
+  font-family: var(--font-geist-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+  transform: scale(var(--zoom, 1));
+  transform-origin: var(--peepX, 50vw) var(--peepY, 50vh);
+  will-change: transform;
+  text-shadow: 0 0 1px rgba(0,0,0,0.05);
+}
+@media (min-width: 768px) { .code-peep .inner { font-size: 16px; } }
+
+
+
+/* Nav button sizing helpers */
+.btn-toggle  { @apply rounded-lg border transition; border-color: var(--border); }
+.icon-btn { @apply grid place-items-center; width: 2.5rem; height: 2.5rem; padding: 0; }
+
+
+
+
+
+/* Contact cards */
+.contact-card { @apply rounded-2xl border border-[var(--border)] bg-[var(--translucent)] backdrop-blur-md p-5 md:p-7 flex items-center gap-4 transition shadow-[0_8px_30px_rgba(0,0,0,0.20)]; }
+.contact-card:hover { transform: translateY(-2px); }
+.contact-icon { height: 1.75rem; width: 1.75rem; }
+@media (min-width: 768px) { .contact-icon { height: 2rem; width: 2rem; } }
+.contact-text { text-align: left; }
+.contact-title { font-size: 1rem; font-weight: 600; }
+@media (min-width: 768px) { .contact-title { font-size: 1.125rem; } }
+.contact-sub { color: var(--muted); font-size: 0.8125rem; }
+@media (min-width: 768px) { .contact-sub { font-size: 0.9375rem; } }
+
+.contact-preferred { position: relative; }
+.contact-preferred .badge { position: absolute; top: 8px; right: 10px; font-size: 10px; padding: 2px 6px; border-radius: 9999px; border: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 60%, transparent); }
+
+/* Contact outlines with brand colors */
+.contact-email { border-width: 2px; border-color: #ef4444; }
+.contact-email .contact-icon { color: #ef4444; }
+.contact-email:hover { box-shadow: 0 0 0 2px rgba(239,68,68,0.55), 0 0 28px rgba(239,68,68,0.35); }
+
+/* LinkedIn brand blue outline */
+.contact-linkedin { border-width: 2px; border-color: #0A66C2; }
+.contact-linkedin .contact-icon { color: #0A66C2; }
+.contact-linkedin:hover { box-shadow: 0 0 0 2px rgba(10,102,194,0.55), 0 0 28px rgba(10,102,194,0.38); }
+
+/* Keyboard focus support */
+.contact-card:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
+@keyframes glowPulse { 0% { box-shadow: 0 0 0 0 rgba(99,102,241,0.35) } 70% { box-shadow: 0 0 0 10px rgba(99,102,241,0) } 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0) } }

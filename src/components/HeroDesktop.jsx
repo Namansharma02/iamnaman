@@ -32,7 +32,8 @@ export default function HeroDesktop({ imgSrc = "/naman-avatar.png", imgAlt = "Pr
         <GreetingHero />
       </div>
 
-      <motion.div style={{ x }} className="justify-self-center">
+      {/* Lift avatar above the code overlay */}
+      <motion.div style={{ x }} className="justify-self-center relative z-[70]">
         <div className="relative md:w-[660px] md:h-[660px] lg:w-[820px] lg:h-[820px]">
           <Image
             src={imgSrc}

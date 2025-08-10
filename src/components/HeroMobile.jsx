@@ -12,7 +12,7 @@ export default function HeroMobile({ imgSrc = "/naman-avatar.png", imgAlt = "Pro
       </div>
 
       {/* Intrinsic image sizing so it never collapses, plus extra space below */}
-      <div className="mt-10 mb-16 w-full flex justify-center">
+      <div className="mt-6 mb-16 w-full flex justify-center relative z-[70]">
         <Image
           src={imgSrc}
           alt={imgAlt}
