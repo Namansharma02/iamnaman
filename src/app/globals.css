@@ -10,7 +10,7 @@
   --accent: #7c4dff;
   --translucent: rgba(17,18,21,0.6);
   --nav-h: 72px;
-  --nav-bg: #0b0b0c; /* fully opaque to hide content under it */
+  --nav-bg: #0b0b0c;
 }
 
 .light {
@@ -21,7 +21,7 @@
   --border: rgba(17,20,24,0.08);
   --accent: #5b7cfa;
   --translucent: rgba(255,255,255,0.7);
-  --nav-bg: #ffffff; /* opaque in light too */
+  --nav-bg: #ffffff;
 }
 
 html { background: var(--bg); color: var(--fg); }
@@ -39,7 +39,13 @@ html { background: var(--bg); color: var(--fg); }
 
 html, body, main { scroll-behavior: smooth; }
 
-.pin-head { position: sticky; top: var(--nav-h); z-index: 10; display: grid; place-items: center; background: transparent; }
+/* Head at top under navbar */
+.section-head { display: grid; place-items: center; }
+.section-head.is-inactive { display: none; }
 
 /* solid navbar surface so headings do not show through */
 .nav-surface { background: var(--nav-bg); }
+
+/* slide down animation for mobile nav */
+.mobile-menu { max-height: 0; opacity: 0; transform: translateY(-8px); transition: max-height .35s ease, opacity .25s ease, transform .35s ease; }
+.mobile-menu.open { max-height: 420px; opacity: 1; transform: translateY(0); }

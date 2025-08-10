@@ -7,49 +7,55 @@ import WhatIDo from "../components/WhatIDo"
 import ExperienceTimeline from "../components/ExperienceTimeline"
 import TypedInView from "../components/TypedInView"
 
-function SectionBlock({ id, title, children, bodyText }) {
+function SectionBlock({ id, title, children, bodyText, activeId }) {
   const ref = useRef(null)
   const [showContent, setShowContent] = useState(false)
   const [titleDone, setTitleDone] = useState(false)
+  const hasEverShown = useRef(false)
   const timers = useRef({})
-  const hasShown = useRef(false)
 
+  const isActive = activeId === id
+
+  // On first time the section is visible at all, schedule content reveal after heading typing time
   useEffect(() => {
     const el = ref.current
     if (!el) return
-
-    const handleEnter = () => {
-      if (hasShown.current) {
-        setShowContent(true)
-        setTitleDone(true)
-        return
-      }
-      const titleText = title || ""
-      const titleSpeed = 18
-      const hold = Math.max(600, titleText.length * titleSpeed + 120)
-      clearTimeout(timers.current.reveal)
-      setShowContent(false)
-      setTitleDone(false)
-      timers.current.reveal = setTimeout(() => {
-        setShowContent(true)
-        setTitleDone(true)
-        hasShown.current = true
-      }, hold)
-    }
-
     const io = new IntersectionObserver(
-      entries => { entries.forEach(e => { if (e.isIntersecting) handleEnter() }) },
-      { threshold: 0.55, rootMargin: "0px 0px -5% 0px" }
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !hasEverShown.current) {
+            const titleText = title || ""
+            const titleSpeed = 18
+            const hold = Math.max(600, Math.ceil(titleText.length * titleSpeed * 0.6) + 120)
+            clearTimeout(timers.current.reveal)
+            timers.current.reveal = setTimeout(() => {
+              setShowContent(true)
+              hasEverShown.current = true
+            }, hold)
+          }
+        })
+      },
+      { threshold: 0.35 }
     )
-
     io.observe(el)
     return () => { clearTimeout(timers.current.reveal); io.disconnect() }
   }, [title])
 
+  // When a section becomes the active one for the first time, let the title type, then mark done so it doesn't retype later
+  useEffect(() => {
+    if (!isActive || titleDone) return
+    const titleText = title || ""
+    const titleSpeed = 18
+    const hold = Math.max(600, Math.ceil(titleText.length * titleSpeed * 0.6) + 120)
+    setTitleDone(false)
+    const t = setTimeout(() => setTitleDone(true), hold)
+    return () => clearTimeout(t)
+  }, [isActive, titleDone, title])
+
   return (
-    <section ref={ref} id={id} className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]">
-      <div className="pin-head">
-        {titleDone ? (
+    <section ref={ref} id={id} data-section className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]">
+      <div className={`section-head ${isActive ? 'is-active' : 'is-inactive'}`}>
+        {titleDone || hasEverShown.current ? (
           <h2 className="section-title text-6xl md:text-7xl font-extrabold text-center">{title}</h2>
         ) : (
           <TypedInView as="h2" className="section-title text-6xl md:text-7xl font-extrabold text-center" text={title} speed={18} />
@@ -57,10 +63,10 @@ function SectionBlock({ id, title, children, bodyText }) {
       </div>
 
       <div className="pin-body mx-auto max-w-5xl pt-6 pb-16 content-scope">
-        {typeof bodyText === "string" && (showContent || hasShown.current) && (
+        {typeof bodyText === "string" && (showContent || hasEverShown.current) && (
           <TypedInView as="p" className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed" text={bodyText} speed={10} startDelay={40} />
         )}
-        {showContent || hasShown.current ? children : null}
+        {showContent || hasEverShown.current ? children : null}
       </div>
     </section>
   )
@@ -68,6 +74,7 @@ function SectionBlock({ id, title, children, bodyText }) {
 
 export default function Home() {
   const [theme, setTheme] = useState("dark")
+  const [activeId, setActiveId] = useState("hero")
 
   useEffect(() => {
     const saved = typeof window !== "undefined" && localStorage.getItem("theme")
@@ -81,6 +88,30 @@ export default function Home() {
       localStorage.setItem("theme", theme)
     }
   }, [theme])
+
+  // Determine current section by scroll position against nav height so only one heading shows
+  useEffect(() => {
+    const main = document.querySelector('main')
+    const sections = Array.from(document.querySelectorAll('[data-section]'))
+    const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
+
+    const getActive = () => {
+      let bestId = sections[0]?.id || ''
+      let best = Infinity
+      sections.forEach(s => {
+        const top = s.getBoundingClientRect().top - navH
+        const score = Math.abs(top)
+        if (score < best) { best = score; bestId = s.id }
+      })
+      setActiveId(bestId)
+    }
+
+    getActive()
+    const onScroll = () => requestAnimationFrame(getActive)
+    main?.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', getActive)
+    return () => { main?.removeEventListener('scroll', onScroll); window.removeEventListener('resize', getActive) }
+  }, [])
 
   const aboutCopy = useMemo(() => (
 `At JPMorgan Chase, I lead automation across trading portals and banking tools, designing solutions that blend Python, Java, Alteryx, UiPath, Tableau, and SQL to remove friction at scale.
@@ -101,21 +132,21 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         </section>
 
         {/* ABOUT ME */}
-        <SectionBlock id="about" title="About Me" bodyText={aboutCopy} />
+        <SectionBlock id="about" activeId={activeId} title="About Me" bodyText={aboutCopy} />
 
         {/* WHAT I DO */}
-        <SectionBlock id="what-i-do" title="What I Do">
-          <WhatIDo />
+<SectionBlock id="what-i-do" activeId={activeId} title="What I Do">
+            <WhatIDo />
         </SectionBlock>
 
         {/* EXPERIENCE */}
-        <SectionBlock id="experience" title="Experience">
-          <ExperienceTimeline />
+<SectionBlock id="experience" activeId={activeId} title="Experience">
+            <ExperienceTimeline />
         </SectionBlock>
 
         {/* PROJECTS */}
-        <SectionBlock id="projects" title="Projects">
-          <div className="mx-auto max-w-5xl">
+<SectionBlock id="projects" activeId={activeId} title="Projects">
+            <div className="mx-auto max-w-5xl">
             <div className="mt-10 grid sm:grid-cols-2 gap-6">
               {[1, 2, 3, 4].map(n => (
                 <a key={n} className="card group" href="#" target="_blank" rel="noreferrer">
@@ -133,8 +164,8 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         </SectionBlock>
 
         {/* SKILLS */}
-        <SectionBlock id="skills" title="Skills">
-          <div className="mx-auto max-w-5xl">
+<SectionBlock id="skills" activeId={activeId} title="Skills">
+            <div className="mx-auto max-w-5xl">
             <div className="mt-10 flex flex-wrap gap-3">
               {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(s => (
                 <span key={s} className="tag">{s}</span>

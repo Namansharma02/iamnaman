@@ -16,12 +16,20 @@ export default function NavBar({ theme, onToggleTheme }) {
   const [open, setOpen] = useState(false)
   useEffect(() => setMounted(true), [])
 
+  const toggle = () => setOpen(v => !v)
   const close = () => setOpen(false)
+
+  // close the drawer when hash changes
+  useEffect(() => {
+    const onHash = () => setOpen(false)
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
 
   return (
     <header className="fixed inset-x-0 top-0 z-[100]">
       <div className="mx-auto max-w-6xl mt-4">
-        <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] nav-surface px-3 py-2">
+        <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] nav-surface px-3 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
           <a href="#hero" className="text-sm font-medium tracking-wide">iamnaman</a>
 
           {/* Desktop nav */}
@@ -35,7 +43,9 @@ export default function NavBar({ theme, onToggleTheme }) {
             {/* Mobile hamburger */}
             <button
               className="md:hidden btn-toggle"
-              onClick={() => setOpen(v => !v)}
+              onClick={toggle}
+              aria-expanded={open}
+              aria-controls="mobileMenu"
               aria-label={open ? "Close menu" : "Open menu"}
             >
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -46,23 +56,26 @@ export default function NavBar({ theme, onToggleTheme }) {
           </div>
         </div>
 
-        {/* Mobile dropdown */}
-        {open && (
-          <div className="md:hidden mt-2 rounded-2xl border border-[var(--border)] nav-surface p-2">
-            <nav className="grid">
-              {links.map(l => (
-                <a
-                  key={l.id}
-                  href={l.href}
-                  className="px-3 py-2 rounded-lg text-sm hover:bg-[color-mix(in_srgb,var(--fg)_8%,transparent)]"
-                  onClick={close}
-                >
-                  {l.label}
-                </a>
-              ))}
-            </nav>
-          </div>
-        )}
+        {/* Mobile dropdown with slide down animation */}
+        <div
+          id="mobileMenu"
+          className={`md:hidden mt-2 overflow-hidden rounded-2xl border border-[var(--border)] nav-surface mobile-menu ${open ? 'open' : ''}`}
+          role="menu"
+        >
+          <nav className="grid p-2">
+            {links.map(l => (
+              <a
+                key={l.id}
+                href={l.href}
+                className="px-3 py-2 rounded-lg text-sm hover:bg-[color-mix(in_srgb,var(--fg)_8%,transparent)]"
+                onClick={close}
+                role="menuitem"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
     </header>
   )
