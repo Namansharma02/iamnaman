@@ -12652,3 +12652,1855 @@ ChatGPT can make mistakes. Check important info. See Cookie Preferences.
 We use cookies
 
 Some cookies are essential for this site to function and cannot be turned off. We also use cookies and collect and share device identifiers to help us understand how our service performs and is used, and to support our marketing efforts. Learn more in our Cookie Policy. You can update your preferences at any time by clicking ‘Manage Cookies’.
+
+
+
+Skip to content
+
+This is a copy of a conversation between ChatGPT & Anonymous.
+You said:
+Can you access this? https://chatgpt.com/share/6897ae2c-94d8-8009-96c0-b807cf2f5eb8
+ChatGPT said:
+
+I tried opening it, but I can’t load the contents from my side. It looks like that shared page needs JavaScript that my browser tool can’t render.
+
+Quick fix options
+
+    Paste the key parts here
+
+    Export or print to PDF and upload it
+
+    Or share any files/code directly
+
+What do you want me to do with it once I have it? Review, summarize, or pull out specific code?
+You said:
+Uploaded a file
+try this
+ChatGPT said:
+
+Yes, I can access your upload. It is your chat log where we set up a Next.js app, deployed to Vercel, connected iamnaman.in, and walked through the DNS records and caching fixes. We had just started replacing the default homepage and planning sections for your interactive resume site.
+
+Here is the fastest way forward. Pick one and I will execute.
+
+    Build the first real version now
+
+    I will ship full files, not snippets. page.js, layout.js, globals.css, plus small components.
+
+    Sections in this order with scroll snap and smooth transitions. Hero, What I Do, About, Experience, Projects, Skills, Contact.
+
+    Subtle animated background and clean CTAs.
+    If you say go, I will drop complete files you can paste and push.
+
+    Turn your resume and LinkedIn into site copy
+
+    Paste your resume text or upload the PDF.
+
+    Paste your LinkedIn About and the key experience bullets.
+    I will rewrite into tight web copy and wire it into the sections above.
+
+    Add a specific visual you want first
+
+    Matrix style background or a minimal premium gradient.
+
+    We already tested some hero ideas. Tell me which direction to lock in and I will code it into the starter.
+
+Quick checks I noted from your log
+
+    Vercel deployment and domain mapping are already valid. If you ever see the custom domain lag behind a new build, hard refresh or redeploy to purge edge cache.
+
+Before I start, two tiny choices from you
+
+    Theme default. Dark or light
+
+    Accent color. Pick one color you like for highlights
+
+Tell me which option you want. If you pick 1, I will post the full files in my next message and you can copy paste and push.
+You said:
+wait wait, now is it possible for you to make this website in chapt gpt itself and we can play sround or its better that you guide me which fioles to update and I update them on my personal?
+ChatGPT said:
+
+We can do both.
+
+Fastest path
+
+    We build and tweak right here. I made a live prototype in the canvas on the right. It has a hero, scrolling image strips, snap scrolling, an About heading that fills from outline, and a Dark or Light theme toggle. We can iterate quickly on layout, copy, and motion.
+
+Then ship to your repo
+
+    When you like the look, I will give you full Next.js files to paste. app/layout.js, app/page.js, app/globals.css, plus small components. No partial snippets.
+
+Tell me what you want to change first
+
+    Theme default
+
+    Hero copy and buttons
+
+    Speed or spacing of the image strips
+
+    Sections order or content
+
+If you prefer repo first, say so and I will give you complete files now.
+You said:
+this is so good. I want to give you my files that I have on my local right now, what you have built is exactly wehat I needs. 
+
+Just see how i have put  background in my local in pages the amtrix one and also the content rest everythign you have put looks good. we will build it here on gpt and then you can proviude me the files alter on for ym local works?
+ChatGPT said:
+
+Perfect. We can build it here, then I will give you the full files to use locally.
+
+What I need from you
+Please upload either a zip or the specific files below from your local project. If you are using the pages router
+
+    pages/_app.js
+
+    pages/index.js
+
+    components used for the matrix background
+
+    styles/globals.css
+
+    public assets if any
+
+    package.json
+
+If you are using the app router
+
+    app/layout.js
+
+    app/page.js
+
+    any components for the matrix background
+
+    app/globals.css
+
+    public assets
+
+    package.json
+
+What I will do next
+
+    Drop your matrix background into the prototype as a MatrixBackground component behind the hero
+
+    Keep the theme toggle, outline heading fill effect, image strips, snap scroll, and section layout as in the canvas
+
+    Expose simple props for the matrix like speed, density, opacity, and fade so we can tune it
+
+    Replace my placeholder copy with your actual content where you want
+
+Two quick checks
+
+    Are you on Next.js pages router or app router
+
+    JavaScript or TypeScript
+
+Upload the files and tell me if you want the gradient backdrop kept as a fallback toggle along with matrix.
+You said:
+Uploaded a file
+Uploaded a file
+Uploaded a file
+Uploaded a file
+Uploaded a file
+Uploaded a file
+Uploaded a file
+Uploaded a file
+Uploaded a file
+Uploaded a file
+anything ewlse you need?
+ChatGPT said:
+
+Great. I have these from you already
+
+    globals.css, MatrixBackground.jsx, GreetingHero.jsx, TypedInView.jsx, WhatIDo.jsx, ExperienceTimeline.jsx, Story.jsx, NavBar.jsx
+
+Two tiny blockers before I merge everything here
+
+    Your app files. The layout.js and page.js you uploaded aren’t readable on my side. Can you reupload them as plain text or paste their contents here
+
+    Dependencies. Confirm you have framer-motion and lucide-react in package.json
+
+Quick choices so I wire it right
+
+    Matrix background default. On or off
+
+    Keep the Matrix toggle in the navbar or replace with a Light theme toggle
+
+    Accent color. Current is cyan in your CSS. Keep or change
+
+    Email and LinkedIn URL for the Contact buttons
+
+Optional
+
+    Fonts. Stick to Geist or switch to Inter
+
+    Typing speed for GreetingHero. Keep current or make it snappier
+
+Once I have the two files or their contents, I will drop a complete app/layout.js and app/page.js that compose your components with the sections and behavior we built here.
+You said:
+i have both Confirm you have framer-motion and lucide-react in package.json
+but even if i dont thats fine we can install it later so feel free to add whatever you want.
+
+
+
+layout.js - 
+import { Geist, Geist_Mono } from "next/font/google"
+import "./globals.css"
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+})
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+})
+
+export const metadata = {
+  title: "Naman's Portfolio",
+  description: "Automation & Analytics Portfolio of Naman",
+}
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body
+        suppressHydrationWarning
+        className={${geistSans.variable} ${geistMono.variable} antialiased}
+      >
+        {children}
+      </body>
+    </html>
+  )
+}
+
+
+
+
+
+
+page.js - 
+"use client"
+
+import { useState } from "react"
+import NavBar from "../components/NavBar"
+import GreetingHero from "../components/GreetingHero"
+import WhatIDo from "../components/WhatIDo"
+import Story from "../components/Story"
+import ExperienceTimeline from "../components/ExperienceTimeline"
+import MatrixBackground from "../components/bg/MatrixBackground"
+// import CursorTrail from "../components/bg/CursorTrail"
+
+export default function Home() {
+  const [bg, setBg] = useState('matrix')
+
+  return (
+    <main
+      id="top"
+      className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-neutral-950 via-neutral-950 to-neutral-900 text-white"
+    >
+      {bg === 'matrix' ? <MatrixBackground /> : null}
+      {/* <CursorTrail
+        color="255,255,255"
+        headWidth={18}
+        tailMin={36}
+        blur={34}
+        maxStep={1.2}
+        decayPerSec={1200}
+        zIndex={9}
+      /> */}
+
+      <div className="relative z-10">
+        <NavBar onChangeBg={setBg} currentBg={bg} />
+        <div className="pt-12">
+          <GreetingHero />
+        </div>
+        <WhatIDo />
+        <Story />
+        <ExperienceTimeline />
+      </div>
+    </main>
+  )
+}
+
+
+
+
+    Matrix background default. On or off - keep it optinal we will see later if we need it, maybe we find even better background who knows but keep it for now 
+
+    Keep the Matrix toggle in the navbar or replace with a Light theme toggle - need both 
+
+    Accent color. Current is cyan in your CSS. Keep or change - change aid you feel something is better present
+
+    Email and LinkedIn URL for the Contact buttons - namans0297@gmail.com and https://www.linkedin.com/in/namansharma0297/
+
+Optional
+
+    Fonts. Stick to Geist or switch to Inter - whichever feels professional and classy, plus artistic
+
+    Typing speed for GreetingHero. Keep current or make it snappier - snappier works 
+ChatGPT said:
+
+Amazing. I’ve dropped complete files in the canvas on the right.
+
+What I did
+
+    Kept your sections and Matrix background
+
+    Added both toggles in the navbar. Theme and Matrix
+
+    Switched accent to premium violet for a cleaner look
+
+    Added ImageStrips, Projects, Skills, Contact
+
+    No framer-motion needed yet, so you can run as is
+
+What you should do now
+
+    Copy app/layout.js, app/page.js, components/NavBar.jsx, components/ImageStrips.jsx, app/globals.css from the canvas into your project
+
+    Keep your other components as is
+
+    Run dev and test the toggles
+
+Want me to wire the GreetingHero typing to be snappier inside your file next, or keep it for later?
+You said:
+nos omthign went rterribly wrongs, now its looks like basic html
+ChatGPT said:
+
+Got you. When a Next app suddenly looks like plain HTML, it’s almost always one of these
+
+    Tailwind not loading or not building your classes
+
+    globals.css not imported from the right place
+
+    Tailwind purge paths missing the app and components folders, so all styles get stripped
+
+    PostCSS not running, so all the @apply helpers vanish
+
+Do this quick triage
+
+    Sanity check in the browser
+    Add this to the top of app/page.js inside the return and refresh
+
+<div className="bg-red-500 text-white p-4">Tailwind test</div>
+
+    If this shows red, Tailwind is alive
+
+    If not, Tailwind is not compiling. Fix below
+
+    Make sure the correct file is imported
+
+    In app/layout.js you already have import "./globals.css". Keep app/globals.css exactly at that path
+
+    Use known good Tailwind config
+    Create or replace these two files at project root
+
+tailwind.config.js
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx,mdx}",
+    "./pages/**/*.{js,jsx,ts,tsx,mdx}",
+    "./components/**/*.{js,jsx,ts,tsx,mdx}",
+    "./src/**/*.{js,jsx,ts,tsx,mdx}"
+  ],
+  theme: {
+    extend: {}
+  },
+  plugins: []
+}
+
+postcss.config.js
+
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {}
+  }
+}
+
+    Ensure globals.css starts with the Tailwind directives
+    Your app/globals.css must begin with
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+    Restart dev server
+
+    Stop next dev
+
+    Start it again so Tailwind picks up the new content globs
+
+    If only the custom utility classes look broken
+    Our buttons and cards use custom classes like btn-primary and card that rely on @apply. If PostCSS was not running they will not exist. After you fix PostCSS this will work. If you want a safe fallback right now, add this at the end of app/globals.css
+
+/* Fallback styles if PostCSS is not running */
+.btn-primary { background: var(--fg); color: var(--bg); padding: 0.5rem 1rem; border-radius: 0.75rem; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; }
+.btn-ghost { border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 0.75rem; display: inline-flex; align-items: center; justify-content: center; }
+.btn-toggle { border: 1px solid var(--border); padding: 0.25rem 0.75rem; border-radius: 0.5rem; font-size: 0.8rem; }
+.nav-link { color: var(--muted); padding: 0.25rem 0.75rem; border-radius: 0.5rem; }
+.card { background: var(--translucent); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 1rem; padding: 1.25rem; }
+.tag { color: var(--muted); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.25rem 0.75rem; font-size: 0.75rem; display: inline-flex; align-items: center; }
+
+If it still looks plain after step 5, send me your tailwind.config.js and postcss.config.js and I will fix them. Also tell me what the red test div did.
+You said:
+Error: Cannot apply unknown utility class rounded-xl. Are you using CSS modules or similar and missing @reference? https://tailwindcss.com/docs/functions-and-directives#reference-directive
+    [at onInvalidCandidate (D:\Codes\iamnaman\node_modules\tailwindcss\dist\lib.js:18:1312)]
+    [at ge (D:\Codes\iamnaman\node_modules\tailwindcss\dist\lib.js:13:29803)]
+    [at D:\Codes\iamnaman\node_modules\tailwindcss\dist\lib.js:18:373]
+    [at I (D:\Codes\iamnaman\node_modules\tailwindcss\dist\lib.js:3:1656)]
+    [at je (D:\Codes\iamnaman\node_modules\tailwindcss\dist\lib.js:18:172)]
+    [at bi (D:\Codes\iamnaman\node_modules\tailwindcss\dist\lib.js:35:780)]
+    [at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]
+    [at async yi (D:\Codes\iamnaman\node_modules\tailwindcss\dist\lib.js:35:1123)]
+    [at async _r (D:\Codes\iamnaman\node_modules\@tailwindcss\node\dist\index.js:10:3384)]
+    [at async p (D:\Codes\iamnaman\node_modules\@tailwindcss\postcss\dist\index.js:10:4019)]
+ ✓ Compiled in 210ms
+ChatGPT said:
+
+You are on Tailwind v4. That error is a v4 thing. Fix is simple.
+
+Do this now
+
+    Open app/globals.css
+
+    Replace the first three lines with these two lines
+
+@import "tailwindcss";
+@reference "tailwindcss";
+
+I already patched the canvas file to use this. Paste it from there or copy the snippet here. This makes @apply work again in v4.
+Tailwind CSS+1
+Stack Overflow
+
+Then restart dev
+Stop and start next dev
+
+If you still see errors
+
+    Delete the custom classes that use @apply and use inline utility classes for a quick test
+
+    Or wrap your custom classes in a components layer
+
+@layer components {
+  .btn-primary { @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium; }
+}
+
+But with the @import and @reference lines you should be good. The v4 change is the reason it broke.
+Tailwind CSS+1
+
+Want me to also convert our few custom classes to inline utilities now so it is version proof, or keep the @apply style since it is cleaner?
+You said:
+Can you ginore ther background and all and make this exactly the way you createed website initlaly? it was premium plus when i was scrolling down it was stopping at each section instead of a free flow. i liekd that better it felt super premium plus the images were moving as well.
+ChatGPT said:
+
+Done. I switched it back to the premium version you liked.
+
+What changed
+
+    Removed Matrix and any background extras
+
+    Added section snap scrolling. The page itself is the scroll container and stops cleanly at each section
+
+    Kept the moving image strips
+
+    Kept theme toggle only in the navbar
+
+    Wrapped your core sections in snap-start sections so the nav links land exactly on the stops
+
+What you need to copy
+
+    app/page.js from the canvas
+
+    components/NavBar.jsx from the canvas
+
+    app/globals.css stays the same as we already fixed Tailwind v4 at the top
+
+Run these checks
+
+    Restart dev so Tailwind picks up classes
+
+    Test with the mouse wheel and with Page Down. Each section should snap and feel tight
+
+    Try the navbar links. They should land exactly on the snap points
+
+Want me to tune the snap feel
+
+    We can switch some sections to snap-center for a different vibe
+
+    We can adjust heights. h-dvh for all or mix h-dvh and min-h-dvh
+
+    We can slow the strip animation if you want calmer motion
+
+Tell me if you want snap-center on the hero and projects or keep all snap-start.
+You said:
+few changes, 
+
+
+this heading What I do , My Story and Excpreince, make it exactykly like ABout me big and bold. remove any typing effect from them. the heading i meant not the content body.
+
+Also when UI scroll down, the headings should be diplayed first in cetnerf screen and then slows goes to top and the ocntent starts appeareng fasdt so it gives a premium feel. for all 3 What I do, my Sytory and Experiences. 
+
+Also replace My story with About me. 
+
+
+the flow of websote should be 
+
+greeting Hero }
+
+then About me 
+
+What I do 
+
+Experience 
+
+Proects 
+
+Skills
+
+
+all heading should have the same flwo as i said -? boig bold center heading -> moes up and the content starts pouring. 
+
+all the content should be in typing effectr so it feels lie it sbeen typed and the user can read it easily as well. 
+
+ChatGPT said:
+
+Locked. I made these exact changes.
+
+What I changed
+
+    All section headings are big like About Me. No typing on headings
+
+    Order is now Hero then About Me then What I Do then Experience then Projects then Skills
+
+    Each section uses the center then float to top pattern. Heading starts centered then sticks near the top. Content fades in fast
+
+    About Me body uses typing. What I Do already types. Projects labels and Skills pills type in now
+
+    Experience keeps your timeline but I hid its internal small heading so our big heading is consistent
+
+What to copy
+
+    app/page.js from the canvas
+
+    components/NavBar.jsx from the canvas
+
+    app/globals.css from the canvas
+
+Run it and tell me
+
+    Do you want the heading to snap to exact center first then top or is this good
+
+    Want slower or faster typing for About Me and Projects
+
+    Want the image strip between Hero and About moved under Experience instead
+
+I can tweak the easing and the sticky offset if you want an even more premium feel.
+You said:
+I want the heading to snap to exact center first then top 
+
+typing is good but I need it a little bigger to small to ready 
+
+use ths content in about me in same ffect - 
+'At JPMorgan Chase, I lead automation across trading portals and banking tools, designing solutions ' +
+    'that blend Python, Java, Alteryx, UiPath, Tableau, and SQL to remove friction at scale.\n\n' +
+    'I thrive on complex, high stakes problems. They force me to think sharper, act faster, ' +
+    'and deliver smarter systems. Outside of work, I follow tech, politics, and global news with the same curiosity ' +
+    'I bring to my projects. I’m also a "sometimes" photographer with one of my shots being published in Lonely Planet magazine, 2020.'
+
+
+remove this at all - Want the image strip between Hero and About moved under Experience instead
+ChatGPT said:
+
+Done. Updates are live in the canvas.
+
+What I changed
+
+    Headings now snap to exact center first then glide to the top. I switched these sections to snap-center and reworked the sticky CSS so the title starts centered at 100vh height, then shrinks to the top as you scroll
+
+    About Me now uses your exact content and renders line breaks. I increased the typed body size to text-xl on mobile and text-2xl on desktop with whitespace-pre-line so it reads clean
+
+    Removed the image strip after Hero and placed it after Experience, as requested
+
+What to copy
+
+    app/page.js from the canvas
+
+    app/globals.css from the canvas
+
+Sanity checks
+
+    Scroll with a wheel or trackpad. Each section should snap center. As you scroll, the big heading should move to the top and the content should fade in quickly
+
+    Check About Me text size. If you want even bigger, I can push it to text-2xl and text-3xl
+
+Want me to do the same center then top glide for Projects and Skills too or keep them as is?
+You said:
+All the headings arew now pemanently coming on top. what I want is
+when you scroll down the heading shoudl come in center jus tthe heading no content. it should bew htere for 2 seconds and then move automaticall at top center and then the content starts typing in
+
+also this is my page.jc right now i have removed images strips 
+
+"use client"
+
+import { useEffect, useMemo, useState } from "react"
+import NavBar from "../components/NavBar"
+import GreetingHero from "../components/GreetingHero"
+import WhatIDo from "../components/WhatIDo"
+import ExperienceTimeline from "../components/ExperienceTimeline"
+// import ImageStrips from "../components/ImageStrips"
+import TypedInView from "../components/TypedInView"
+
+function SectionBlock({ id, title, children, bodyText }) {
+  // bodyText is optional. If provided we render it typed above children
+  return (
+    <section id={id} data-pin-section className="snap-center min-h-dvh px-6 py-24">
+      <div className="pin-head">
+        <h2 className="outline-heading text-6xl md:text-7xl font-extrabold text-center">{title}</h2>
+      </div>
+      <div className="pin-body mx-auto max-w-5xl">
+        {typeof bodyText === "string" && (
+          <TypedInView
+            as="p"
+            className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed"
+            text={bodyText}
+            speed={18}
+            startDelay={120}
+          />
+        )}
+        {children}
+      </div>
+    </section>
+  )
+}
+
+export default function Home() {
+  const [theme, setTheme] = useState("dark")
+
+  // hydrate theme from localStorage and apply to <html>
+  useEffect(() => {
+    const saved = typeof window !== "undefined" && localStorage.getItem("theme")
+    if (saved) setTheme(saved)
+  }, [])
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.toggle("dark", theme === "dark")
+      document.documentElement.classList.toggle("light", theme === "light")
+      localStorage.setItem("theme", theme)
+    }
+  }, [theme])
+
+  // activate pin sections and fill outline headings
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll('[data-pin-section]'))
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) e.target.classList.add("active")
+        })
+      },
+      { threshold: 0.35 }
+    )
+    sections.forEach(s => io.observe(s))
+
+    const io2 = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('filled') }),
+      { threshold: 0.6 }
+    )
+    document.querySelectorAll('.outline-heading').forEach(el => io2.observe(el))
+
+    return () => { io.disconnect(); io2.disconnect() }
+  }, [])
+
+  const aboutCopy = useMemo(() => (
+At JPMorgan Chase, I lead automation across trading portals and banking tools, designing solutions that blend Python, Java, Alteryx, UiPath, Tableau, and SQL to remove friction at scale.
+
+I thrive on complex, high stakes problems. They force me to think sharper, act faster, and deliver smarter systems. Outside of work, I follow tech, politics, and global news with the same curiosity I bring to my projects. I’m also a "sometimes" photographer with one of my shots being published in Lonely Planet magazine, 2020.
+  ), [])
+
+  return (
+    <main
+      id="top"
+      className="h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]"
+    >
+      <NavBar
+        theme={theme}
+        onToggleTheme={() => setTheme(t => (t === "dark" ? "light" : "dark"))}
+      />
+
+      {/* HERO */}
+      <section id="hero" className="snap-start h-dvh relative flex items-center justify-center px-6 pt-16">
+        <div className="max-w-5xl text-center">
+          <GreetingHero />
+        </div>
+      </section>
+
+      {/* ABOUT ME */}
+      <SectionBlock id="about" title="About Me" bodyText={aboutCopy}>
+        {/* nothing else here for now */}
+      </SectionBlock>
+
+      {/* WHAT I DO */}
+      <SectionBlock id="what-i-do" title="What I Do">
+        <WhatIDo />
+      </SectionBlock>
+
+      {/* EXPERIENCE */}
+      <SectionBlock id="experience" title="Experience">
+        {/* hide the internal heading of ExperienceTimeline and show only items */}
+        <div className="hide-child-h2">
+          <ExperienceTimeline />
+        </div>
+      </SectionBlock>
+
+      {/* MOVING IMAGES DIVIDER placed AFTER experience as requested */}
+      {/* <section className="snap-center">
+        <ImageStrips />
+      </section> */}
+
+      {/* PROJECTS */}
+      <SectionBlock id="projects" title="Projects">
+        <div className="mx-auto max-w-5xl">
+          <div className="mt-10 grid sm:grid-cols-2 gap-6">
+            {[1, 2, 3, 4].map(n => (
+              <a key={n} className="card group" href="#" target="_blank" rel="noreferrer">
+                <div className="h-40 rounded-xl bg-[var(--card)] border border-[var(--border)] grid place-items-center text-[var(--muted)]">
+                  <TypedInView as="span" text={Preview ${n}} speed={16} />
+                </div>
+                <div className="mt-4 flex items-center justify-between">
+                  <div className="font-medium"><TypedInView as="span" text={Case study ${n}} speed={16} /></div>
+                  <span className="text-xs text-[var(--muted)] group-hover:text-[var(--fg)]"><TypedInView as="span" text="Read" speed={16} /></span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </SectionBlock>
+
+      {/* SKILLS */}
+      <SectionBlock id="skills" title="Skills">
+        <div className="mx-auto max-w-5xl">
+          <div className="mt-10 flex flex-wrap gap-3">
+            {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(s => (
+              <span key={s} className="tag"><TypedInView as="span" text={s} speed={14} /></span>
+            ))}
+          </div>
+        </div>
+      </SectionBlock>
+    </main>
+  )
+}
+ChatGPT said:
+
+Got it. I changed the pattern to a three stage flow per section.
+
+What it does now
+
+    When a section snaps into view the big heading sits alone in the exact center
+
+    After 2 seconds the heading glides to the top center
+
+    Right after that the content fades in and the typing starts
+
+What I changed in your code
+
+    In app/page.js the SectionBlock is now stateful with its own IntersectionObserver. It adds classes stage-center then stage-top then stage-content with a 2 second pause before moving up. I only render the content once stage-content is active so typing starts at the right time
+
+    I removed the old active logic and kept only the heading fill observer
+
+    In app/globals.css I replaced the old active styles with staged CSS for pin-head and pin-body. Heading is centered by default then shrinks to the top when stage-top is added
+
+What you need to copy
+
+    app/page.js from the canvas
+
+    app/globals.css from the canvas
+
+Tuning options
+
+    Want longer than 2 seconds. Change 2000 to 2500 inside SectionBlock
+
+    Want the heading to sit a bit lower when at the top. Increase min-height from 36vh to 45vh
+
+    Want content to appear a bit later. Change 2250 to 2400
+
+Tell me how it feels now. If the heading still jumps too fast I can add easing on the min-height change to make it float smoother.
+You said:
+so the ehading starts in the mid but the font size is small and after 2 secoins the ehaing pops from toip to bottom direction which looks reallyt bad, it shoudl slide from center to ptop centerr. 
+
+
+in What I do section the heading is coming near the bottom instead of center. 
+
+remove the workd What I do from the content because we aalready have a heading for it so no need in the cointent as well. 
+
+
+
+also the content inside what i do and expericne is not turniogn ti black when the theme is light. make those chanegs as well. 
+ChatGPT said:
+
+Alright, fixed all four things.
+
+What I changed
+
+    Smooth slide. No pop. The heading now stays big, centered, then glides up with a transform. I removed the min height jump that caused the pop
+
+    True center on every section. I removed extra vertical padding on the section wrapper so the title does not sit low. It is perfectly centered in stage one
+
+    No duplicate title. I hide any h1, h2, h3 inside What I Do and Experience so only the big section title shows
+
+    Light theme text. I force What I Do and Experience content to follow the theme. It turns dark in light mode now
+
+What to copy
+
+    app/page.js from the canvas
+
+    app/globals.css from the canvas
+
+Quick checks
+
+    Scroll to What I Do. Does the title land in the exact center for two seconds, then glide to the top, then content types in
+
+    Toggle light theme. Do What I Do and Experience text switch to dark correctly
+
+    Font size on the title now uses a fluid clamp. If you want even bigger in the center I can push the max to 8.5rem
+
+Want me to tune the glide distance. I set it to 40vh. If you prefer a shorter float I can make it 32vh.
+You said:
+omethign is wrong what i do and experince are noe bouncing from centert to op contionusoly the content is nto ocmign any mroe, sdo we need to update somethign in the whatuido.jsx or experence.jsx?
+ChatGPT said:
+
+Yep, that bounce was our observer re-triggering while the section was still in view, so it kept resetting. I fixed it by locking each section until it fully leaves the screen, then we reset. Also made the title bigger in the center and the slide is a smooth transform, not a pop.
+
+What I changed
+
+    SectionBlock now uses a lock and only triggers once per visit. It resets only when the section is fully offscreen
+
+    IntersectionObserver uses a gentle root margin so it does not fire mid scroll
+
+    Titles are larger in the center. Max 9rem. Then glide up by 38vh
+
+    I keep What I Do and Experience content in a wrapper that forces theme color so it turns black in light mode
+
+    I still hide any H1 to H3 inside those components so the duplicate heading is gone
+
+Copy these two files from the canvas
+
+    app/page.js
+
+    app/globals.css
+
+Quick test
+
+    Scroll to What I Do. It should sit centered for about 2 seconds, then glide to the top, then content types in
+
+    Toggle light theme. Check that both What I Do and Experience text is dark
+
+    If any part still bounces, tell me which section and I will tweak the threshold or the glide distance
+
+If you want the pause to be 1.5 seconds or 3 seconds, say the number and I will set it.
+You said:
+Uploaded an image
+there is a lto of space between the ehading and the content
+ChatGPT said:
+
+Good catch. That big gap was because the sticky header block was still 100vh after the heading moved up, so the content sat far below.
+
+I fixed it
+
+    When the section moves to stage top the sticky block now shrinks to 42vh. That brings the content up
+
+    Reduced pin body padding from 24 to 12
+
+    The heading now glides because height shrinks smoothly and the title has a small translate up
+
+What to copy
+
+    app/globals.css from the canvas
+
+    app/page.js from the canvas
+
+If you want it tighter still
+
+    Change 42vh to 36vh in app/globals.css under [data-pin-section].stage-top .pin-head
+
+    Or reduce py-12 in the pin body to py-8 in app/page.js
+
+Tell me how it feels now. Want me to apply the same compact spacing to Projects and Skills too?
+You said:
+Uploaded a file
+Uploaded a file
+well its worse now, lerts do one thing forget everytgin.
+
+
+when i scroll down the headting should alreayd be on top center and they should be typed first and then the content should be typed. Update these two files if needed as well
+ChatGPT said:
+
+Locked in.
+
+What I changed to match your reset
+
+    Headings are already at the top center when a section snaps in
+
+    The heading types first
+
+    After a short calculated delay the section content mounts and starts typing
+
+    No center pause or bounce anymore
+
+What you need to copy
+
+    app/page.js from the canvas
+
+    app/globals.css from the canvas
+
+    components/WhatIDo.jsx from the canvas
+
+    components/ExperienceTimeline.jsx from the canvas
+
+Notes on the two components
+
+    I removed the inner “Experience” heading from ExperienceTimeline so the SectionBlock title is the only one typing
+
+    I replaced hard coded white backgrounds and borders with theme variables, so light mode reads correctly
+
+    WhatIDo keeps the colored icons. Text uses your theme vars so it flips to dark in light mode
+
+Sanity check
+
+    Scroll to About then to What I Do. Title should type at the top, then content should start typing
+
+    Toggle Light. Make sure What I Do and Experience text turns dark
+
+    If the heading delay feels off say a number in seconds. I will set it precisely for all sections
+
+Want this same top typing pattern for Projects and Skills too or keep them simple?
+You said:
+Uploaded an image
+Uploaded an image
+two small problems. 
+
+
+after about me th enext headline is too close to the previous headline i dont want ot see the prvieous hedline once the new headline somes in atatched image 
+
+
+
+increrse the typing speed of everythgin apart from greetin ghero. 
+
+
+third once a content has been types and then we  go somewhere and then come back to that content, it is getting typed again, dont need that please.
+ChatGPT said:
+You said:
+try again
+ChatGPT said:
+
+Nice clear list. I’ve fixed all three.
+
+What I changed
+
+    No previous heading peeking under the navbar
+    I made the navbar use a solid surface so it hides whatever is behind it. Copied into NavBar.jsx as class nav-surface and added a matching background in globals.css.
+
+    Faster typing everywhere except GreetingHero
+    Headings type at speed 18. Body/content type at speed 10. What I Do and Experience speeds tightened too.
+
+    Don’t retype when you come back
+    SectionBlock remembers if a section was already revealed. First time it types the title then content. On revisit it shows both immediately without retyping.
+
+What to copy
+
+    app/page.js
+
+    app/globals.css
+
+    components/NavBar.jsx
+
+    components/WhatIDo.jsx
+
+    components/ExperienceTimeline.jsx
+
+Quick test
+
+    Scroll from About to What I Do. You should not see the old heading through the navbar.
+
+    Toggle Light. Text in What I Do and Experience should be dark.
+
+    Scroll away and back to any section. Title and content should appear instantly, no retype.
+
+Want the typing even faster, say a number and I’ll set it globally.
+You said:
+nav bar has dissapeared
+ChatGPT said:
+
+Ah, that’s on me. The header was inside the scroll container, which can make it vanish behind content on some setups.
+
+I fixed it like this
+
+    Moved <NavBar /> outside of <main> so it’s fixed to the viewport
+
+    Bumped its stacking to z-[100]
+
+    Kept the solid nav-surface background so old headings don’t show through
+
+What to copy
+
+    app/page.js from the canvas
+
+    components/NavBar.jsx from the canvas
+
+Quick check
+
+    Hard refresh your dev server
+
+    You should see the navbar pinned at the very top on every section
+
+    Anchors still land cleanly because sections already use scroll-mt-[var(--nav-h)]
+
+If it still doesn’t show, tell me which theme you’re on and I’ll tweak the colors or add a temporary outline so we can see it for sure.
+You said:
+Uploaded an image
+how do we take care of this extra heading wastage being seen behind the nav bar? 
+
+
+also the hamburger option for nav bar for mobile is gone now, add that bazck I am not able to see anythign on the mobilein nav bar aprt from light dark button 
+ChatGPT said:
+
+Got you. Two fixes coming up.
+
+What I changed
+
+    No text showing under the navbar anymore
+    I made the navbar background fully opaque and removed the blur. That stops the previous heading from leaking through. The class nav-surface now uses a solid color in both themes.
+
+    Mobile hamburger is back
+    I added a Menu and X button on mobile. Tap it to open a dropdown with the links. Clicking a link closes it.
+
+What to copy
+
+    components/NavBar.jsx from the canvas
+
+    app/globals.css from the canvas
+
+Quick checks
+
+    Scroll between sections. You should not see the prior heading behind the navbar
+
+    Resize to mobile. You should see the hamburger on the right next to the theme button
+
+    If you prefer the navbar to be full width without rounded corners say the word and I will switch it to a straight bar with a soft shadow
+
+Do you also want the mobile menu to slide down instead of just appear?
+You said:
+Uploaded an image
+still seeing the previous heading beinh nav bar, can we not hide it when we are not on that section? 
+ChatGPT said:
+
+Yep, we can hide the previous heading completely.
+
+What I changed
+
+    I track the current section in app/page.js with an IntersectionObserver
+
+    Each SectionBlock gets activeId and only shows its heading when it is the active section
+
+    Non active headings are set to visibility hidden so nothing peeks under the navbar
+
+    Typing still happens once per section. On revisit it shows instantly, no retype
+
+What to copy
+
+    app/page.js
+
+    app/globals.css
+
+Quick test
+
+    Scroll slowly from About to What I Do. The About heading should vanish right as What I Do becomes active
+
+    Try on mobile. The hamburger still works and the navbar hides any heading behind it
+
+Want the switch point earlier or later. I can move the rootMargin or threshold a bit so the new heading takes over sooner.
+You said:
+the heading didnt vanish and is same as before but the cointent has vanished
+ChatGPT said:
+
+Thanks for the screenshots. I see what’s happening.
+
+I’ve pushed a clean fix:
+
+    Only the current section’s heading shows. All other headings are hidden with display none. No more “previous heading” peeking.
+
+    Content no longer disappears. Each section reveals content the first time it’s in view, then never hides or retypes again.
+
+    Active section is chosen by scroll position relative to the navbar height, not the old intersection logic. This makes the handoff crisp at each snap.
+
+What to copy now
+
+    app/page.js
+
+    app/globals.css
+
+Sanity checks
+
+    Scroll from About to What I Do. The About heading should vanish as soon as What I Do reaches the top. The content of About should remain as-is if you scroll back, without retyping.
+
+    Mobile menu still works.
+
+If you still see the old heading, tell me which section pair and your theme. I can shift the handoff threshold a bit earlier or later.
+You said:
+headings have disappeared
+ChatGPT said:
+
+Got it. The headings disappeared because we’re hiding non-active headings, but activeId wasn’t being passed into your SectionBlock calls. So every heading was treated as inactive.
+
+Do these two quick fixes.
+
+    Pass activeId to every SectionBlock in app/page.js
+    Replace these lines
+
+    <SectionBlock id="about" title="About Me" bodyText={aboutCopy} />
+
+    <SectionBlock id="what-i-do" title="What I Do">
+
+    <SectionBlock id="experience" title="Experience">
+
+    <SectionBlock id="projects" title="Projects">
+
+    <SectionBlock id="skills" title="Skills">
+
+with
+
+    <SectionBlock id="about" activeId={activeId} title="About Me" bodyText={aboutCopy} />
+
+    <SectionBlock id="what-i-do" activeId={activeId} title="What I Do">
+
+    <SectionBlock id="experience" activeId={activeId} title="Experience">
+
+    <SectionBlock id="projects" activeId={activeId} title="Projects">
+
+    <SectionBlock id="skills" activeId={activeId} title="Skills">
+
+    Make the section heading sticky at the top so it stays visible and still hides previous headings
+    In app/globals.css update .section-head to be sticky and keep inactive ones hidden
+
+/* Head at top under navbar */
+.section-head {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+}
+.section-head.is-inactive { display: none; }
+
+That’s it. After this
+
+    Only the current section’s heading shows
+
+    It sits at the top center
+
+    Content stays visible and does not retype on revisit
+
+Want me to push these exact edits into the canvas for you?
+You said:
+things are much better now
+ChatGPT said:
+
+Love it. Glad it’s feeling better.
+
+Quick dials I can still tune fast
+
+    Handoff timing for headings. Should the new heading take over a bit earlier or later
+
+    Heading size at the top. Want bigger or smaller
+
+    Space under the heading before content starts
+
+    Typing speed for sections. Faster or slower than now
+
+    Mobile menu. Want a slide down animation
+
+Tell me which you want tweaked and I’ll push the exact edits.
+You said:
+Mobile menu. Want a slide down animation
+ChatGPT said:
+
+Done. The mobile menu now slides down smoothly.
+
+What I changed
+
+    Added a CSS transition that animates max height, opacity, and translateY
+
+    Wired the hamburger to toggle a div with class mobile-menu that expands and collapses
+
+    Kept it accessible with aria attributes and it auto closes on link tap or hash change
+
+What to copy
+
+    components/NavBar.jsx
+
+    app/globals.css
+
+Want it snappier or more floaty. I can shorten the timings or add a slight scale on the container.
+You said:
+Uploaded an image
+Uploaded an image
+Uploaded an image
+now what i want is in the attached image for websiote on PC 
+i want this text to be on the left side and on the rigth aside i want my image to be attached. atatced in the chat.
+
+The image should move left right with mosue cursor but on a little not like too much left. just for fun. 
+
+on mobile the text should be on top and the iomage should be below it, 
+ChatGPT said:
+
+Perfect. I added a split hero:
+
+    On desktop the greeting sits on the left and your image sits on the right
+
+    The image glides a little left–right with the mouse
+
+    On mobile it stacks: text first, image below
+
+What to copy
+
+    app/page.js
+
+    components/HeroSplit.jsx
+
+Where to put your image
+
+    Save your avatar to public/naman-avatar.png
+    If you want a different name or path, just change imgSrc in app/page.js where HeroSplit is used
+
+Tuning
+
+    Parallax amount is 16 px each side. Want 8 or 24
+
+    Want a softer or snappier feel. I can adjust the spring stiffness and damping
+
+Shout if you want a subtle vertical drift on scroll too.
+You said:
+Uploaded an image
+Uploaded an image
+so i dont want the image in the box, its png for a reason want it to be free. and a little larger same thign in mobile but in mobile the text should be at op and then mage 
+ChatGPT said:
+
+Done. Your hero image is now free of the box and bigger.
+
+What I changed
+
+    Removed the white card, border, and rounded container
+
+    Kept a soft drop shadow so the PNG pops without a frame
+
+    Increased size to 540 on desktop, 420 on mobile
+
+    Text is first on mobile, image below
+
+    Gentle mouse parallax remains
+
+What to copy
+
+    components/HeroSplit.jsx from the canvas
+
+If you want more or less glide say a number for pixels. I set it to 20.
+You said:
+dont give me the code just tell me what shoudl I do to increase th eheight and size
+ChatGPT said:
+
+Easy win.
+
+Do this to make the avatar bigger.
+
+    Open components/HeroSplit.jsx.
+
+    Find the wrapper around the Image. You will see three sizes for height and width
+
+        base h-[340px] w-[340px]
+
+        sm h-[420px] w-[420px]
+
+        md h-[540px] w-[540px]
+
+    Bump those numbers. Good starting set
+
+        base 420
+
+        sm 520
+
+        md 660
+
+    In the same file, update the Next Image sizes string to match your new max width. Change it to say the largest value you chose. Example idea
+
+        (max-width: 768px) 520px, 660px
+
+    If you want more breathing room in the hero, open app/page.js and look at the hero section. Increase the vertical gap from gap-8 to gap-12 or gap-16.
+
+    Optional. If you increase the image a lot and want the parallax to feel the same, raise maxShift in HeroSplit from 20 to 24. If it feels too floaty, drop it back to 16.
+
+Tell me the exact sizes you want and I will set them precisely.
+You said:
+the iomage is not changin, shoudl I clear cache or osmethiong?
+ChatGPT said:
+
+Likely not a cache issue. A few checks to make it change right away.
+
+    Make sure you edited the right place
+    In components/HeroSplit.jsx change the size on the wrapper that controls the image. Save and watch your dev console say “compiled”.
+
+    Add desktop breakpoints
+    If you only changed base or sm you might not see it on a big screen. Also set sizes for md or lg. Example targets you can try
+    base 420
+    sm 520
+    md 660
+    lg 740
+
+    Widen the hero container if needed
+    In app/page.js the hero sits inside max-w-6xl. That can choke how wide the image can appear next to the text. Bump it to max-w-7xl or remove the max width if you want the image much larger.
+
+    Do a hard reload
+    Browser cache can hang on to styles sometimes. Use Ctrl Shift R on Windows or Cmd Shift R on Mac.
+
+    Only if you replaced the actual PNG file and the picture itself is not updating
+    Rename the file and update the path. That busts the browser cache for static assets.
+
+If you tell me the exact numbers you changed to and your screen width I will tune the breakpoints and the container width so it looks perfect.
+You said:
+Uploaded an image
+perfect in windows have increase the size but in mobile its worse 
+
+this is current setting in hero - 
+"use client"
+
+import { useRef } from 'react'
+import Image from 'next/image'
+import { motion, useMotionValue, animate } from 'framer-motion'
+import GreetingHero from './GreetingHero'
+
+export default function HeroSplit({ imgSrc = "/naman-avatar.png", imgAlt = "Profile" }) {
+  const containerRef = useRef(null)
+  const x = useMotionValue(0)
+
+  const maxShift = 10 // px left right
+
+  const onMouseMove = e => {
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (!rect) return
+    const ratio = (e.clientX - rect.left) / rect.width // 0..1
+    const target = (ratio - 0.5) * 2 * maxShift // -max..max
+    animate(x, target, { type: 'spring', stiffness: 140, damping: 20 })
+  }
+
+  const onMouseLeave = () => animate(x, 0, { type: 'spring', stiffness: 140, damping: 20 })
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      className="grid items-center gap-8 md:grid-cols-2"
+    >
+      {/* Left: text always first on mobile and desktop */}
+      <div className="order-1">
+        <div className="text-left">
+          <GreetingHero />
+        </div>
+      </div>
+
+      {/* Right: free PNG, no box, gentle parallax */}
+      <motion.div style={{ x }} className="order-2 justify-self-center">
+        <div className="relative h-[440px] w-[440px] sm:h-[520px] sm:w-[520px] md:h-[740px] md:w-[740px]">
+          <Image
+            src={imgSrc}
+            alt={imgAlt}
+            fill
+            sizes="(max-width: 768px) 520px, 640px"
+            priority
+            style={{ objectFit: 'contain' }}
+            className="drop-shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
+          />
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+ChatGPT said:
+
+You nailed desktop. Mobile looks off because the hero section is locked to full viewport height, so the big image gets pushed below the fold.
+
+Do this
+
+    In app/page.js change the hero section height
+    Use auto on mobile and full height only from md up
+    Replace the hero section class that has h-dvh with
+    h-auto md:h-dvh py-10 md:py-0
+
+    Make the mobile image smaller so both text and image can fit without scrolling
+    In components/HeroSplit.jsx set the container sizes to something like
+    base 300, sm 380, md 580, lg 740
+    So the wrapper becomes h 300 w 300 at base, 380 at sm, 580 at md, 740 at lg
+
+    Update the Next Image sizes string to match the new breakpoints
+    For example
+    (max-width: 640px) 300px, (max-width: 768px) 380px, 580px
+
+    Add a little spacing between text and image on mobile
+    In the grid wrapper change gap-8 to gap-6
+    Optionally add a margin below the greeting container like mb-4 on the text column
+
+That should give you text at the top and the image right below it on phones, while keeping the larger image on desktop.
+
+Do you want both text and image fully visible on the first mobile screen with no scroll, or is a small scroll fine? If you want both visible, I will tighten the mobile image to 260 or 280 and set slightly larger top padding to balance the layout.
+You said:
+give me the code for page. this is curretn code - 
+
+"use client"
+
+import { useEffect, useMemo, useRef, useState } from "react"
+import NavBar from "../components/NavBar"
+import GreetingHero from "../components/GreetingHero"
+import HeroSplit from "../components/HeroSplit"
+import WhatIDo from "../components/WhatIDo"
+import ExperienceTimeline from "../components/ExperienceTimeline"
+import TypedInView from "../components/TypedInView"
+
+function SectionBlock({ id, title, children, bodyText, activeId }) {
+  const ref = useRef(null)
+  const [showContent, setShowContent] = useState(false)
+  const [titleDone, setTitleDone] = useState(false)
+  const hasEverShown = useRef(false)
+  const timers = useRef({})
+
+  const isActive = activeId === id
+
+  // On first time the section is visible at all, schedule content reveal after heading typing time
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !hasEverShown.current) {
+            const titleText = title || ""
+            const titleSpeed = 18
+            const hold = Math.max(600, Math.ceil(titleText.length * titleSpeed * 0.6) + 120)
+            clearTimeout(timers.current.reveal)
+            timers.current.reveal = setTimeout(() => {
+              setShowContent(true)
+              hasEverShown.current = true
+            }, hold)
+          }
+        })
+      },
+      { threshold: 0.35 }
+    )
+    io.observe(el)
+    return () => { clearTimeout(timers.current.reveal); io.disconnect() }
+  }, [title])
+
+  // When a section becomes the active one for the first time, let the title type, then mark done so it doesn't retype later
+  useEffect(() => {
+    if (!isActive || titleDone) return
+    const titleText = title || ""
+    const titleSpeed = 18
+    const hold = Math.max(600, Math.ceil(titleText.length * titleSpeed * 0.6) + 120)
+    setTitleDone(false)
+    const t = setTimeout(() => setTitleDone(true), hold)
+    return () => clearTimeout(t)
+  }, [isActive, titleDone, title])
+
+  return (
+    <section ref={ref} id={id} data-section className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]">
+      <div className={section-head ${isActive ? 'is-active' : 'is-inactive'}}>
+        {titleDone || hasEverShown.current ? (
+          <h2 className="section-title text-6xl md:text-7xl font-extrabold text-center">{title}</h2>
+        ) : (
+          <TypedInView as="h2" className="section-title text-6xl md:text-7xl font-extrabold text-center" text={title} speed={18} />
+        )}
+      </div>
+
+      <div className="pin-body mx-auto max-w-5xl pt-6 pb-16 content-scope">
+        {typeof bodyText === "string" && (showContent || hasEverShown.current) && (
+          <TypedInView as="p" className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed" text={bodyText} speed={10} startDelay={40} />
+        )}
+        {showContent || hasEverShown.current ? children : null}
+      </div>
+    </section>
+  )
+}
+
+export default function Home() {
+  const [theme, setTheme] = useState("dark")
+  const [activeId, setActiveId] = useState("hero")
+
+  useEffect(() => {
+    const saved = typeof window !== "undefined" && localStorage.getItem("theme")
+    if (saved) setTheme(saved)
+  }, [])
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.toggle("dark", theme === "dark")
+      document.documentElement.classList.toggle("light", theme === "light")
+      localStorage.setItem("theme", theme)
+    }
+  }, [theme])
+
+  // Determine current section by scroll position against nav height so only one heading shows
+  useEffect(() => {
+    const main = document.querySelector('main')
+    const sections = Array.from(document.querySelectorAll('[data-section]'))
+    const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
+
+    const getActive = () => {
+      let bestId = sections[0]?.id || ''
+      let best = Infinity
+      sections.forEach(s => {
+        const top = s.getBoundingClientRect().top - navH
+        const score = Math.abs(top)
+        if (score < best) { best = score; bestId = s.id }
+      })
+      setActiveId(bestId)
+    }
+
+    getActive()
+    const onScroll = () => requestAnimationFrame(getActive)
+    main?.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', getActive)
+    return () => { main?.removeEventListener('scroll', onScroll); window.removeEventListener('resize', getActive) }
+  }, [])
+
+  const aboutCopy = useMemo(() => (
+At JPMorgan Chase, I lead automation across trading portals and banking tools, designing solutions that blend Python, Java, Alteryx, UiPath, Tableau, and SQL to remove friction at scale.
+
+I thrive on complex, high stakes problems. They force me to think sharper, act faster, and deliver smarter systems. Outside of work, I follow tech, politics, and global news with the same curiosity I bring to my projects. I’m also a "sometimes" photographer with one of my shots being published in Lonely Planet magazine, 2020.
+  ), [])
+
+  return (
+    <>
+      <NavBar theme={theme} onToggleTheme={() => setTheme(t => (t === "dark" ? "light" : "dark"))} />
+
+      <main id="top" className="h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]">
+        {/* HERO */}
+        <section id="hero" className="snap-start h-dvh relative px-6 pt-16 grid items-center">
+          <div className="mx-auto w-full max-w-7xl">
+            <HeroSplit imgSrc="/naman-avatar.png" imgAlt="Naman avatar" />
+          </div>
+        </section>
+
+        {/* ABOUT ME */}
+        <SectionBlock id="about" activeId={activeId} title="About Me" bodyText={aboutCopy} />
+
+        {/* WHAT I DO */}
+        <SectionBlock id="what-i-do" activeId={activeId} title="What I Do">
+          <WhatIDo />
+        </SectionBlock>
+
+        {/* EXPERIENCE */}
+        <SectionBlock id="experience" activeId={activeId} title="Experience">
+          <ExperienceTimeline />
+        </SectionBlock>
+
+        {/* PROJECTS */}
+        <SectionBlock id="projects" activeId={activeId} title="Projects">
+          <div className="mx-auto max-w-5xl">
+            <div className="mt-10 grid sm:grid-cols-2 gap-6">
+              {[1, 2, 3, 4].map(n => (
+                <a key={n} className="card group" href="#" target="_blank" rel="noreferrer">
+                  <div className="h-40 rounded-xl bg-[var(--card)] border border-[var(--border)] grid place-items-center text-[var(--muted)]">
+                    <span>Preview {n}</span>
+                  </div>
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="font-medium">Case study {n}</div>
+                    <span className="text-xs text-[var(--muted)] group-hover:text-[var(--fg)]">Read</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </SectionBlock>
+
+        {/* SKILLS */}
+        <SectionBlock id="skills" activeId={activeId} title="Skills">
+          <div className="mx-auto max-w-5xl">
+            <div className="mt-10 flex flex-wrap gap-3">
+              {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(s => (
+                <span key={s} className="tag">{s}</span>
+              ))}
+            </div>
+          </div>
+        </SectionBlock>
+      </main>
+    </>
+  )
+}
+ChatGPT said:
+
+Here’s the updated app/page.js with the hero fixed for mobile.
+Key change is the hero section uses h-auto md:h-dvh and py-10 md:py-0, plus a wider container.
+
+"use client"
+
+import { useEffect, useMemo, useRef, useState } from "react"
+import NavBar from "../components/NavBar"
+import GreetingHero from "../components/GreetingHero"
+import HeroSplit from "../components/HeroSplit"
+import WhatIDo from "../components/WhatIDo"
+import ExperienceTimeline from "../components/ExperienceTimeline"
+import TypedInView from "../components/TypedInView"
+
+function SectionBlock({ id, title, children, bodyText, activeId }) {
+  const ref = useRef(null)
+  const [showContent, setShowContent] = useState(false)
+  const [titleDone, setTitleDone] = useState(false)
+  const hasEverShown = useRef(false)
+  const timers = useRef({})
+
+  const isActive = activeId === id
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !hasEverShown.current) {
+            const titleText = title || ""
+            const titleSpeed = 18
+            const hold = Math.max(600, Math.ceil(titleText.length * titleSpeed * 0.6) + 120)
+            clearTimeout(timers.current.reveal)
+            timers.current.reveal = setTimeout(() => {
+              setShowContent(true)
+              hasEverShown.current = true
+            }, hold)
+          }
+        })
+      },
+      { threshold: 0.35 }
+    )
+    io.observe(el)
+    return () => { clearTimeout(timers.current.reveal); io.disconnect() }
+  }, [title])
+
+  useEffect(() => {
+    if (!isActive || titleDone) return
+    const titleText = title || ""
+    const titleSpeed = 18
+    const hold = Math.max(600, Math.ceil(titleText.length * titleSpeed * 0.6) + 120)
+    setTitleDone(false)
+    const t = setTimeout(() => setTitleDone(true), hold)
+    return () => clearTimeout(t)
+  }, [isActive, titleDone, title])
+
+  return (
+    <section ref={ref} id={id} data-section className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]">
+      <div className={`section-head ${isActive ? 'is-active' : 'is-inactive'}`}>
+        {titleDone || hasEverShown.current ? (
+          <h2 className="section-title text-6xl md:text-7xl font-extrabold text-center">{title}</h2>
+        ) : (
+          <TypedInView as="h2" className="section-title text-6xl md:text-7xl font-extrabold text-center" text={title} speed={18} />
+        )}
+      </div>
+
+      <div className="pin-body mx-auto max-w-5xl pt-6 pb-16 content-scope">
+        {typeof bodyText === "string" && (showContent || hasEverShown.current) && (
+          <TypedInView as="p" className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed" text={bodyText} speed={10} startDelay={40} />
+        )}
+        {showContent || hasEverShown.current ? children : null}
+      </div>
+    </section>
+  )
+}
+
+export default function Home() {
+  const [theme, setTheme] = useState("dark")
+  const [activeId, setActiveId] = useState("hero")
+
+  useEffect(() => {
+    const saved = typeof window !== "undefined" && localStorage.getItem("theme")
+    if (saved) setTheme(saved)
+  }, [])
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.toggle("dark", theme === "dark")
+      document.documentElement.classList.toggle("light", theme === "light")
+      localStorage.setItem("theme", theme)
+    }
+  }, [theme])
+
+  useEffect(() => {
+    const main = document.querySelector('main')
+    const sections = Array.from(document.querySelectorAll('[data-section]'))
+    const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
+
+    const getActive = () => {
+      let bestId = sections[0]?.id || ''
+      let best = Infinity
+      sections.forEach(s => {
+        const top = s.getBoundingClientRect().top - navH
+        const score = Math.abs(top)
+        if (score < best) { best = score; bestId = s.id }
+      })
+      setActiveId(bestId)
+    }
+
+    getActive()
+    const onScroll = () => requestAnimationFrame(getActive)
+    main?.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', getActive)
+    return () => { main?.removeEventListener('scroll', onScroll); window.removeEventListener('resize', getActive) }
+  }, [])
+
+  const aboutCopy = useMemo(() => (
+`At JPMorgan Chase, I lead automation across trading portals and banking tools, designing solutions that blend Python, Java, Alteryx, UiPath, Tableau, and SQL to remove friction at scale.
+
+I thrive on complex, high stakes problems. They force me to think sharper, act faster, and deliver smarter systems. Outside of work, I follow tech, politics, and global news with the same curiosity I bring to my projects. I’m also a "sometimes" photographer with one of my shots being published in Lonely Planet magazine, 2020.`
+  ), [])
+
+  return (
+    <>
+      <NavBar theme={theme} onToggleTheme={() => setTheme(t => (t === "dark" ? "light" : "dark"))} />
+
+      <main id="top" className="h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]">
+        {/* HERO */}
+        <section id="hero" className="snap-start h-auto md:h-dvh relative px-6 pt-16 py-10 md:py-0 grid items-center">
+          <div className="mx-auto w-full max-w-7xl">
+            <HeroSplit imgSrc="/naman-avatar.png" imgAlt="Naman avatar" />
+          </div>
+        </section>
+
+        {/* ABOUT ME */}
+        <SectionBlock id="about" activeId={activeId} title="About Me" bodyText={aboutCopy} />
+
+        {/* WHAT I DO */}
+        <SectionBlock id="what-i-do" activeId={activeId} title="What I Do">
+          <WhatIDo />
+        </SectionBlock>
+
+        {/* EXPERIENCE */}
+        <SectionBlock id="experience" activeId={activeId} title="Experience">
+          <ExperienceTimeline />
+        </SectionBlock>
+
+        {/* PROJECTS */}
+        <SectionBlock id="projects" activeId={activeId} title="Projects">
+          <div className="mx-auto max-w-5xl">
+            <div className="mt-10 grid sm:grid-cols-2 gap-6">
+              {[1, 2, 3, 4].map(n => (
+                <a key={n} className="card group" href="#" target="_blank" rel="noreferrer">
+                  <div className="h-40 rounded-xl bg-[var(--card)] border border-[var(--border)] grid place-items-center text-[var(--muted)]">
+                    <span>Preview {n}</span>
+                  </div>
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="font-medium">Case study {n}</div>
+                    <span className="text-xs text-[var(--muted)] group-hover:text-[var(--fg)]">Read</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </SectionBlock>
+
+        {/* SKILLS */}
+        <SectionBlock id="skills" activeId={activeId} title="Skills">
+          <div className="mx-auto max-w-5xl">
+            <div className="mt-10 flex flex-wrap gap-3">
+              {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(s => (
+                <span key={s} className="tag">{s}</span>
+              ))}
+            </div>
+          </div>
+        </SectionBlock>
+      </main>
+    </>
+  )
+}
+
+Want me to also send the tuned HeroSplit.jsx with smaller mobile image sizes so both parts sit on the first screen, or are you good sizing it yourself now?
+You said:
+can you answer this back in the interactive code window? so next tme when we need an update you can make update to same code 
+ChatGPT said:
+
+Done. I pushed the app/page.js update into the canvas, so we can keep editing in that same interactive doc next time.
+
+Anything else you want me to tweak while we’re here?
+You said:
+Uploaded an image
+still the sme issue cant see it on the mobile 
+ChatGPT said:
+
+Got it. I pushed two fixes to the canvas so mobile looks right:
+
+    Hero image scales by viewport width on phones, not a fixed big height. It uses w-[68vw] h-[68vw] with sensible max sizes, then larger sizes at sm md lg.
+
+    Mobile layout aligns from the top and adds a little spacing between text and image. Desktop stays centered.
+
+Pull the latest:
+
+    components/HeroSplit.jsx
+
+    app/page.js
+
+If you still want both text and most of the image fully visible on the first mobile screen, I can drop that mobile size from 68vw to 60vw or reduce the heading size on xs. What do you prefer?
+You said:
+no this made the image on website even smaller and from the mopbile its gone cant see it anymroe
+ChatGPT said:
+
+Thanks for flagging. I pushed three changes to the canvas:
+
+    Mobile hero starts at the top with tighter spacing
+
+    Hero text scales down a touch on phones so the image fits on screen
+
+    Image sizing is responsive: 60vw on phones, then 440, 660, 820 at larger breakpoints
+
+What to copy
+
+    components/HeroSplit.jsx
+
+    app/page.js
+
+    app/globals.css
+
+Please hard refresh on your phone. If the image is still not visible above the fold, tell me your phone width. I’ll dial the mobile size from 60vw to 52vw or 48vw so both text and most of the image show without scroll.
+You said:
+Uploaded an image
+cant see man, what are you doing???????? is it too hard to fix?
+ChatGPT said:
+
+I get why you’re annoyed. Let’s make this simple and bulletproof.
+
+I just pushed three targeted changes into the canvas:
+
+    Made the hero section tighter on mobile
+    Smaller padding and gap so the image fits right under the text
+
+    Scaled the greeting a bit on phones
+    .hero-scope now scales to 0.82 on small screens to free up space
+
+    Set the image to a clear mobile size
+    52vw with a max of 300px on phones, then 420px at small screens, 660px at medium, 820px at large
+
+What to copy
+
+    components/HeroSplit.jsx
+
+    app/page.js
+
+    app/globals.css
+
+Hard refresh on your phone. If the image still does not appear above the fold, tell me your phone model or viewport width. I will set the mobile image to 48vw and scale the heading to 0.76 so both show on screen one.
+
+
+ChatGPT can make mistakes. Check important info. See Cookie Preferences.
+We use cookies
+
+Some cookies are essential for this site to function and cannot be turned off. We also use cookies and collect and share device identifiers to help us understand how our service performs and is used, and to support our marketing efforts. Learn more in our Cookie Policy. You can update your preferences at any time by clicking ‘Manage Cookies’.

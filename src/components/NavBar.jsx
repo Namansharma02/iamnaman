@@ -30,7 +30,7 @@ export default function NavBar({ theme, onToggleTheme }) {
     <header className="fixed inset-x-0 top-0 z-[100]">
       <div className="mx-auto max-w-6xl mt-4">
         <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] nav-surface px-3 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
-          <a href="#hero" className="text-sm font-medium tracking-wide">iamnaman</a>
+          <a href="#hero" className="text-sm font-medium tracking-wide">Top</a>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">

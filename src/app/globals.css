@@ -49,3 +49,28 @@ html, body, main { scroll-behavior: smooth; }
 /* slide down animation for mobile nav */
 .mobile-menu { max-height: 0; opacity: 0; transform: translateY(-8px); transition: max-height .35s ease, opacity .25s ease, transform .35s ease; }
 .mobile-menu.open { max-height: 420px; opacity: 1; transform: translateY(0); }
+
+/* Hero tweaks for small screens */
+@media (max-width: 640px) {
+  /* remove previous hero-scope scaling which nudged content right */
+  .hero-scope { transform: none; transform-origin: center; }
+}
+
+
+/* Blinking caret for the hero typed heading */
+.typing-caret { display: inline-block; margin-left: 6px; animation: caret-blink 1s steps(1, end) infinite; }
+@keyframes caret-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
+
+
+/* Shimmer reveal */
+.shimmer-wrap { position: relative; overflow: hidden; display: block; }
+.shimmer-wrap .shimmer-bar {
+  position: absolute;
+  top: 0; left: -35%;
+  width: 30%; height: 100%;
+  background: linear-gradient(115deg, transparent 0%, color-mix(in srgb, var(--fg) 6%, transparent) 35%, color-mix(in srgb, var(--fg) 28%, transparent) 52%, color-mix(in srgb, var(--fg) 6%, transparent) 69%, transparent 100%);
+  filter: blur(6px);
+  transform: translateX(0);
+  animation: shimmer-sweep 0.9s ease forwards;
+}
+@keyframes shimmer-sweep { to { left: 135%; } }

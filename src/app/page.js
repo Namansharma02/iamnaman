@@ -3,11 +3,13 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import NavBar from "../components/NavBar"
 import GreetingHero from "../components/GreetingHero"
+import HeroSplit from "../components/HeroSplit"
 import WhatIDo from "../components/WhatIDo"
+import { motion } from "framer-motion"
 import ExperienceTimeline from "../components/ExperienceTimeline"
 import TypedInView from "../components/TypedInView"
 
-function SectionBlock({ id, title, children, bodyText, activeId }) {
+function SectionBlock({ id, title, children, bodyText, activeId, bodySpeed = 10, bodyDelay = 40, bodyEffect = "type" }) {
   const ref = useRef(null)
   const [showContent, setShowContent] = useState(false)
   const [titleDone, setTitleDone] = useState(false)
@@ -54,7 +56,7 @@ function SectionBlock({ id, title, children, bodyText, activeId }) {
 
   return (
     <section ref={ref} id={id} data-section className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]">
-      <div className={`section-head ${isActive ? 'is-active' : 'is-inactive'}`}>
+      <div className={`section-head ${isActive ? 'is-active' : 'is-inactive'}`}> 
         {titleDone || hasEverShown.current ? (
           <h2 className="section-title text-6xl md:text-7xl font-extrabold text-center">{title}</h2>
         ) : (
@@ -64,7 +66,24 @@ function SectionBlock({ id, title, children, bodyText, activeId }) {
 
       <div className="pin-body mx-auto max-w-5xl pt-6 pb-16 content-scope">
         {typeof bodyText === "string" && (showContent || hasEverShown.current) && (
-          <TypedInView as="p" className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed" text={bodyText} speed={10} startDelay={40} />
+          bodyEffect === "fade" ? (
+            <motion.p
+              className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.28 }}
+            >
+              {bodyText}
+            </motion.p>
+          ) : (
+            <TypedInView
+              as="p"
+              className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed"
+              text={bodyText}
+              speed={bodySpeed}
+              startDelay={bodyDelay}
+            />
+          )
         )}
         {showContent || hasEverShown.current ? children : null}
       </div>
@@ -125,28 +144,28 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
 
       <main id="top" className="h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]">
         {/* HERO */}
-        <section id="hero" className="snap-start h-dvh relative flex items-center justify-center px-6 pt-16">
-          <div className="max-w-5xl text-center">
-            <GreetingHero />
+        <section id="hero" className="snap-start h-auto md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center">
+          <div className="mx-auto w-full max-w-6xl">
+            <HeroSplit imgSrc="/naman-avatar.png" imgAlt="Naman avatar" />
           </div>
         </section>
 
         {/* ABOUT ME */}
-        <SectionBlock id="about" activeId={activeId} title="About Me" bodyText={aboutCopy} />
+        <SectionBlock id="about" activeId={activeId} title="About Me" bodyText={aboutCopy} bodyEffect="fade" />
 
         {/* WHAT I DO */}
-<SectionBlock id="what-i-do" activeId={activeId} title="What I Do">
-            <WhatIDo />
+        <SectionBlock id="what-i-do" activeId={activeId} title="What I Do">
+          <WhatIDo />
         </SectionBlock>
 
         {/* EXPERIENCE */}
-<SectionBlock id="experience" activeId={activeId} title="Experience">
-            <ExperienceTimeline />
+        <SectionBlock id="experience" activeId={activeId} title="Experience">
+          <ExperienceTimeline />
         </SectionBlock>
 
         {/* PROJECTS */}
-<SectionBlock id="projects" activeId={activeId} title="Projects">
-            <div className="mx-auto max-w-5xl">
+        <SectionBlock id="projects" activeId={activeId} title="Projects">
+          <div className="mx-auto max-w-5xl">
             <div className="mt-10 grid sm:grid-cols-2 gap-6">
               {[1, 2, 3, 4].map(n => (
                 <a key={n} className="card group" href="#" target="_blank" rel="noreferrer">
@@ -164,8 +183,8 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         </SectionBlock>
 
         {/* SKILLS */}
-<SectionBlock id="skills" activeId={activeId} title="Skills">
-            <div className="mx-auto max-w-5xl">
+        <SectionBlock id="skills" activeId={activeId} title="Skills">
+          <div className="mx-auto max-w-5xl">
             <div className="mt-10 flex flex-wrap gap-3">
               {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(s => (
                 <span key={s} className="tag">{s}</span>

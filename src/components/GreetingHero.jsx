@@ -1,15 +1,16 @@
-'use client'
+"use client"
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
-export default function GreetingHero() {
-  const parts = ['Hey,', "I'm", 'Naman.']         // types word by word
-  const charDelay = 50                               // ms per character
-  const gapBetweenWords = 50                         // pause between words
+export default function GreetingHero({ compact = false }) {
+  const parts = ['Hey,', "I'm", 'Naman.']
+  const charDelay = 50
+  const gapBetweenWords = 50
+  const BREAK = '\n' // escaped newline
 
-  const [text, setText] = useState('')               // what’s visible
-  const [done, setDone] = useState(false)            // when typing finishes
+  const [text, setText] = useState('')
+  const [done, setDone] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -25,7 +26,8 @@ export default function GreetingHero() {
           await new Promise(r => setTimeout(r, charDelay))
         }
         if (i < parts.length - 1) {
-          current += ' '
+          // Force exactly 2 lines: after "I'm" insert a newline
+          current += i === 1 ? BREAK : ' '
           setText(current)
           await new Promise(r => setTimeout(r, gapBetweenWords))
         }
@@ -37,54 +39,46 @@ export default function GreetingHero() {
     return () => { cancelled = true }
   }, [])
 
+  const hasBreak = text.includes(BREAK)
+  const [line1, line2] = hasBreak ? text.split(BREAK) : [text, '']
+
+  const sectionClasses = compact
+    ? 'relative mx-auto max-w-3xl px-4 pt-8 pb-2 text-center'
+    : 'relative mx-auto max-w-6xl px-6 min-h-[86vh] flex items-center justify-center text-center md:text-left pt-14 md:pt-10 pb-16'
+
   return (
-   <section className="relative mx-auto max-w-6xl px-6 min-h-[78vh] md:min-h-[86vh] flex items-center justify-center text-center pt-10 pb-16 pt-14 md:pt-10">
-
-      
-      {/* <p className="mb-3 text-sm tracking-widest text-emerald-300/90">WELCOME</p> */}
-
-      {/* typing line */}
-      <h1
-  className="font-bold leading-tight tracking-tight text-[clamp(70px,9vw,250px)]"
-        aria-live="polite"
-        aria-label="Hey, I'm Naman"
-      >
-        <span>{text}</span>
-        <span className="typing-caret" aria-hidden="true">|</span>
-      </h1>
-
-      {/* tagline */}
-      {/* <motion.p
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: done ? 1 : 0, y: done ? 0 : 12 }}
-        transition={{ duration: 0.4 }}
-        className="mt-4 mx-auto max-w-2xl text-lg text-neutral-300"
-      >
-        I automate and analyze work most teams think is out of scope. Clean systems, measurable results.
-      </motion.p> */}
-
-      {/* buttons appear after typing */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: done ? 1 : 0, y: done ? 0 : 12 }}
-        transition={{ duration: 0.4, delay: 0.05 }}
-        className="mt-8 flex flex-wrap items-center justify-center gap-3"
-      >
-        {/* <a
-          href="#experience"
-          className="rounded-xl bg-white px-6 py-3 font-medium text-black transition hover:translate-y-0.5 active:translate-y-1"
+    <section className={sectionClasses}>
+      <div>
+        <h1
+          className="font-bold leading-[0.95] tracking-tight text-[clamp(48px,9vw,240px)]"
+          aria-live="polite"
+          aria-label="Hey, I'm Naman"
         >
-          View experience
-        </a>
-        <a
-          href="mailto:hello@iamnaman.in"
-          className="rounded-xl border border-white/20 bg-white/5 px-6 py-3 font-medium text-white backdrop-blur transition hover:bg-white/10 hover:border-white/30"
+          {hasBreak ? (
+            <>
+              <span className="block whitespace-nowrap">{line1}</span>
+              <span className="block whitespace-nowrap">
+                {line2}
+                {!done && <span className="typing-caret" aria-hidden="true">|</span>}
+              </span>
+            </>
+          ) : (
+            <span className="block whitespace-nowrap">
+              {line1}
+              {!done && <span className="typing-caret" aria-hidden="true">|</span>}
+            </span>
+          )}
+        </h1>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: done ? 1 : 0, y: done ? 0 : 12 }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className="mt-8 flex flex-wrap items-center justify-center gap-3"
         >
-          Contact me
-        </a> */}
-      </motion.div>
+          {/* Add buttons here if needed */}
+        </motion.div>
+      </div>
     </section>
-    
-    
   )
 }
