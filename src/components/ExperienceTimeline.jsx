@@ -35,7 +35,7 @@ function InlineReveal({ children, delay = 0 }) {
 
 const roles = [
   { company: 'JPMorgan Chase', title: 'Automation Team Leader', period: 'Jul 2021 to Present', bullets: ['Lead automation / digitalization for PBA & IPB Platforms', 'Team lead of four across Python, UiPath, Alteryx, Tableau, SQL', 'Train 200 plus professionals each quarter'] },
-  { company: 'Deloitte USI', title: 'Associate Analyst', period: 'Jul 2019 to Jun 2021', bullets: ['Testing and data integrity for Louisiana Health Department systems', 'COVID enhancements tested and deployed'] }
+  { company: 'Deloitte USI', title: 'Analyst', period: 'Jul 2019 to Jun 2021', bullets: ['Testing and data integrity for Louisiana Health Department systems', 'COVID enhancements tested and deployed'] }
 ]
 
 const listVariants = {

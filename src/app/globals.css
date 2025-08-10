@@ -10,7 +10,10 @@
   --accent: #7c4dff;
   --translucent: rgba(17,18,21,0.6);
   --nav-h: 72px;
-  --nav-bg: #0b0b0c;
+  --nav-bg: #0b0b0c; /* page background for dark theme */
+  /* Invert navbar: white bar on dark theme */
+  --nav-surface-bg: #ffffff;
+  --nav-surface-fg: #111418;
 }
 
 .light {
@@ -21,7 +24,10 @@
   --border: rgba(17,20,24,0.08);
   --accent: #5b7cfa;
   --translucent: rgba(255,255,255,0.7);
-  --nav-bg: #ffffff;
+  --nav-bg: #ffffff; /* page background for light theme */
+  /* Invert navbar: black bar on light theme */
+  --nav-surface-bg: #0b0b0c;
+  --nav-surface-fg: #e8e9ea;
 }
 
 html { background: var(--bg); color: var(--fg); }
@@ -43,8 +49,13 @@ html, body, main { scroll-behavior: smooth; }
 .section-head { display: grid; place-items: center; }
 .section-head.is-inactive { display: none; }
 
-/* solid navbar surface so headings do not show through */
-.nav-surface { background: var(--nav-bg); }
+/* solid navbar surface, inverted vs page theme */
+.nav-surface { background: var(--nav-surface-bg); color: var(--nav-surface-fg); }
+.nav-surface a, .nav-surface .text { color: var(--nav-surface-fg); }
+.nav-surface .nav-link { color: color-mix(in srgb, var(--nav-surface-fg) 70%, transparent); }
+.nav-surface .nav-link:hover { color: var(--nav-surface-fg); background: color-mix(in srgb, var(--nav-surface-fg) 10%, transparent); }
+.nav-surface .btn-toggle { border-color: color-mix(in srgb, var(--nav-surface-fg) 24%, transparent); color: var(--nav-surface-fg); }
+.nav-surface .btn-toggle:hover { background: color-mix(in srgb, var(--nav-surface-fg) 8%, transparent); }
 
 /* slide down animation for mobile nav */
 .mobile-menu { max-height: 0; opacity: 0; transform: translateY(-8px); transition: max-height .35s ease, opacity .25s ease, transform .35s ease; }
@@ -55,7 +66,6 @@ html, body, main { scroll-behavior: smooth; }
   /* remove previous hero-scope scaling which nudged content right */
   .hero-scope { transform: none; transform-origin: center; }
 }
-
 
 /* Blinking caret for the hero typed heading */
 .typing-caret { display: inline-block; margin-left: 6px; animation: caret-blink 1s steps(1, end) infinite; }

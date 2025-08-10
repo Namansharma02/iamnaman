@@ -28,9 +28,9 @@ export default function NavBar({ theme, onToggleTheme }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-[100]">
-      <div className="mx-auto w-full max-w-7xl px-2 md:px-3 mt-3 md:mt-4">
+      <div className="mx-auto w-full max-w-8xl px-4 md:px-100 mt-3 md:mt-4">
         <div className="flex items-center justify-between rounded-2xl border border-[var(--border)] nav-surface px-2 md:px-3 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)] overflow-hidden">
-          <a href="#hero" className="text-sm font-medium tracking-wide">Top</a>
+          <a href="#hero" className="text-sm font-medium tracking-wide">Hey!</a>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
