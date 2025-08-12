@@ -187,9 +187,10 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
 
       <main suppressHydrationWarning id="top" className="h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]">
         {/* HERO */}
-        <section id="hero" data-section className="snap-start min-h-[100svh] md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center">
+        <section id="hero" className="snap-start min-h-[100svh] md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center">
           <div className="mx-auto w-full max-w-7xl">
-            <HeroSplit imgSrc={heroImg} imgAlt="Naman avatar" />
+             {/* Pass theme so avatar switches */}
+            <HeroSplit theme={theme} />
           </div>
         </section>
 
