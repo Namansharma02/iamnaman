@@ -1,16 +1,23 @@
 "use client"
 
-import HeroDesktop from './HeroDesktop'
-import HeroMobile from './HeroMobile'
+import HeroDesktop from "./HeroDesktop"
+import HeroMobile from "./HeroMobile"
 
-export default function HeroSplit({ imgSrc = "/naman-avatar.png", imgAlt = "Profile" }) {
+export default function HeroSplit({
+  theme = "dark",
+  imgLight = "/naman-avatar-light.png",
+  imgDark = "/naman-avatar-dark.png",
+  imgAlt = "Profile",
+}) {
+  const imgSrc = theme === "dark" ? imgDark : imgLight
+
   return (
     <>
-      {/* Mobile layout */}
+      {/* Mobile */}
       <div className="block md:hidden">
         <HeroMobile imgSrc={imgSrc} imgAlt={imgAlt} />
       </div>
-      {/* Desktop layout */}
+      {/* Desktop */}
       <div className="hidden md:block">
         <HeroDesktop imgSrc={imgSrc} imgAlt={imgAlt} />
       </div>

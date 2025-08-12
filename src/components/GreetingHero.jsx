@@ -50,7 +50,7 @@ export default function GreetingHero({ compact = false }) {
     <section className={sectionClasses}>
       <div>
         <h1
-          className="font-bold leading-[0.95] tracking-tight text-[clamp(48px,9vw,240px)]"
+          className="font-bold leading-[0.95] tracking-tight text-[clamp(80px,9vw,240px)]"
           aria-live="polite"
           aria-label="Hey, I'm Naman"
         >
