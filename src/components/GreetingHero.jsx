@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 export default function GreetingHero({ compact = false }) {
   const parts = ['Hey,', "I'm", 'Naman.']
-  const charDelay = 50
+  const charDelay = 20
   const gapBetweenWords = 50
   const BREAK = '\n' // escaped newline
 

@@ -14,13 +14,19 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Naman's Portfolio",
   description: "Automation & Analytics Portfolio of Naman",
+  icons: {
+    icon: "/naman-avatar-light.png",
+    shortcut: "/naman-avatar-light.png",
+    apple: "/naman-avatar-light.png"
+  }
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/naman-avatar-light.png" />
+        <link rel="apple-touch-icon" href="/naman-avatar-light.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {

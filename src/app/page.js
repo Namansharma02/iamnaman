@@ -86,7 +86,7 @@ function SectionBlock({
               className="mb-8 text-center text-xl md:text-2xl whitespace-pre-line text-[var(--muted)] leading-relaxed"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.28 }}
+              transition={{ duration: 0.20 }}
             >
               {bodyText}
             </motion.p>
@@ -273,7 +273,7 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         />
 
         {/* WHAT I DO */}
-        <SectionBlock id="what-i-do" activeId={activeId} hasScrolled={hasScrolled} title="What I Do">
+        <SectionBlock id="what-i-do" activeId={activeId} hasScrolled={hasScrolled} title="What I Do" >
           <WhatIDo />
         </SectionBlock>
 
@@ -326,6 +326,7 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
                   <div className="contact-title">Email</div>
                   <div className="contact-sub group-hover:text-[var(--fg)]">namans0297@gmail.com</div>
                 </div>
+                
               </a>
 
               <a
@@ -339,8 +340,8 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
                   <div className="contact-title">LinkedIn</div>
                   <div className="contact-sub group-hover:text-[var(--fg)]">/in/namansharma0297</div>
                 </div>
-                <ExternalLink className="ml-auto h-4 w-4 opacity-60 group-hover:opacity-100" />
-                <span className="badge">Preferred</span>
+                {/* <ExternalLink className="ml-auto h-4 w-4 opacity-60 group-hover:opacity-100" />
+                <span className="badge">Preferred</span> */}
               </a>
             </div>
 
