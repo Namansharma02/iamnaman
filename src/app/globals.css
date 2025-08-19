@@ -161,3 +161,11 @@ html, body, main { scroll-behavior: smooth; }
 /* Keyboard focus support */
 .contact-card:focus-visible { outline: 3px solid currentColor; outline-offset: 2px; }
 @keyframes glowPulse { 0% { box-shadow: 0 0 0 0 rgba(99,102,241,0.35) } 70% { box-shadow: 0 0 0 10px rgba(99,102,241,0) } 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0) } }
+
+
+
+
+section {
+  position: relative;
+  z-index: 1;
+}

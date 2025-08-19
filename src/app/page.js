@@ -10,7 +10,21 @@ import ExperienceTimeline from "../components/ExperienceTimeline"
 import TypedInView from "../components/TypedInView"
 import CodePeepOverlay from "../components/CodePeepOverlay"
 
-function SectionBlock({ id, title, children, bodyText, activeId, bodySpeed = 10, bodyDelay = 40, bodyEffect = "type" }) {
+import FloatHeading from "../components/FloatHeading"
+
+
+function SectionBlock({
+  id,
+  title,
+  children,
+  bodyText,
+  activeId,
+  hasScrolled,
+  scrollContainerRef,              // NEW: pass the <main> scroller ref
+  bodySpeed = 10,
+  bodyDelay = 40,
+  bodyEffect = "type",
+}) {
   const ref = useRef(null)
   const [titleStarted, setTitleStarted] = useState(false)
   const [titleDone, setTitleDone] = useState(false)
@@ -20,12 +34,12 @@ function SectionBlock({ id, title, children, bodyText, activeId, bodySpeed = 10,
 
   const isActive = activeId === id
 
-  // start typing the title only when this section becomes active
+  // Start body typing/reveal ONLY when section becomes active AND user has scrolled
   useEffect(() => {
-    if (!titleStarted && isActive) setTitleStarted(true)
-  }, [isActive, titleStarted])
+    if (!titleStarted && isActive && hasScrolled) setTitleStarted(true)
+  }, [isActive, hasScrolled, titleStarted])
 
-  // when typing starts, schedule finish and body reveal once
+  // When typing starts, schedule finish and body reveal once
   useEffect(() => {
     if (!titleStarted || hasEverShown.current) return
     const titleText = title || ""
@@ -36,20 +50,29 @@ function SectionBlock({ id, title, children, bodyText, activeId, bodySpeed = 10,
     clearTimeout(timers.current.body)
 
     timers.current.title = setTimeout(() => setTitleDone(true), hold)
-    timers.current.body = setTimeout(() => { setShowContent(true); hasEverShown.current = true }, hold)
+    timers.current.body = setTimeout(() => {
+      setShowContent(true)
+      hasEverShown.current = true
+    }, hold)
 
-    return () => { clearTimeout(timers.current.title); clearTimeout(timers.current.body) }
+    return () => {
+      clearTimeout(timers.current.title)
+      clearTimeout(timers.current.body)
+    }
   }, [titleStarted, title])
 
   return (
-    <section ref={ref} id={id} data-section className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]">
-      <div className={`section-head ${isActive ? 'is-active' : 'is-inactive'}`}>
-        {titleDone ? (
-          <h2 className="section-title text-6xl md:text-7xl font-extrabold text-center">{title}</h2>
-        ) : titleStarted ? (
-          <TypedInView as="h2" className="section-title text-6xl md:text-7xl font-extrabold text-center" text={title} speed={18} />
-        ) : null}
-      </div>
+    <section
+      ref={ref}
+      id={id}
+      data-section
+      className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]"
+    >
+      {/* Heading uses Framer Motion float now */}
+<div className={`section-head ${isActive ? "is-active" : "is-inactive"}`}>
+  <FloatHeading text={title} />
+</div>
+
 
       <div className="pin-body mx-auto max-w-5xl pt-6 pb-16 content-scope">
         {typeof bodyText === "string" && (showContent || hasEverShown.current) && (
@@ -72,16 +95,22 @@ function SectionBlock({ id, title, children, bodyText, activeId, bodySpeed = 10,
             />
           )
         )}
-        {showContent || hasEverShown.current ? children : null}
+
+        {/* Keep children in the DOM to avoid layout jump */}
+        <div style={{ visibility: (showContent || hasEverShown.current) ? "visible" : "hidden" }}>
+          {children}
+        </div>
       </div>
     </section>
   )
 }
 
 export default function Home() {
-  const [theme, setTheme] = useState("dark")
+  const [theme, setTheme] = useState("light")
   const [activeId, setActiveId] = useState("hero")
   const [codeOpen, setCodeOpen] = useState(false)
+  const [hasScrolled, setHasScrolled] = useState(false)
+  const mainRef = useRef(null)                    // NEW: ref for the <main> scroller
 
   // hydrate theme from localStorage
   useEffect(() => {
@@ -92,8 +121,9 @@ export default function Home() {
   // apply theme classes
   useEffect(() => {
     if (typeof document !== "undefined") {
-      document.documentElement.classList.toggle("dark", theme === "dark")
-      document.documentElement.classList.toggle("light", theme === "light")
+      const root = document.documentElement
+      root.classList.remove("light", "dark")
+      root.classList.add(theme)
       localStorage.setItem("theme", theme)
     }
   }, [theme])
@@ -107,14 +137,18 @@ export default function Home() {
 
   // ESC to close overlay
   useEffect(() => {
-    const onKey = e => { if (e.key === "Escape") setCodeOpen(false) }
+    const onKey = e => {
+      if (e.key === "Escape") setCodeOpen(false)
+    }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [])
 
   // force top on hard refresh and strip any hash
   useEffect(() => {
-    try { if ("scrollRestoration" in history) history.scrollRestoration = "manual" } catch {}
+    try {
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual"
+    } catch {}
     if (window.location.hash) {
       history.replaceState(null, "", window.location.pathname + window.location.search)
     }
@@ -124,10 +158,23 @@ export default function Home() {
       const prev = main.style.scrollBehavior
       main.style.scrollBehavior = "auto"
       main.scrollTop = 0
-      requestAnimationFrame(() => { main.style.scrollBehavior = prev || "" })
+      requestAnimationFrame(() => {
+        main.style.scrollBehavior = prev || ""
+      })
     }
     setActiveId("hero")
   }, [])
+
+  // detect first user scroll on the main scroller
+  useEffect(() => {
+    const main = document.querySelector("main")
+    if (!main) return
+    const onScroll = () => {
+      if (!hasScrolled && main.scrollTop > 2) setHasScrolled(true)
+    }
+    main.addEventListener("scroll", onScroll, { passive: true })
+    return () => main.removeEventListener("scroll", onScroll)
+  }, [hasScrolled])
 
   // active section tracking against the scroll container
   useEffect(() => {
@@ -136,14 +183,19 @@ export default function Home() {
     const sections = Array.from(document.querySelectorAll("[data-section]"))
 
     const getActive = () => {
-      const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 72
+      const navH = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--nav-h")
+      ) || 72
       const anchor = main.scrollTop + navH + 8
       let bestId = sections[0]?.id || ""
       let best = Infinity
       sections.forEach(s => {
         const sectionTop = s.offsetTop - main.offsetTop
         const dist = Math.abs(sectionTop - anchor)
-        if (dist < best) { best = dist; bestId = s.id }
+        if (dist < best) {
+          best = dist
+          bestId = s.id
+        }
       })
       setActiveId(bestId)
     }
@@ -152,29 +204,33 @@ export default function Home() {
     const onScroll = () => requestAnimationFrame(getActive)
     main.addEventListener("scroll", onScroll, { passive: true })
     window.addEventListener("resize", getActive)
-    return () => { main.removeEventListener("scroll", onScroll); window.removeEventListener("resize", getActive) }
+    return () => {
+      main.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", getActive)
+    }
   }, [])
 
   // About text
-  const aboutCopy = useMemo(() => (
+  const aboutCopy = useMemo(
+    () =>
 `At JPMorgan Chase, I lead automation across trading portals and banking tools, designing solutions that blend Python, Java, Alteryx, UiPath, Tableau, and SQL to remove friction at scale.
 
-I thrive on complex, high stakes problems. They force me to think sharper, act faster, and deliver smarter systems. Outside of work, I follow tech, politics, and global news with the same curiosity I bring to my projects. I’m also a "sometimes" photographer with one of my shots being published in Lonely Planet magazine, 2020.`
-  ), [])
+I thrive on complex, high stakes problems. They force me to think sharper, act faster, and deliver smarter systems. Outside of work, I follow tech, politics, and global news with the same curiosity I bring to my projects. I’m also a "sometimes" photographer with one of my shots being published in Lonely Planet magazine, 2020.`,
+    []
+  )
 
   // Lazy-load the code text for the overlay
   const [pageCode, setPageCode] = useState("")
   useEffect(() => {
     if (codeOpen && !pageCode) {
       fetch("/code/page.js.txt")
-        .then(r => r.ok ? r.text() : Promise.reject(r.status))
+        .then(r => (r.ok ? r.text() : Promise.reject(r.status)))
         .then(setPageCode)
-        .catch(() => setPageCode("// Failed to load /code/page.js.txt. Add the file under public/code/ and reload."))
+        .catch(() =>
+          setPageCode("// Failed to load /code/page.js.txt. Add the file under public/code/ and reload.")
+        )
     }
   }, [codeOpen, pageCode])
-
-  // theme-based avatar for hero
-  const heroImg = theme === "dark" ? "/naman-avatar-dark.png" : "/naman-avatar-light.png"
 
   return (
     <>
@@ -185,30 +241,63 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         onToggleCode={() => setCodeOpen(o => !o)}
       />
 
-      <main suppressHydrationWarning id="top" className="h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]">
+      <main
+        ref={mainRef}  // attach the scroller ref so GSAP uses <main> as scroller
+        suppressHydrationWarning
+        id="top"
+        className="relative h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]"
+      >
         {/* HERO */}
-        <section id="hero" className="snap-start min-h-[100svh] md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center">
+        <section
+          id="hero"
+          className="snap-start min-h-[100svh] md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center"
+        >
           <div className="mx-auto w-full max-w-7xl">
-             {/* Pass theme so avatar switches */}
             <HeroSplit theme={theme} />
           </div>
         </section>
 
         {/* ABOUT ME */}
-        <SectionBlock id="about" activeId={activeId} title="About Me" bodyText={aboutCopy} bodyEffect="fade" />
+        <SectionBlock
+          id="about"
+          activeId={activeId}
+          hasScrolled={hasScrolled}
+          scrollContainerRef={mainRef}
+          title="About Me"
+          bodyText={aboutCopy}
+          bodyEffect="fade"
+        />
 
         {/* WHAT I DO */}
-        <SectionBlock id="what-i-do" activeId={activeId} title="What I Do">
+        <SectionBlock
+          id="what-i-do"
+          activeId={activeId}
+          hasScrolled={hasScrolled}
+          scrollContainerRef={mainRef}
+          title="What I Do"
+        >
           <WhatIDo />
         </SectionBlock>
 
         {/* EXPERIENCE */}
-        <SectionBlock id="experience" activeId={activeId} title="Experience">
+        <SectionBlock
+          id="experience"
+          activeId={activeId}
+          hasScrolled={hasScrolled}
+          scrollContainerRef={mainRef}
+          title="Experience"
+        >
           <ExperienceTimeline />
         </SectionBlock>
 
         {/* PROJECTS */}
-        <SectionBlock id="projects" activeId={activeId} title="Projects">
+        <SectionBlock
+          id="projects"
+          activeId={activeId}
+          hasScrolled={hasScrolled}
+          scrollContainerRef={mainRef}
+          title="Projects"
+        >
           <div className="mx-auto max-w-5xl">
             <div className="mt-10 grid sm:grid-cols-2 gap-6">
               {[1, 2, 3, 4].map(n => (
@@ -227,18 +316,35 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         </SectionBlock>
 
         {/* SKILLS */}
-        <SectionBlock id="skills" activeId={activeId} title="Skills">
+        <SectionBlock
+          id="skills"
+          activeId={activeId}
+          hasScrolled={hasScrolled}
+          scrollContainerRef={mainRef}
+          title="Skills"
+        >
           <div className="mx-auto max-w-5xl">
             <div className="mt-10 flex flex-wrap gap-3">
-              {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(s => (
-                <span key={s} className="tag">{s}</span>
-              ))}
+              {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(
+                s => (
+                  <span key={s} className="tag">
+                    {s}
+                  </span>
+                )
+              )}
             </div>
           </div>
         </SectionBlock>
 
         {/* CONTACT */}
-        <SectionBlock id="contact" activeId={activeId} title="Contact" bodyEffect="fade">
+        <SectionBlock
+          id="contact"
+          activeId={activeId}
+          hasScrolled={hasScrolled}
+          scrollContainerRef={mainRef}
+          title="Contact"
+          bodyEffect="fade"
+        >
           <div className="mx-auto max-w-3xl">
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               <a href="mailto:namans0297@gmail.com" className="contact-card contact-email group">
@@ -249,7 +355,12 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
                 </div>
               </a>
 
-              <a href="https://www.linkedin.com/in/namansharma0297/" target="_blank" rel="noreferrer" className="contact-card contact-linkedin contact-preferred group">
+              <a
+                href="https://www.linkedin.com/in/namansharma0297/"
+                target="_blank"
+                rel="noreferrer"
+                className="contact-card contact-linkedin contact-preferred group"
+              >
                 <Linkedin className="contact-icon" />
                 <div className="contact-text">
                   <div className="contact-title">LinkedIn</div>
@@ -260,7 +371,9 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
               </a>
             </div>
 
-            <p className="mt-6 text-center text-sm text-[var(--muted)]">I respond fastest on LinkedIn. Email works great for longer notes.</p>
+            <p className="mt-6 text-center text-sm text-[var(--muted)]">
+              I respond fastest on Email. LinkedIn works great for conversations.
+            </p>
           </div>
         </SectionBlock>
       </main>

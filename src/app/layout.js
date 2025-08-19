@@ -14,25 +14,27 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Naman's Portfolio",
   description: "Automation & Analytics Portfolio of Naman",
-  icons: {
-    icon: "/naman-avatar-light.png",
-    shortcut: "/naman-avatar-light.png",
-    apple: "/naman-avatar-light.png"
-  }
 }
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Favicon uses the same avatar image */}
-        <link rel="icon" type="image/png" href="/naman-avatar-light.png" />
-        <link rel="apple-touch-icon" href="/naman-avatar-light.png" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            try {
+              var stored = localStorage.getItem('theme');
+              var theme = stored || 'light';
+              document.documentElement.classList.add(theme);
+            } catch (e) {
+              document.documentElement.classList.add('light');
+            }
+          })();
+        ` }} />
       </head>
-      <body
-        suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
