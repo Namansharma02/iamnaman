@@ -10,7 +10,8 @@ import ExperienceTimeline from "../components/ExperienceTimeline"
 import TypedInView from "../components/TypedInView"
 import CodePeepOverlay from "../components/CodePeepOverlay"
 
-import FloatHeading from "../components/FloatHeading"
+
+
 
 
 function SectionBlock({
@@ -20,7 +21,6 @@ function SectionBlock({
   bodyText,
   activeId,
   hasScrolled,
-  scrollContainerRef,              // NEW: pass the <main> scroller ref
   bodySpeed = 10,
   bodyDelay = 40,
   bodyEffect = "type",
@@ -34,7 +34,7 @@ function SectionBlock({
 
   const isActive = activeId === id
 
-  // Start body typing/reveal ONLY when section becomes active AND user has scrolled
+  // Start typing ONLY when section becomes active AND user has scrolled
   useEffect(() => {
     if (!titleStarted && isActive && hasScrolled) setTitleStarted(true)
   }, [isActive, hasScrolled, titleStarted])
@@ -68,9 +68,14 @@ function SectionBlock({
       data-section
       className="snap-start min-h-dvh px-6 pt-[calc(var(--nav-h)+24px)] scroll-mt-[var(--nav-h)]"
     >
-      {/* Heading uses Framer Motion float now */}
-<div className={`section-head ${isActive ? "is-active" : "is-inactive"}`}>
-  <FloatHeading text={title} />
+      <div className={`section-head ${isActive ? "is-active" : "is-inactive"}`}>
+  <h2 className="section-title text-6xl md:text-7xl font-extrabold text-center">
+    {titleDone || hasEverShown.current
+      ? title
+      : titleStarted && hasScrolled
+        ? <TypedInView as="span" text={title} speed={18} />
+        : <span className="opacity-0">{title}</span>}
+  </h2>
 </div>
 
 
@@ -95,11 +100,10 @@ function SectionBlock({
             />
           )
         )}
-
-        {/* Keep children in the DOM to avoid layout jump */}
         <div style={{ visibility: (showContent || hasEverShown.current) ? "visible" : "hidden" }}>
-          {children}
-        </div>
+  {children}
+</div>
+
       </div>
     </section>
   )
@@ -110,7 +114,6 @@ export default function Home() {
   const [activeId, setActiveId] = useState("hero")
   const [codeOpen, setCodeOpen] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
-  const mainRef = useRef(null)                    // NEW: ref for the <main> scroller
 
   // hydrate theme from localStorage
   useEffect(() => {
@@ -120,13 +123,14 @@ export default function Home() {
 
   // apply theme classes
   useEffect(() => {
-    if (typeof document !== "undefined") {
-      const root = document.documentElement
-      root.classList.remove("light", "dark")
-      root.classList.add(theme)
-      localStorage.setItem("theme", theme)
-    }
-  }, [theme])
+  if (typeof document !== "undefined") {
+    const root = document.documentElement
+    root.classList.remove("light", "dark")
+    root.classList.add(theme)
+    localStorage.setItem("theme", theme)
+  }
+}, [theme])
+
 
   // add/remove helper class when code overlay is open
   useEffect(() => {
@@ -242,17 +246,18 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
       />
 
       <main
-        ref={mainRef}  // attach the scroller ref so GSAP uses <main> as scroller
-        suppressHydrationWarning
-        id="top"
-        className="relative h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]"
-      >
+  suppressHydrationWarning
+  id="top"
+  className="relative h-dvh snap-y snap-mandatory overflow-y-scroll overscroll-contain bg-[var(--bg)] text-[var(--fg)]"
+>
+
         {/* HERO */}
         <section
           id="hero"
           className="snap-start min-h-[100svh] md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center"
         >
           <div className="mx-auto w-full max-w-7xl">
+            {/* Pass theme so avatar switches */}
             <HeroSplit theme={theme} />
           </div>
         </section>
@@ -262,42 +267,23 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
           id="about"
           activeId={activeId}
           hasScrolled={hasScrolled}
-          scrollContainerRef={mainRef}
           title="About Me"
           bodyText={aboutCopy}
           bodyEffect="fade"
         />
 
         {/* WHAT I DO */}
-        <SectionBlock
-          id="what-i-do"
-          activeId={activeId}
-          hasScrolled={hasScrolled}
-          scrollContainerRef={mainRef}
-          title="What I Do"
-        >
+        <SectionBlock id="what-i-do" activeId={activeId} hasScrolled={hasScrolled} title="What I Do">
           <WhatIDo />
         </SectionBlock>
 
         {/* EXPERIENCE */}
-        <SectionBlock
-          id="experience"
-          activeId={activeId}
-          hasScrolled={hasScrolled}
-          scrollContainerRef={mainRef}
-          title="Experience"
-        >
+        <SectionBlock id="experience" activeId={activeId} hasScrolled={hasScrolled} title="Experience">
           <ExperienceTimeline />
         </SectionBlock>
 
         {/* PROJECTS */}
-        <SectionBlock
-          id="projects"
-          activeId={activeId}
-          hasScrolled={hasScrolled}
-          scrollContainerRef={mainRef}
-          title="Projects"
-        >
+        <SectionBlock id="projects" activeId={activeId} hasScrolled={hasScrolled} title="Projects">
           <div className="mx-auto max-w-5xl">
             <div className="mt-10 grid sm:grid-cols-2 gap-6">
               {[1, 2, 3, 4].map(n => (
@@ -316,13 +302,7 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         </SectionBlock>
 
         {/* SKILLS */}
-        <SectionBlock
-          id="skills"
-          activeId={activeId}
-          hasScrolled={hasScrolled}
-          scrollContainerRef={mainRef}
-          title="Skills"
-        >
+        <SectionBlock id="skills" activeId={activeId} hasScrolled={hasScrolled} title="Skills">
           <div className="mx-auto max-w-5xl">
             <div className="mt-10 flex flex-wrap gap-3">
               {["React", "Next.js", "Tailwind", "Python", "Alteryx", "Tableau", "APIs", "Automation", "Leadership"].map(
@@ -337,14 +317,7 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
         </SectionBlock>
 
         {/* CONTACT */}
-        <SectionBlock
-          id="contact"
-          activeId={activeId}
-          hasScrolled={hasScrolled}
-          scrollContainerRef={mainRef}
-          title="Contact"
-          bodyEffect="fade"
-        >
+        <SectionBlock id="contact" activeId={activeId} hasScrolled={hasScrolled} title="Contact" bodyEffect="fade">
           <div className="mx-auto max-w-3xl">
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               <a href="mailto:namans0297@gmail.com" className="contact-card contact-email group">
