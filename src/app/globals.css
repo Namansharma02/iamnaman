@@ -4,11 +4,13 @@
 /* Theme tokens */
 :root {
   --bg: #0b0b0c;
-  --fg: #e8e9ea;
+  --fg: #ffffff;
   --muted: #9aa0a6;
   --card: #111215;
   --border: rgba(255,255,255,0.08);
-  --accent: #7c4dff;
+  --accent: #006A67;
+  --cooking-accent: #006A67;
+  --cooking-text: #ffffff;
   --translucent: rgba(17,18,21,0.6);
 
   --nav-h: 72px;
@@ -25,11 +27,13 @@
 
 .light {
   --bg: #f6f7f9;
-  --fg: #111418;
+  --fg: #000000;
   --muted: #5b6168;
   --card: #ffffff;
   --border: rgba(17,20,24,0.08);
-  --accent: #5b7cfa;
+  --accent: #4682A9;
+  --cooking-accent: #4682A9;
+  --cooking-text: #FCF8DD;
   --translucent: rgba(255,255,255,0.7);
 
   /* Page background color for light theme */
@@ -63,7 +67,7 @@ html, body, main { scroll-behavior: smooth; }
 
 /* Section heading visibility under navbar */
 .section-head { display: grid; place-items: center; }
-.section-head.is-inactive { display: none; }
+/* .section-head.is-inactive { display: none; } */
 
 /* Solid navbar surface that inverts against page theme */
 .nav-surface { background: var(--nav-surface-bg); color: var(--nav-surface-fg); }
@@ -169,3 +173,36 @@ section {
   position: relative;
   z-index: 1;
 } */
+
+
+
+/* Rolling word pill */
+.rw-box {
+  display: inline-flex;
+  align-items: center;
+  background: var(--cooking-accent);
+  color: var(--cooking-text);
+  font-weight: 700;
+  border-radius: 0.6rem;
+  padding: 0.15rem 0.6rem;
+  line-height: 1.15;
+
+}
+
+/* viewport for the scrolling words */
+.rw-window {
+  position: relative;
+  height: 1.2em;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: flex-end;
+  min-width: 8ch;
+}
+
+/* each animated word */
+.rw-word {
+  display: inline-block;
+  will-change: transform;
+}
+
+

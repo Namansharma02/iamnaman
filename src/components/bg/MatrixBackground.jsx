@@ -7,7 +7,7 @@ export default function MatrixBackground() {
   const rafRef = useRef(0)
 
   // >>> TWEAK THIS NUMBER to change blur amount (in pixels)
-  const BLUR_PX = 2.5   // try 0, 4, 8, 12, 16
+  const BLUR_PX = 0  // try 0, 4, 8, 12, 16
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -129,7 +129,10 @@ export default function MatrixBackground() {
   }, [])
 
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none">
+    <div
+   className="absolute inset-0 pointer-events-none"
+   style={{ zIndex: -1 }}
+ >
       <canvas
         ref={canvasRef}
         className="h-full w-full"

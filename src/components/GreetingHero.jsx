@@ -1,22 +1,21 @@
 "use client"
 
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from "react"
 
-export default function GreetingHero({ compact = false }) {
-  const parts = ['Hey,', "I'm", 'Naman.']
-  const charDelay = 20
+export default function GreetingHero({ compact = false, onDone }) {
+  // no fake newlines
+  const parts = ["Hey,", "I'm", "Naman."]
+  const charDelay = 30
   const gapBetweenWords = 50
-  const BREAK = '\n' // escaped newline
+  const BREAK = "\n"
 
-  const [text, setText] = useState('')
+  const [text, setText] = useState("")
   const [done, setDone] = useState(false)
 
   useEffect(() => {
     let cancelled = false
-
     async function typeAll() {
-      let current = ''
+      let current = ""
       for (let i = 0; i < parts.length; i++) {
         const word = parts[i]
         for (let c = 0; c < word.length; c++) {
@@ -26,59 +25,38 @@ export default function GreetingHero({ compact = false }) {
           await new Promise(r => setTimeout(r, charDelay))
         }
         if (i < parts.length - 1) {
-          // Force exactly 2 lines: after "I'm" insert a newline
-          current += i === 1 ? BREAK : ' '
+          // insert the BREAK after "I'm" to force 2 lines
+          current += i === 1 ? BREAK : " "
           setText(current)
           await new Promise(r => setTimeout(r, gapBetweenWords))
         }
       }
       setDone(true)
+      onDone?.()
     }
-
     typeAll()
     return () => { cancelled = true }
-  }, [])
+  }, []) // run once
 
-  const hasBreak = text.includes(BREAK)
-  const [line1, line2] = hasBreak ? text.split(BREAK) : [text, '']
+  const [line1, line2] = text.includes(BREAK) ? text.split(BREAK) : [text, ""]
 
+  // IMPORTANT: no vertical centering; keep content from shifting
   const sectionClasses = compact
-    ? 'relative mx-auto max-w-3xl px-4 pt-8 pb-2 text-center'
-    : 'relative mx-auto max-w-6xl px-6 min-h-[86vh] flex items-center justify-center text-center md:text-left pt-14 md:pt-10 pb-16'
+    ? "relative mx-auto max-w-3xl px-4 pt-8 pb-2 text-center"
+    : "relative mx-auto max-w-6xl px-6 flex flex-col items-start text-center md:text-left pt-14 md:pt-10 pb-0"
 
   return (
     <section className={sectionClasses}>
-      <div>
-        <h1
-          className="font-bold leading-[0.95] tracking-tight text-[clamp(80px,9vw,240px)]"
-          aria-live="polite"
-          aria-label="Hey, I'm Naman"
-        >
-          {hasBreak ? (
-            <>
-              <span className="block whitespace-nowrap">{line1}</span>
-              <span className="block whitespace-nowrap">
-                {line2}
-                {!done && <span className="typing-caret" aria-hidden="true">|</span>}
-              </span>
-            </>
-          ) : (
-            <span className="block whitespace-nowrap">
-              {line1}
-              {!done && <span className="typing-caret" aria-hidden="true">|</span>}
-            </span>
-          )}
-        </h1>
-
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: done ? 1 : 0, y: done ? 0 : 12 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          className="mt-8 flex flex-wrap items-center justify-center gap-3"
-        >
-          {/* Add buttons here if needed */}
-        </motion.div>
-      </div>
+      <h1 className="font-bold leading-[0.95] tracking-tight text-[clamp(80px,9vw,150px)]">
+        {/* Always render TWO lines with fixed line height to lock total height */}
+        <span className="block whitespace-nowrap min-h-[0.95em]">
+          {line1 || "\u00A0"}
+        </span>
+        <span className="block whitespace-nowrap min-h-[0.95em]">
+          {line2 || "\u00A0"}
+          {!done && <span className="typing-caret">|</span>}
+        </span>
+      </h1>
     </section>
   )
 }

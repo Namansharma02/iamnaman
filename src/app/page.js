@@ -9,6 +9,7 @@ import { Mail, Linkedin, ExternalLink } from "lucide-react"
 import ExperienceTimeline from "../components/ExperienceTimeline"
 import TypedInView from "../components/TypedInView"
 import CodePeepOverlay from "../components/CodePeepOverlay"
+import MatrixBackground from "../components/bg/MatrixBackground"
 
 
 
@@ -217,9 +218,7 @@ export default function Home() {
   // About text
   const aboutCopy = useMemo(
     () =>
-`At JPMorgan Chase, I lead automation across trading portals and banking tools, designing solutions that blend Python, Java, Alteryx, UiPath, Tableau, and SQL to remove friction at scale.
-
-I thrive on complex, high stakes problems. They force me to think sharper, act faster, and deliver smarter systems. Outside of work, I follow tech, politics, and global news with the same curiosity I bring to my projects. I’m also a "sometimes" photographer with one of my shots being published in Lonely Planet magazine, 2020.`,
+``,
     []
   )
 
@@ -252,15 +251,20 @@ I thrive on complex, high stakes problems. They force me to think sharper, act f
 >
 
         {/* HERO */}
-        <section
-          id="hero"
-          className="snap-start min-h-[100svh] md:h-dvh relative px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center"
-        >
-          <div className="mx-auto w-full max-w-7xl">
-            {/* Pass theme so avatar switches */}
-            <HeroSplit theme={theme} />
-          </div>
-        </section>
+       <section
+  id="hero"
+  className="snap-start min-h-[100svh] md:h-dvh relative overflow-hidden px-4 md:px-6 pt-14 pb-2 md:pt-16 md:pb-0 grid items-start md:items-center"
+>
+  {/* Background — absolutely positioned and forced behind via zIndex:-1 */}
+  <MatrixBackground />
+
+  {/* Foreground content — ensure above the background */}
+  <div className="relative z-[2] mx-auto w-full max-w-7xl">
+    <HeroSplit theme={theme} />
+  </div>
+</section>
+
+
 
         {/* ABOUT ME */}
         <SectionBlock
