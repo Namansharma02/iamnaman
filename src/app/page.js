@@ -259,7 +259,7 @@ export default function Home() {
   <MatrixBackground />
 
   {/* Foreground content — ensure above the background */}
-  <div className="relative z-[2] mx-auto w-full max-w-7xl">
+  <div className="relative z-[2] w-full">
     <HeroSplit theme={theme} />
   </div>
 </section>

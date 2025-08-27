@@ -28,6 +28,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" href="/naman-avatar-light.png" />
         <link rel="apple-touch-icon" href="/naman-avatar-light.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="https://fonts.googleapis.com/css2?family=Priestacy&display=swap" rel="stylesheet" />
         <script dangerouslySetInnerHTML={{ __html: `
           (function() {
             try {

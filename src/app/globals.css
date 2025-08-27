@@ -8,8 +8,8 @@
   --muted: #9aa0a6;
   --card: #111215;
   --border: rgba(255,255,255,0.08);
-  --accent: #006A67;
-  --cooking-accent: #006A67;
+ --accent: #4682A9;
+  --cooking-accent: #4682A9;
   --cooking-text: #ffffff;
   --translucent: rgba(17,18,21,0.6);
 
@@ -31,8 +31,9 @@
   --muted: #5b6168;
   --card: #ffffff;
   --border: rgba(17,20,24,0.08);
-  --accent: #4682A9;
-  --cooking-accent: #4682A9;
+    --accent: #006A67;
+  --cooking-accent: #006A67;
+  
   --cooking-text: #FCF8DD;
   --translucent: rgba(255,255,255,0.7);
 
@@ -94,7 +95,20 @@ html, body, main { scroll-behavior: smooth; }
   .hero-scope { transform: none; transform-origin: center; }
 }
 
-/* Blinking caret for typed headings */
+/* Professional typing cursor */
+.typing-cursor { 
+  display: inline-block; 
+  margin-left: 2px;
+  font-weight: 400;
+  color: var(--fg);
+  animation: cursor-blink 1.2s steps(2) infinite;
+}
+@keyframes cursor-blink { 
+  0%, 50% { opacity: 1; } 
+  51%, 100% { opacity: 0; } 
+}
+
+/* Legacy caret for backward compatibility */
 .typing-caret { display: inline-block; margin-left: 6px; animation: caret-blink 1s steps(1, end) infinite; }
 @keyframes caret-blink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
 
@@ -203,6 +217,17 @@ section {
 .rw-word {
   display: inline-block;
   will-change: transform;
+}
+
+/* Marquee background text with theme support */
+.marquee-text {
+  color: rgba(255, 255, 255, 0.08);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.12);
+}
+
+.light .marquee-text {
+  color: rgba(0, 0, 0, 0.08);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.12);
 }
 
 

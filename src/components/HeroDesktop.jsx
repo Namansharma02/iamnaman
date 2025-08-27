@@ -3,19 +3,26 @@
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { motion, useMotionValue, animate } from "framer-motion"
-import RollingWord from "./RollingWord"
+import StraightMarquee from "./StraightMarquee"
 
 export default function HeroDesktop({ imgSrc = "/naman-avatar-light.png", imgAlt = "Profile" }) {
   const containerRef = useRef(null)
   const x = useMotionValue(0)
   const maxShift = 10
   
-  // States for sequential animations
-  const [greetingText, setGreetingText] = useState("")
-  const [greetingStarted, setGreetingStarted] = useState(false)
-  const [greetingDone, setGreetingDone] = useState(false)
+  // New layout states
   const [showImage, setShowImage] = useState(false)
-  const [showTagline, setShowTagline] = useState(false)
+  const [showHey, setShowHey] = useState(false)
+  const [showInnovation, setShowInnovation] = useState(false)
+  const [showMarquee, setShowMarquee] = useState(false)
+  
+  // Dynamic word typing states
+  const [currentWord, setCurrentWord] = useState("")
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isTypingWord, setIsTypingWord] = useState(false)
+  const wordIndexRef = useRef(0)
+  
+  const words = ["Automation", "Technology", "Strategy"]
 
   // Mouse parallax effect
   const onMouseMove = e => {
@@ -27,149 +34,120 @@ export default function HeroDesktop({ imgSrc = "/naman-avatar-light.png", imgAlt
   }
   const onMouseLeave = () => animate(x, 0, { type: "spring", stiffness: 140, damping: 20 })
 
-  // Animation sequence: Image first, then greeting, then tagline
+  // Animation sequence
   useEffect(() => {
-    // Start with image appearing with proper popup effect
-    setTimeout(() => setShowImage(true), 300)
-    
-    // Then start greeting after image appears
+    // Straight marquee appears first (behind everything)
+    setTimeout(() => setShowMarquee(true), 100)
+    // Image appears
+    setTimeout(() => setShowImage(true), 500)
+    // Hey appears
+    setTimeout(() => setShowHey(true), 900)
+    // Innovation text appears and starts typing
     setTimeout(() => {
-      startTyping()
-    }, 1200)
+      setShowInnovation(true)
+      startDynamicTyping()
+    }, 1300)
   }, [])
 
-  const startTyping = async () => {
-    const parts = ["Hey,", "I'm", "Naman."]
-    const charDelay = 20
-    const gapBetweenWords = 80
-    const BREAK = "\n"
-
-    setGreetingStarted(true)
-    let current = ""
+  const startDynamicTyping = async () => {
+    setIsTypingWord(true)
     
-    for (let i = 0; i < parts.length; i++) {
-      const word = parts[i]
-      for (let c = 0; c < word.length; c++) {
-        current += word[c]
-        setGreetingText(current)
-        await new Promise(r => setTimeout(r, charDelay))
+    while (true) {
+      const word = words[wordIndexRef.current]
+      
+      // Type the word
+      setIsDeleting(false)
+      for (let i = 0; i <= word.length; i++) {
+        setCurrentWord(word.substring(0, i))
+        await new Promise(resolve => setTimeout(resolve, 20))
       }
-      if (i < parts.length - 1) {
-        current += i === 1 ? BREAK : " "
-        setGreetingText(current)
-        await new Promise(r => setTimeout(r, gapBetweenWords))
+      
+      // Pause before deleting
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // Delete the word
+      setIsDeleting(true)
+      for (let i = word.length; i >= 0; i--) {
+        setCurrentWord(word.substring(0, i))
+        await new Promise(resolve => setTimeout(resolve, 20))
       }
+      
+      // Move to next word
+      wordIndexRef.current = (wordIndexRef.current + 1) % words.length
+      await new Promise(resolve => setTimeout(resolve, 300))
     }
-    setGreetingDone(true)
-    // Show tagline after greeting is done
-    setTimeout(() => setShowTagline(true), 600)
   }
 
-  const [line1, line2] = greetingText.includes("\n") ? greetingText.split("\n") : [greetingText, ""]
-
   return (
-    <div
-      ref={containerRef}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-      className="grid grid-cols-1 lg:grid-cols-3 items-center gap-6 md:gap-8 min-h-[85vh] px-4 md:px-8"
-    >
-      {/* LEFT COLUMN: Greeting with typing effect */}
-      <motion.div 
-        className="text-center lg:text-left lg:justify-self-end order-2 lg:order-1"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: greetingStarted ? 1 : 0, y: greetingStarted ? 0 : 20 }}
-        transition={{ duration: 0.5 }}
+    <>
+      {/* Full-width background marquee */}
+      {showMarquee && <StraightMarquee text="Naman Sharma" speed={0.08} direction="left" />}
+      
+      <div
+        ref={containerRef}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+        className="relative grid grid-cols-1 lg:grid-cols-3 items-end gap-8 md:gap-12 min-h-[85vh] px-8 md:px-16 lg:px-24"
       >
-        <h1 className="font-bold leading-[0.95] tracking-tight text-[clamp(48px,8vw,150px)]">
-          <span className="block whitespace-nowrap min-h-[0.95em]">
-            {line1 || "\u00A0"}
-          </span>
-          <span className="block whitespace-nowrap min-h-[0.95em]">
-            {line2 || "\u00A0"}
-            {greetingStarted && !greetingDone && greetingText && <span className="typing-caret ml-1">|</span>}
-          </span>
-        </h1>
-      </motion.div>
-
-      {/* MIDDLE COLUMN: Profile Image */}
-      <div className="justify-self-center relative z-[70] order-1 lg:order-2">
-        {showImage && (
-          <motion.div
-            style={{ x }}
-            initial={{ opacity: 0, scale: 0.3, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ 
-              type: "spring", 
-              stiffness: 200, 
-              damping: 15,
-              duration: 0.8
-            }}
-          >
-            <div className="relative w-[400px] h-[400px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px]">
-              <Image
-                src={imgSrc}
-                alt={imgAlt}
-                fill
-                sizes="(max-width: 768px) 400px, (max-width: 1024px) 600px, 700px"
-                priority
-                style={{ objectFit: "contain" }}
-                className="drop-shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
-              />
-            </div>
-          </motion.div>
-        )}
-      </div>
-
-      {/* RIGHT COLUMN: Cooking tagline */}
-      <div className="text-center lg:text-right lg:justify-self-start w-full lg:w-auto order-3 lg:order-3">
-        {showTagline && (
-          <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 200,
-            damping: 20,
-            duration: 0.6
-          }}
-        >
-          <div className="relative overflow-hidden">
-            <motion.div
-              className="flex justify-center items-stretch font-mono text-[var(--muted)]"
-              initial={{ height: 0 }}
-              animate={{ height: "auto" }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+        {/* LEFT COLUMN: Text content - bottom-left positioned */}
+        <div className="text-left space-y-6 order-2 lg:order-1 z-20 relative pb-8 lg:pb-12">
+          {/* Combined single line: Hey, I cook innovation through [dynamic] */}
+          {showHey && (
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              {/* LEFT < */}
-              <div className="flex flex-col justify-center">
-                <span className="leading-none text-[clamp(40px,9vw,200px)] opacity-40">&lt;</span>
-              </div>
-
-              {/* MIDDLE: two rows */}
-              <div className="flex flex-col items-center justify-center text-center min-w-0">
-                <div className="text-base md:text-xl lg:text-2xl leading-tight whitespace-nowrap mb-2">
-                  COOKING INNOVATION THROUGH
-                </div>
-                <div className="w-full flex justify-center">
-                  <span className="text-xl md:text-2xl lg:text-3xl flex items-center justify-center px-4 py-2 h-12 rounded-md bg-[var(--cooking-accent)] text-white font-bold w-[240px] md:w-[280px] lg:w-[320px]">
-                    <RollingWord
-                      words={["Technology", "Automation", "Strategy"]}
-                      interval={1200}
-                    />
+              <h1 className="font-mono font-bold text-[clamp(40px,8vw,80px)] leading-[1.1] tracking-tight">
+                <span className="block">Hey, </span>
+                <span className="text-[clamp(24px,5vw,48px)] font-medium block">
+                  I cook innovation through{" "}
+                </span>
+                {showInnovation && (
+                  <span className="text-[var(--cooking-accent)] font-bold text-[clamp(28px,6vw,52px)] block">
+                    {currentWord}
+                    {isTypingWord && (
+                      <span className="typing-cursor animate-pulse">|</span>
+                    )}
                   </span>
-                </div>
-              </div>
+                )}
+              </h1>
+            </motion.div>
+          )}
+        </div>
 
-              {/* RIGHT > */}
-              <div className="flex flex-col justify-center">
-                <span className="leading-none text-[clamp(40px,9vw,200px)] opacity-40">&gt;</span>
+        {/* MIDDLE & RIGHT: Large centered image */}
+        <div className="lg:col-span-2 relative flex justify-center items-center order-1 lg:order-2 min-h-[60vh] lg:min-h-[80vh] self-center">
+          {/* Profile Image - Large and Centered */}
+          {showImage && (
+            <motion.div
+              style={{ x }}
+              className="relative z-30"
+              initial={{ opacity: 0, scale: 0.3, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 200, 
+                damping: 15,
+                duration: 0.8
+              }}
+            >
+              <div className="relative w-[500px] h-[500px] md:w-[650px] md:h-[650px] lg:w-[800px] lg:h-[800px] xl:w-[900px] xl:h-[900px]">
+                <Image
+                  src={imgSrc}
+                  alt={imgAlt}
+                  fill
+                  sizes="(max-width: 768px) 500px, (max-width: 1024px) 650px, (max-width: 1280px) 800px, 900px"
+                  priority
+                  style={{ objectFit: "contain" }}
+                  className="drop-shadow-[0_30px_80px_rgba(0,0,0,0.35)]"
+                />
               </div>
             </motion.div>
-          </div>
-          </motion.div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
