@@ -1,4 +1,5 @@
 import CleanHeader from '@/components/CleanHeader'
+import SimpleMobileNav from '@/components/SimpleMobileNav'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Experience from '@/components/Experience'
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <>
       <CleanHeader />
+      <SimpleMobileNav />
       <main id="main-content" suppressHydrationWarning>
         <Hero />
         <About />

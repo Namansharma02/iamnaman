@@ -54,7 +54,6 @@
 }
 
 html {
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
@@ -163,10 +162,25 @@ body {
   @apply opacity-100 translate-x-0;
 }
 
-/* Snap scroll sections */
+/* Section styles */
 .snap-section {
-  scroll-snap-align: start;
   min-height: 100vh;
   box-sizing: border-box;
-  scroll-margin-top: 4rem; /* Better than padding-top for scroll snap */
+  scroll-margin-top: 4rem; /* Offset for fixed header */
+}
+
+/* Force navigation overlay on mobile */
+@media (max-width: 1023px) {
+  body {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+  
+  .mobile-nav-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+  }
 }
