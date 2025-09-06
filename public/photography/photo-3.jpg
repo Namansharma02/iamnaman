@@ -1,0 +1,9 @@
+<svg width="800" height="1200" viewBox="0 0 800 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="800" height="1200" fill="#0c4a6e"/>
+<rect x="100" y="100" width="600" height="800" rx="30" fill="#0369a1"/>
+<rect x="150" y="200" width="500" height="300" rx="20" fill="#0284c7"/>
+<circle cx="400" cy="350" r="100" fill="#0ea5e9"/>
+<circle cx="400" cy="350" r="60" fill="#38bdf8"/>
+<rect x="200" y="600" width="400" height="200" rx="15" fill="#075985"/>
+<text x="400" y="1150" font-family="Arial, sans-serif" font-size="28" fill="#7dd3fc" text-anchor="middle">Abstract Art</text>
+</svg>

@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Light Theme */
+  --color-background: 255 255 255;
+  --color-surface: 250 250 250;
+  --color-border: 229 231 235;
+  --color-text: 17 24 39;
+  --color-subtle: 107 114 128;
+  --color-brand: 59 130 246;
+  --color-brand-muted: 147 197 253;
+  --color-brand-on: 255 255 255;
+  --color-success: 34 197 94;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme */
+  --color-background: 9 9 11;
+  --color-surface: 24 24 27;
+  --color-border: 39 39 42;
+  --color-text: 244 244 245;
+  --color-subtle: 161 161 170;
+  --color-brand: 96 165 250;
+  --color-brand-muted: 59 130 246;
+  --color-brand-on: 255 255 255;
+  --color-success: 34 197 94;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+}
+
+[data-theme="green"] {
+  /* Accent Green Theme */
+  --color-background: 248 250 252;
+  --color-surface: 241 245 249;
+  --color-border: 203 213 225;
+  --color-text: 15 23 42;
+  --color-subtle: 100 116 139;
+  --color-brand: 34 197 94;
+  --color-brand-muted: 134 239 172;
+  --color-brand-on: 255 255 255;
+  --color-success: 34 197 94;
+  --color-warning: 245 158 11;
+  --color-error: 239 68 68;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text));
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom focus rings */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-background;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  @apply absolute left-4 top-4 z-50 bg-brand text-brandOn px-4 py-2 rounded-md font-medium transform -translate-y-16 focus:translate-y-0 transition-transform;
+}
+
+/* Marquee animation */
+.marquee {
+  @apply whitespace-nowrap;
+  animation: marquee 20s linear infinite;
+}
+
+/* Watermark text */
+.watermark-text {
+  @apply absolute inset-0 flex items-center justify-center pointer-events-none select-none;
+  font-size: clamp(8rem, 20vw, 24rem);
+  font-weight: 900;
+  color: rgb(var(--color-text) / 0.03);
+  letter-spacing: -0.05em;
+  z-index: -1;
+}
+
+/* Smooth reveal animations */
+.reveal {
+  @apply opacity-0 translate-y-8;
+  transition: all 0.6s ease-out;
+}
+
+.reveal.in-view {
+  @apply opacity-100 translate-y-0;
+}
+
+/* Link hover effects */
+.link-hover {
+  @apply relative overflow-hidden;
+}
+
+.link-hover::after {
+  @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-brand transition-all duration-300;
+  content: '';
+  transform: translateX(-50%);
+}
+
+.link-hover:hover::after {
+  @apply w-full;
+}
+
+/* Button hover effects */
+.button-hover {
+  @apply transition-all duration-200 active:scale-95;
+}
+
+.button-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgb(var(--color-text) / 0.1);
+}
+
+/* Icon hover effects */
+.icon-hover {
+  @apply transition-transform duration-200;
+}
+
+.icon-hover:hover {
+  transform: rotate(5deg);
+}
+
+/* Sticky rail styles */
+.sticky-rail {
+  @apply sticky top-32;
+}
+
+/* Project card styles */
+.project-card {
+  @apply opacity-0 translate-x-8;
+  transition: all 0.6s ease-out;
+}
+
+.project-card.visible {
+  @apply opacity-100 translate-x-0;
+}
+
+/* Snap scroll sections */
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  box-sizing: border-box;
+  scroll-margin-top: 4rem; /* Better than padding-top for scroll snap */
+}
