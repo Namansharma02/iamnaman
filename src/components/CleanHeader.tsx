@@ -101,7 +101,13 @@ export default function CleanHeader() {
       {/* Desktop Header Only */}
       <header 
         className={`hidden lg:block fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 shadow-none ${
-          scrolled ? (currentTheme === 'dark' ? 'bg-white shadow-lg' : 'bg-black shadow-lg') : 'bg-transparent'
+          scrolled 
+            ? currentTheme === 'dark' 
+              ? 'bg-white shadow-lg' 
+              : currentTheme === 'green'
+                ? 'bg-brand shadow-lg'
+                : 'bg-black shadow-lg'
+            : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -135,8 +141,14 @@ export default function CleanHeader() {
                   onMouseEnter={() => setHoveredItem(item.label)}
                   onMouseLeave={() => setHoveredItem(null)}
                   className={`relative lg:transition-colors lg:duration-200 text-lg font-semibold focus:outline-none px-2 py-1 ${
-                    currentTheme === 'dark' ? 'text-black lg:text-text' : 'text-white lg:text-text'
-                  } ${scrolled ? 'lg:text-background' : ''} hover:text-brand`}
+                    scrolled 
+                      ? currentTheme === 'dark' 
+                        ? 'text-black'
+                        : currentTheme === 'green'
+                          ? 'text-black'
+                          : 'text-white'
+                      : (currentTheme === 'dark' ? 'text-white' : 'text-black')
+                  } hover:text-brand`}
                 >
                   <motion.div
                     className="flex items-center"
@@ -189,10 +201,16 @@ export default function CleanHeader() {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
                 className={`p-2 hover:text-brand transition-colors rounded-full focus:outline-none ${
-                  currentTheme === 'dark' 
-                    ? 'text-black bg-black/10 hover:bg-black/20 border border-black/20 hover:border-brand/50' 
-                    : 'text-white bg-white/10 hover:bg-white/20 border border-white/20 hover:border-brand/50'
-                } ${scrolled ? '' : 'lg:text-text lg:bg-surface/50 lg:hover:bg-surface/80 lg:border-border/50'}`}
+                  scrolled
+                    ? currentTheme === 'dark' 
+                        ? 'text-black bg-black/10 hover:bg-black/20 border border-black/20'
+                        : currentTheme === 'green'
+                          ? 'text-black bg-black/10 hover:bg-black/20 border border-black/20'
+                          : 'text-white bg-white/10 hover:bg-white/20 border border-white/20'
+                    : (currentTheme === 'dark' 
+                        ? 'text-white bg-white/10 hover:bg-white/20 border border-white/20'
+                        : 'text-black bg-black/10 hover:bg-black/20 border border-black/20')
+                } hover:border-brand/50`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Change theme"

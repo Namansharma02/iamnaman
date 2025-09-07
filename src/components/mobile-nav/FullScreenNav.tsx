@@ -74,7 +74,7 @@ export default function FullScreenNav() {
         animate={{ y: 0, opacity: 1 }}
         className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-sm"
         style={{
-          position: 'fixed !important',
+          position: 'fixed',
           zIndex: 9999
         }}
       >
