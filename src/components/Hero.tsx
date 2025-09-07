@@ -114,8 +114,8 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="relative z-10 w-full max-w-none mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 xl:gap-32 items-center min-h-screen max-w-7xl mx-auto w-full">
+      <div className="relative z-10 w-full max-w-full mx-auto px-4 sm:px-6 lg:px-12 xl:px-20 overflow-hidden">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-20 xl:gap-32 items-center min-h-screen max-w-7xl mx-auto w-full max-w-full">
           {/* Mobile Avatar - Top */}
           <div className="lg:hidden flex justify-center mb-8 pt-32">
             <motion.div
@@ -130,24 +130,8 @@ export default function Hero() {
                   alt="Naman Sharma"
                   className="w-full h-full rounded-full object-cover border-4 border-brand shadow-2xl"
                 />
-                {/* Enhanced glow effect */}
-                <div className="absolute inset-0 rounded-full bg-brand/30 blur-xl -z-10 animate-pulse"></div>
-                
-                {/* Animated border ring */}
-                <motion.div
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 rounded-full border-2 border-dashed border-brand/30 -m-2"
-                />
-                
-                {/* Floating dot */}
-                <motion.div
-                  initial={{ y: 0 }}
-                  animate={{ y: [-8, 8, -8] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-4 -right-4 w-3 h-3 bg-brand rounded-full shadow-lg"
-                />
+                {/* Simple glow effect */}
+                <div className="absolute inset-0 rounded-full bg-brand/20 blur-lg -z-10"></div>
               </div>
             </motion.div>
           </div>
@@ -255,7 +239,7 @@ export default function Hero() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               className="relative flex justify-center lg:justify-end max-w-full"
             >
-              <div className="relative w-[28rem] h-[28rem] xl:w-[32rem] xl:h-[32rem] flex-shrink-0 max-w-full">
+              <div className="relative w-[30rem] h-[30rem] lg:w-[34rem] lg:h-[34rem] xl:w-[38rem] xl:h-[38rem] flex-shrink-0 max-w-full">
                 <img
                   src={avatarSrc}
                   alt="Naman Sharma"
@@ -269,7 +253,8 @@ export default function Hero() {
                   initial={{ rotate: 0 }}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 rounded-full border-2 border-dashed border-brand/30 -m-4"
+                  className="absolute -inset-4 rounded-full border-2 border-dashed border-brand/30 aspect-square"
+                  style={{ aspectRatio: '1 / 1' }}
                 />
                 
                 {/* Floating dots */}

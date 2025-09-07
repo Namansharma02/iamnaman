@@ -65,6 +65,26 @@
   max-width: none;
 }
 
+/* Specific mobile constraints */
+@media (max-width: 1023px) {
+  * {
+    max-width: 100vw !important;
+  }
+  
+  .watermark-line,
+  .animate-marquee-left,
+  .animate-marquee-right {
+    max-width: none !important;
+  }
+  
+  /* Ensure no element causes horizontal scroll */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 20px; /* Minimal spacing for header positioning */

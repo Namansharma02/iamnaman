@@ -16,7 +16,7 @@ export default function Home() {
     <>
       <CleanHeader />
       <FixedFullScreenNav />
-      <main id="main-content" suppressHydrationWarning>
+      <main id="main-content" className="w-full max-w-full overflow-x-hidden" suppressHydrationWarning>
         <Hero />
         <About />
         <Experience />
