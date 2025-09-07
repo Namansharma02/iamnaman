@@ -35,6 +35,7 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', 'monospace'],
       },
       letterSpacing: {
         'display': '-0.02em',
