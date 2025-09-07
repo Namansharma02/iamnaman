@@ -76,8 +76,19 @@ export default function FixedFullScreenNav() {
     const sectionId = href.replace('#', '')
     const element = document.getElementById(sectionId)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+      // Close menu immediately to show scrolling animation
       setIsOpen(false)
+      
+      // Small delay to allow menu close animation, then scroll
+      setTimeout(() => {
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+        const offsetPosition = elementPosition - 20 // Minimal mobile offset
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }, 50)
     }
   }
 
@@ -146,13 +157,28 @@ export default function FixedFullScreenNav() {
           #main-content {
             padding-top: 0;
           }
+          
+          /* Override section padding for better scroll positioning */
+          .snap-section {
+            scroll-margin-top: 20px;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .snap-section {
+            scroll-margin-top: 20px;
+          }
         }
       `}</style>
 
       {/* Full Screen Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <div
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             style={{
               position: 'fixed',
               top: 0,
@@ -206,18 +232,29 @@ export default function FixedFullScreenNav() {
               <motion.div
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8 }}
+                exit={{ y: -30, opacity: 0 }}
+                transition={{ 
+                  delay: isOpen ? 0.8 : 0,
+                  duration: isOpen ? 0.6 : 0.3
+                }}
                 className="border-t border-border pt-8 mb-8"
               >
                 <h3 className="text-sm font-medium text-subtle uppercase tracking-wider mb-4">
                   Theme
                 </h3>
                 <div className="flex gap-3">
-                  {themes.map((t) => {
+                  {themes.map((t, index) => {
                     const Icon = t.icon
                     return (
                       <motion.button
                         key={t.id}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ 
+                          delay: isOpen ? 0.9 + (index * 0.1) : 0,
+                          duration: 0.3
+                        }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleThemeChange(t.id)}
@@ -236,7 +273,7 @@ export default function FixedFullScreenNav() {
               </motion.div>
 
             </div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

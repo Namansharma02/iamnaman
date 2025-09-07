@@ -67,7 +67,13 @@ export default function CleanHeader() {
     if (href.startsWith('#')) {
       const element = document.querySelector(href)
       if (element) {
-        element.scrollIntoView({ behavior: 'auto' })
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+        const offsetPosition = elementPosition - 20 // Minimal desktop offset
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
       }
     } else {
       window.open(href, '_blank')
@@ -75,7 +81,7 @@ export default function CleanHeader() {
   }
 
   const scrollToHero = () => {
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const currentTheme = mounted ? theme : 'light'
@@ -143,12 +149,16 @@ export default function CleanHeader() {
                   className={`relative lg:transition-colors lg:duration-200 text-lg font-semibold focus:outline-none px-2 py-1 ${
                     scrolled 
                       ? currentTheme === 'dark' 
-                        ? 'text-black'
+                        ? 'text-black hover:text-blue-600'
                         : currentTheme === 'green'
-                          ? 'text-black'
-                          : 'text-white'
-                      : (currentTheme === 'dark' ? 'text-white' : 'text-black')
-                  } hover:text-brand`}
+                          ? 'text-black hover:text-black'
+                          : 'text-white hover:text-blue-600'
+                      : currentTheme === 'dark' 
+                        ? 'text-white hover:text-brand'
+                        : currentTheme === 'green'
+                          ? 'text-black hover:text-green-600'
+                          : 'text-black hover:text-blue-600'
+                  }`}
                 >
                   <motion.div
                     className="flex items-center"
@@ -170,7 +180,19 @@ export default function CleanHeader() {
                               animate={{ opacity: 1, x: 0 }}
                               exit={{ opacity: 0, x: -5 }}
                               transition={{ duration: 0.15 }}
-                              className="absolute -left-4 text-brand font-mono text-lg"
+                              className={`absolute -left-2 font-mono text-lg ${
+                                scrolled
+                                  ? currentTheme === 'dark'
+                                    ? 'text-blue-600'
+                                    : currentTheme === 'green'
+                                      ? 'text-black'
+                                      : 'text-blue-600'
+                                  : currentTheme === 'dark'
+                                    ? 'text-brand'
+                                    : currentTheme === 'green'
+                                      ? 'text-green-600'
+                                      : 'text-blue-600'
+                              }`}
                             >
                               &lt;
                             </motion.span>
@@ -179,7 +201,19 @@ export default function CleanHeader() {
                               animate={{ opacity: 1, x: 0 }}
                               exit={{ opacity: 0, x: 5 }}
                               transition={{ duration: 0.15 }}
-                              className="absolute -right-4 text-brand font-mono text-lg"
+                              className={`absolute -right-2 font-mono text-lg ${
+                                scrolled
+                                  ? currentTheme === 'dark'
+                                    ? 'text-blue-600'
+                                    : currentTheme === 'green'
+                                      ? 'text-black'
+                                      : 'text-blue-600'
+                                  : currentTheme === 'dark'
+                                    ? 'text-brand'
+                                    : currentTheme === 'green'
+                                      ? 'text-green-600'
+                                      : 'text-blue-600'
+                              }`}
                             >
                               &gt;
                             </motion.span>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { about } from '@/lib/content'
+import ScrollFloat from '@/components/animations/ScrollFloat'
 
 export default function About() {
   const ref = useRef<HTMLElement>(null)
@@ -18,15 +19,10 @@ export default function About() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-16 text-center"
-        >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-text mb-4 tracking-display">
+        <div className="mb-16 text-center">
+          <ScrollFloat containerClassName="mb-4">
             {about.headline}
-          </h2>
+          </ScrollFloat>
           
           {/* Decorative Marquee Line */}
           <div className="relative h-1 bg-border rounded-full overflow-hidden mt-8 max-w-xs mx-auto">
@@ -37,7 +33,7 @@ export default function About() {
               className="absolute inset-0 bg-gradient-to-r from-transparent via-brand to-transparent rounded-full"
             />
           </div>
-        </motion.div>
+        </div>
 
         {/* Content Grid */}
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">

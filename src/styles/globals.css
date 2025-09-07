@@ -55,6 +55,18 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 20px; /* Minimal spacing for header positioning */
+}
+
+/* Improve scroll smoothness */
+* {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 1023px) {
+  html {
+    scroll-padding-top: 20px; /* Minimal mobile offset */
+  }
 }
 
 body {
@@ -98,9 +110,56 @@ body {
   @apply absolute inset-0 flex items-center justify-center pointer-events-none select-none;
   font-size: clamp(8rem, 20vw, 24rem);
   font-weight: 900;
-  color: rgb(var(--color-text) / 0.03);
+  color: rgb(var(--color-text) / 0.02);
   letter-spacing: -0.05em;
   z-index: -1;
+}
+
+/* Animated watermark lines */
+.watermark-line {
+  font-size: clamp(4rem, 12vw, 16rem);
+  font-weight: 900;
+  color: rgb(var(--color-text) / 0.02);
+  letter-spacing: -0.05em;
+  display: inline-block;
+}
+
+/* Continuous marquee animations */
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 20s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 20s linear infinite;
+}
+
+/* Faster animations for mobile */
+@media (max-width: 1023px) {
+  .animate-marquee-left {
+    animation: marquee-left 10s linear infinite;
+  }
+
+  .animate-marquee-right {
+    animation: marquee-right 10s linear infinite;
+  }
 }
 
 /* Smooth reveal animations */
@@ -166,7 +225,33 @@ body {
 .snap-section {
   min-height: 100vh;
   box-sizing: border-box;
-  scroll-margin-top: 4rem; /* Offset for fixed header */
+  scroll-margin-top: 1rem; /* Minimal offset for header positioning */
+}
+
+/* Reduce excessive section padding */
+.snap-section.py-24,
+.snap-section.sm\\:py-32,
+.snap-section.lg\\:py-40 {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+@media (min-width: 640px) {
+  .snap-section.py-24,
+  .snap-section.sm\\:py-32,
+  .snap-section.lg\\:py-40 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .snap-section.py-24,
+  .snap-section.sm\\:py-32,
+  .snap-section.lg\\:py-40 {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
 }
 
 /* Force navigation overlay on mobile */

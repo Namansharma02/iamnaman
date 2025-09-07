@@ -19,7 +19,7 @@ export default function RootLayout({
       <head>
         <title>Naman Sharma - Automation & Analytics Lead</title>
         <meta name="description" content="Automation & Analytics Lead at JPMorgan Chase, specializing in Python, Tableau, and strategic automation solutions." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
         
         {/* Open Graph */}

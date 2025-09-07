@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { testimonials } from '@/lib/content'
+import ScrollFloat from '@/components/animations/ScrollFloat'
 
 export default function Testimonials() {
   const ref = useRef<HTMLElement>(null)
@@ -15,19 +16,19 @@ export default function Testimonials() {
       className="snap-section py-24 sm:py-32 lg:py-40 relative overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-center mb-20"
-        >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-text mb-6 tracking-display">
+        <div className="text-center mb-20">
+          <ScrollFloat containerClassName="mb-6">
             What People Say
-          </h2>
-          <p className="text-xl text-subtle max-w-3xl mx-auto leading-relaxed">
+          </ScrollFloat>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            className="text-xl text-subtle max-w-3xl mx-auto leading-relaxed"
+          >
             Feedback from colleagues, leaders, and collaborators who have experienced my work firsthand.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           {testimonials.map((testimonial, index) => (

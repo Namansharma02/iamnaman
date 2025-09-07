@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Code2, TrendingUp, Database, Cpu, BarChart3, Calculator } from 'lucide-react'
 import { skills } from '@/lib/content'
+import ScrollFloat from '@/components/animations/ScrollFloat'
 
 const skillCategories = [
   {
@@ -139,19 +140,19 @@ export default function Skills() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-center mb-20"
-        >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-text mb-6 tracking-display">
+        <div className="text-center mb-20">
+          <ScrollFloat containerClassName="mb-6">
             Skills & Expertise
-          </h2>
-          <p className="text-xl text-subtle max-w-3xl mx-auto leading-relaxed">
+          </ScrollFloat>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            className="text-xl text-subtle max-w-3xl mx-auto leading-relaxed"
+          >
             A comprehensive toolkit for building automation solutions, analyzing complex data, and leading technical teams.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* Main Skills Grid */}
         <div className="grid lg:grid-cols-2 gap-8 mb-16">

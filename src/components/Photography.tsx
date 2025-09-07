@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { Camera, Gamepad2, Film, Music, Award, ExternalLink } from 'lucide-react'
 import { photography } from '@/lib/content'
+import ScrollFloat from '@/components/animations/ScrollFloat'
 
 const passionIcons = {
   'Photography': Camera,
@@ -172,19 +173,19 @@ export default function Photography() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-center mb-20"
-        >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-text mb-6 tracking-display">
+        <div className="text-center mb-20">
+          <ScrollFloat containerClassName="mb-6">
             {photography.headline}
-          </h2>
-          <p className="text-xl text-subtle max-w-3xl mx-auto leading-relaxed">
+          </ScrollFloat>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+            className="text-xl text-subtle max-w-3xl mx-auto leading-relaxed"
+          >
             Beyond technology, I find inspiration in creative pursuits that fuel my curiosity and keep me connected to the world.
-          </p>
-        </motion.div>
+          </motion.p>
+        </div>
 
         {/* Featured Photography Gallery */}
         <motion.div
