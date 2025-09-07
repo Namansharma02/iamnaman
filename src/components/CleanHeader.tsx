@@ -129,9 +129,9 @@ export default function CleanHeader() {
               aria-label="Go to homepage"
             >
               <img
-                src="/naman-avatar-light.png"
+                src={mounted && theme === 'dark' ? '/naman-avatar-dark.png' : '/naman-avatar-light.png'}
                 alt="Naman Sharma"
-                className="h-8 w-8 rounded-full object-cover hover:scale-105 transition-transform duration-200"
+                className="h-12 w-12 rounded-full object-cover hover:scale-105 transition-transform duration-200"
               />
             </motion.button>
 

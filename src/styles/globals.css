@@ -53,9 +53,23 @@
   box-sizing: border-box;
 }
 
+/* Prevent horizontal overflow on mobile */
+* {
+  max-width: 100%;
+}
+
+/* Allow specific elements to exceed if needed */
+.watermark-line,
+.animate-marquee-left,
+.animate-marquee-right {
+  max-width: none;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 20px; /* Minimal spacing for header positioning */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  width: 100%;
 }
 
 /* Improve scroll smoothness */
@@ -73,6 +87,9 @@ body {
   background-color: rgb(var(--color-background));
   color: rgb(var(--color-text));
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  width: 100%;
+  max-width: 100vw; /* Ensure body doesn't exceed viewport width */
 }
 
 @media (prefers-reduced-motion: reduce) {

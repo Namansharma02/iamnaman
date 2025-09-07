@@ -123,13 +123,31 @@ export default function FixedFullScreenNav() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-3"
+            className="flex items-center gap-4"
           >
-            <img
-              src="/naman-avatar-light.png"
-              alt="Naman"
-              className="w-10 h-10 rounded-full border-2 border-brand"
-            />
+            <div className="relative">
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="relative"
+              >
+                <img
+                  src={mounted && theme === 'dark' ? '/naman-avatar-dark.png' : '/naman-avatar-light.png'}
+                  alt="Naman"
+                  className="w-12 h-12 rounded-full border-2 border-brand shadow-md object-cover"
+                />
+                {/* Subtle glow ring */}
+                <div className="absolute inset-0 rounded-full bg-brand/10 blur-sm -z-10"></div>
+                {/* Animated border ring */}
+                <motion.div
+                  initial={{ rotate: 0, scale: 1 }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 rounded-full border border-dashed border-brand/20 -m-1"
+                />
+              </motion.div>
+            </div>
             <div className="text-left">
               <h1 className="text-lg font-bold text-text">Naman</h1>
               <p className="text-xs text-subtle">Portfolio</p>

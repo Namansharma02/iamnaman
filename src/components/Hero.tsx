@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronDown, ArrowRight, Linkedin, Github } from 'lucide-react'
 import { personalInfo } from '@/lib/content'
@@ -18,6 +19,40 @@ const socialLinks = [
 ]
 
 export default function Hero() {
+  const [theme, setTheme] = useState('light')
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    const savedTheme = localStorage.getItem('theme') || 'light'
+    setTheme(savedTheme)
+    
+    // Listen for theme changes via MutationObserver (more reliable)
+    const observer = new MutationObserver(() => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 
+                          localStorage.getItem('theme') || 'light'
+      setTheme(currentTheme)
+    })
+    
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    })
+    
+    // Also listen for localStorage changes
+    const handleStorageChange = () => {
+      const currentTheme = localStorage.getItem('theme') || 'light'
+      setTheme(currentTheme)
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [])
+
   const scrollToAbout = () => {
     const aboutSection = document.getElementById('about')
     aboutSection?.scrollIntoView({ behavior: 'auto' })
@@ -28,8 +63,10 @@ export default function Hero() {
     projectsSection?.scrollIntoView({ behavior: 'auto' })
   }
 
+  const avatarSrc = mounted && theme === 'dark' ? '/naman-avatar-dark.png' : '/naman-avatar-light.png'
+
   return (
-    <section id="hero" className="snap-section relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="snap-section relative min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full">
       {/* Background Watermark Lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" suppressHydrationWarning>
         {/* Desktop: 4 lines with better spacing */}
@@ -77,14 +114,53 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Main Headline */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-8"
-        >
+      <div className="relative z-10 w-full max-w-none mx-auto px-4 sm:px-6 lg:px-12 xl:px-20">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 xl:gap-32 items-center min-h-screen max-w-7xl mx-auto w-full">
+          {/* Mobile Avatar - Top */}
+          <div className="lg:hidden flex justify-center mb-8 pt-32">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="relative"
+            >
+              <div className="relative w-48 h-48 sm:w-56 sm:h-56">
+                <img
+                  src={avatarSrc}
+                  alt="Naman Sharma"
+                  className="w-full h-full rounded-full object-cover border-4 border-brand shadow-2xl"
+                />
+                {/* Enhanced glow effect */}
+                <div className="absolute inset-0 rounded-full bg-brand/30 blur-xl -z-10 animate-pulse"></div>
+                
+                {/* Animated border ring */}
+                <motion.div
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 rounded-full border-2 border-dashed border-brand/30 -m-2"
+                />
+                
+                {/* Floating dot */}
+                <motion.div
+                  initial={{ y: 0 }}
+                  animate={{ y: [-8, 8, -8] }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-4 -right-4 w-3 h-3 bg-brand rounded-full shadow-lg"
+                />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Text Content */}
+          <div className="text-center lg:text-left lg:pr-8">
+            {/* Main Headline */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="mb-8"
+            >
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-display leading-none mb-6">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -169,7 +245,50 @@ export default function Hero() {
             Learn More
           </motion.button>
         </motion.div>
+          </div>
 
+          {/* Desktop Avatar - Right Side */}
+          <div className="hidden lg:block lg:pl-8 max-w-full">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: 30 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="relative flex justify-center lg:justify-end max-w-full"
+            >
+              <div className="relative w-[28rem] h-[28rem] xl:w-[32rem] xl:h-[32rem] flex-shrink-0 max-w-full">
+                <img
+                  src={avatarSrc}
+                  alt="Naman Sharma"
+                  className="w-full h-full rounded-full object-cover border-4 border-brand shadow-2xl aspect-square"
+                />
+                {/* Glow effect */}
+                <div className="absolute inset-0 rounded-full bg-brand/30 blur-2xl -z-10 animate-pulse"></div>
+                
+                {/* Decorative elements */}
+                <motion.div
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 rounded-full border-2 border-dashed border-brand/30 -m-4"
+                />
+                
+                {/* Floating dots */}
+                <motion.div
+                  initial={{ y: 0 }}
+                  animate={{ y: [-10, 10, -10] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-6 -right-6 w-4 h-4 bg-brand rounded-full shadow-lg"
+                />
+                <motion.div
+                  initial={{ y: 0 }}
+                  animate={{ y: [10, -10, 10] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute -bottom-4 -left-4 w-3 h-3 bg-brand/60 rounded-full shadow-md"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </div>
 
       {/* Gradient Overlay */}
