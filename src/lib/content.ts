@@ -12,7 +12,7 @@ export const about = {
   headline: "About Me",
   content: `I was born curious. From painting digital art in Photoshop to writing my first lines of code, creativity has always been my compass. Today, I lead automation at JPMorgan Chase, where I transform complex challenges in trading portals and banking systems into solutions that feel almost effortless.
 
-I don't just test or build, I innovate. I thrive in spaces that many call out of scope, turning them into possibilities and realities. My main tools are Python, Java, UiPath, Alteryx, Tableau and SQL, but my real craft is weaving them together to solve high stakes problems at scale. These challenges push me to think sharper, act faster, and deliver smarter solutions.
+I don't just build or test, I innovate. I thrive in spaces that many call out of scope, turning them into possibilities and realities. My main tools are Python, Java, UiPath, Alteryx, Tableau and SQL, but my real craft is weaving them together to solve high stakes problems at scale. These challenges push me to think sharper, act faster, and deliver smarter solutions.
 
 Beyond work, I'm a photographer whose lens has been featured in Lonely Planet Magazine. I'm a gamer, a movie lover who once dreamed of directing films, and a lifelong learner currently pursuing an Executive MBA at SPJIMR, India.
 
@@ -142,9 +142,9 @@ export const projects = [
     role: "Lead Developer",
     summary: "Robust web automation framework built with Playwright, providing stable regression coverage and reducing cycles across multiple banking applications.",
     timeframe: "2023 – Present",
-    discipline: "Test Automation",
+    discipline: "Automation",
     tools: ["Playwright", "TypeScript", "CI/CD"],
-    industryTags: ["Testing", "DevOps", "Banking"],
+    industryTags: ["DevOps", "Banking"],
     image: "/projects/automation-framework.jpg",
     link: "#"
   }

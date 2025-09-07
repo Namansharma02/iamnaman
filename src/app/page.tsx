@@ -9,12 +9,13 @@ import Photography from '@/components/Photography'
 import Testimonials from '@/components/Testimonials'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
+import { BottomTabNav, SlideDrawerNav, FloatingActionNav, FullScreenNav, FixedFullScreenNav, DotsNav }  from '@/components/mobile-nav'
 
 export default function Home() {
   return (
     <>
       <CleanHeader />
-      <SimpleMobileNav />
+      <FixedFullScreenNav />
       <main id="main-content" suppressHydrationWarning>
         <Hero />
         <About />
