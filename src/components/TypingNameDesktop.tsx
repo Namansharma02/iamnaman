@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import DecryptedText from './DecryptedText'
 
 interface TypingNameDesktopProps {
   className?: string
@@ -11,7 +12,6 @@ export default function TypingNameDesktop({ className = '' }: TypingNameDesktopP
   const [displayText, setDisplayText] = useState('')
   const [showCursor, setShowCursor] = useState(true)
   const [currentPhase, setCurrentPhase] = useState(0)
-  const [isSelected, setIsSelected] = useState(false)
   const [theme, setTheme] = useState('light')
   
   const fullText = "Hello, I am Naman Sharma"
@@ -54,28 +54,19 @@ export default function TypingNameDesktop({ className = '' }: TypingNameDesktopP
       typeNextChar()
     } 
     else if (currentPhase === 1) {
-      const textToRemove = "Hello, I am "
-      let removeIndex = textToRemove.length
-      
-      const removeNextChar = () => {
-        if (removeIndex > 0) {
-          const currentText = textToRemove.slice(0, removeIndex - 1) + finalText
-          setDisplayText(currentText)
-          removeIndex--
-          timeoutId = setTimeout(removeNextChar, 50)
+      // Backspace deletion effect
+      let deleteIndex = fullText.length
+      const deleteNextChar = () => {
+        if (deleteIndex > 0) {
+          setDisplayText(fullText.slice(0, deleteIndex - 1))
+          deleteIndex--
+          timeoutId = setTimeout(deleteNextChar, 30)
         } else {
-          setDisplayText(finalText)
-          timeoutId = setTimeout(() => setCurrentPhase(2), 500)
+          setDisplayText('')
+          timeoutId = setTimeout(() => setCurrentPhase(2), 300)
         }
       }
-      removeNextChar()
-    } 
-    else if (currentPhase === 2) {
-      setIsSelected(true)
-      timeoutId = setTimeout(() => {
-        setIsSelected(false)
-        setCurrentPhase(3)
-      }, 800)
+      deleteNextChar()
     }
     
     return () => {
@@ -94,42 +85,47 @@ export default function TypingNameDesktop({ className = '' }: TypingNameDesktopP
     return () => clearInterval(cursorInterval)
   }, [currentPhase])
 
-  if (currentPhase === 3) {
-    // Final formatted text - no cursor space for desktop
+  if (currentPhase === 2) {
+    // Final stage with DecryptedText effect - fixed font size
+    const getSharmaColor = () => {
+      if (theme === 'green') return 'text-green-500'
+      return 'text-blue-500' // blue for both light and dark themes
+    }
+
     return (
       <div className={`font-mono ${className}`}>
-        <motion.span 
-          className="inline-block"
-          initial={{ scale: 1 }}
-          animate={{ scale: 1.3 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+        <div
+          className="inline-block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[8rem] 2xl:text-[9rem] font-black tracking-display leading-none"
           style={{ transformOrigin: 'left center' }}
         >
-          <motion.span
-            initial={{ fontWeight: 'inherit' }}
-            animate={{ fontWeight: 'bold' }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="inline-block"
-          >
-            Naman&nbsp;
-          </motion.span><motion.span
-            initial={{ color: 'inherit', fontWeight: 'inherit' }}
-            animate={{ color: theme === 'green' ? '#22C55E' : '#3B82F6', fontWeight: 'bold' }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-            className="inline-block"
-          >
-            Sharma
-          </motion.span>
-        </motion.span>
+          <DecryptedText
+            text="Naman "
+            speed={80}
+            maxIterations={15}
+            sequential={true}
+            revealDirection="start"
+            animateOn="view"
+            className="text-text font-bold"
+            encryptedClassName="opacity-70"
+          />
+          <DecryptedText
+            text="Sharma"
+            speed={80}
+            maxIterations={15}
+            sequential={true}
+            revealDirection="start"
+            animateOn="view"
+            className={`font-bold ${getSharmaColor()}`}
+            encryptedClassName="opacity-70"
+          />
+        </div>
       </div>
     )
   }
 
   return (
     <div className={`font-mono ${className}`}>
-      <span className={`transition-all duration-300 ${
-        isSelected ? (theme === 'green' ? 'bg-green-500 text-white px-2 py-1 rounded' : 'bg-blue-500 text-white px-2 py-1 rounded') : ''
-      }`}>
+      <span>
         {displayText}
       </span>
       <span 
