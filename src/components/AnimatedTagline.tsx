@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface AnimatedTaglineProps {
@@ -15,7 +15,7 @@ export default function AnimatedTagline({ className = '', delay = 0 }: AnimatedT
   const [showCursor, setShowCursor] = useState(false)
   
   const baseText = "Cooking innovation through "
-  const words = ["Technology", "Automation", "Strategy"]
+  const words = useMemo(() => ["Technology", "Automation", "Strategy"], [])
   
   useEffect(() => {
     // Wait for delay before starting
@@ -80,7 +80,7 @@ export default function AnimatedTagline({ className = '', delay = 0 }: AnimatedT
       }
       removeChar()
     }
-  }, [currentPhase, currentWordIndex, delay])
+  }, [currentPhase, currentWordIndex, delay, words])
   
   // Cursor blinking
   useEffect(() => {

@@ -72,7 +72,7 @@ export default function TypingNameMobile({ className = '' }: TypingNameMobilePro
     return () => {
       if (timeoutId) clearTimeout(timeoutId)
     }
-  }, [currentPhase])
+  }, [currentPhase, fullText])
   
   // Cursor blinking - optimized
   useEffect(() => {
