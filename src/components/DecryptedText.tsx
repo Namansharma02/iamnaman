@@ -15,6 +15,7 @@ interface DecryptedTextProps extends HTMLMotionProps<'span'> {
   encryptedClassName?: string;
   parentClassName?: string;
   animateOn?: 'view' | 'hover' | 'both';
+  loopInterval?: number; // New prop for 5-second loop
 }
 
 export default function DecryptedText({
@@ -29,6 +30,7 @@ export default function DecryptedText({
   parentClassName = '',
   encryptedClassName = '',
   animateOn = 'hover',
+  loopInterval = 0, // 0 means no loop, 5000 means 5 seconds
   ...props
 }: DecryptedTextProps) {
   const [displayText, setDisplayText] = useState<string>(text);
@@ -174,6 +176,21 @@ export default function DecryptedText({
       if (currentRef) observer.unobserve(currentRef);
     };
   }, [animateOn, hasAnimated]);
+
+  // New useEffect for looping functionality
+  useEffect(() => {
+    if (loopInterval <= 0 || !hasAnimated) return;
+
+    const loopTimer = setInterval(() => {
+      setIsHovering(true);
+      // Reset after animation completes
+      setTimeout(() => {
+        setIsHovering(false);
+      }, sequential ? text.length * speed + 500 : maxIterations * speed + 500);
+    }, loopInterval);
+
+    return () => clearInterval(loopTimer);
+  }, [loopInterval, hasAnimated, sequential, text.length, speed, maxIterations]);
 
   const hoverProps =
     animateOn === 'hover' || animateOn === 'both'

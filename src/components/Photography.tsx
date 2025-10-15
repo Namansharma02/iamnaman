@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Camera, Gamepad2, Film, Music, Award, ExternalLink } from 'lucide-react'
 import { photography } from '@/lib/content'
 import ScrollFloat from '@/components/animations/ScrollFloat'
+import DecryptedText from '@/components/DecryptedText'
 
 const passionIcons = {
   'Photography': Camera,
@@ -169,14 +170,23 @@ export default function Photography() {
     <section 
       id="photography" 
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 bg-surface/30 relative"
+      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative z-10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <ScrollFloat containerClassName="mb-6">
-            {photography.headline}
-          </ScrollFloat>
+          <div className="mb-6">
+            <DecryptedText
+              text={photography.headline}
+              animateOn="view"
+              loopInterval={10000}
+              sequential={true}
+              revealDirection="center"
+              speed={60}
+              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+            />
+          </div>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}

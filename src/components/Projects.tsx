@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { ExternalLink, Calendar, Tag, Wrench } from 'lucide-react'
 import { projects } from '@/lib/content'
 import ScrollFloat from '@/components/animations/ScrollFloat'
+import DecryptedText from '@/components/DecryptedText'
 
 interface ProjectCardProps {
   project: typeof projects[0]
@@ -264,14 +265,23 @@ export default function Projects() {
     <section 
       id="projects" 
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 bg-surface/30"
+      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative z-10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <ScrollFloat containerClassName="mb-6">
-            Featured Projects
-          </ScrollFloat>
+          <div className="mb-6">
+            <DecryptedText
+              text="Featured Projects"
+              animateOn="view"
+              loopInterval={10000}
+              sequential={true}
+              revealDirection="center"
+              speed={60}
+              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+            />
+          </div>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}

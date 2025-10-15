@@ -95,13 +95,13 @@ export default function TypingNameDesktop({ className = '' }: TypingNameDesktopP
     return (
       <div className={`font-mono ${className}`}>
         <div
-          className="inline-block text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[8rem] 2xl:text-[9rem] font-black tracking-display leading-none"
+          className="inline-block text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl 3xl:text-[12rem] font-black tracking-display leading-none"
           style={{ transformOrigin: 'left center' }}
         >
           <DecryptedText
             text="Naman "
             speed={80}
-            maxIterations={15}
+            maxIterations={150}
             sequential={true}
             revealDirection="start"
             animateOn="view"
@@ -111,7 +111,7 @@ export default function TypingNameDesktop({ className = '' }: TypingNameDesktopP
           <DecryptedText
             text="Sharma"
             speed={80}
-            maxIterations={15}
+            maxIterations={150}
             sequential={true}
             revealDirection="start"
             animateOn="view"

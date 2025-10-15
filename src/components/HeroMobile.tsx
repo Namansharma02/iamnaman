@@ -6,6 +6,7 @@ import { ArrowRight, Linkedin, Github, Download } from 'lucide-react'
 import { personalInfo } from '@/lib/content'
 import TypingName from './TypingName'
 import RotatingText from './RotatingText'
+import TerminalContainer from './TerminalContainer'
 
 const socialLinks = [
   {
@@ -70,7 +71,7 @@ export default function HeroMobile() {
   const avatarSrc = mounted && theme === 'dark' ? '/naman-avatar-dark.png' : '/naman-avatar-light.png'
 
   return (
-    <section id="hero" className="snap-section relative min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full">
+    <section id="hero" className="snap-section fixed inset-0 min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full z-0">
       {/* Background Watermark Lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" suppressHydrationWarning>
         <div className="absolute top-[6%] w-full whitespace-nowrap animate-marquee-right">
@@ -138,62 +139,25 @@ export default function HeroMobile() {
               </motion.div>
             </div>
             
-            {/* Bottom Section: Tagline + Buttons - 60% of height */}
-            <div className="h-[60%] flex flex-col justify-center space-y-12">
-              {/* Tagline */}
+            {/* Bottom Section: Terminal Container - 60% of height */}
+            <div className="h-[60%] flex flex-col justify-center px-4">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 2.5 }}
-                className="text-center"
+                initial={{ opacity: 0, y: 40, scale: 0.8, rotateX: 10 }}
+                animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+                transition={{
+                  duration: 1.2,
+                  ease: [0.23, 1, 0.32, 1],
+                  delay: 6,
+                  type: "spring",
+                  stiffness: 50,
+                  damping: 15
+                }}
+                className="max-w-full"
+                style={{ perspective: "1000px" }}
               >
-                <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-mono font-light text-subtle">
-                  <div className="mb-2">Cooking innovation through</div>
-                  <div className="inline-block">
-                    <RotatingText
-                      texts={['Technology', 'Automation', 'Strategy']}
-                      rotationInterval={3000}
-                      mainClassName={`inline-block px-2 py-1 rounded-md text-base sm:text-lg md:text-xl lg:text-2xl ${
-                        theme === 'green' 
-                          ? 'bg-green-500 text-white' 
-                          : 'bg-blue-500 text-white'
-                      } font-medium shadow-sm`}
-                      staggerFrom="first"
-                      initial={{ y: "100%", scale: 0.9 }}
-                      animate={{ y: 0, scale: 1 }}
-                      exit={{ y: "-120%", scale: 0.9 }}
-                      staggerDuration={0.02}
-                      splitLevelClassName="overflow-hidden"
-                      transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-              
-              {/* Action Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 3 }}
-                className="grid grid-cols-1 gap-4 max-w-sm mx-auto"
-              >
-                {/* Let's Explore Button */}
-                <button
-                  onClick={scrollToAbout}
-                  className="group flex items-center justify-center px-8 py-6 bg-brand text-brandOn rounded-xl font-medium text-base transition-all duration-300 hover:bg-brand/90 hover:shadow-lg hover:-translate-y-1 min-h-[60px]"
-                >
-                  <span>Let's Explore</span>
-                  <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-                
-                {/* Download Resume Button */}
-                <button
-                  onClick={downloadResume}
-                  className="group flex items-center justify-center px-8 py-6 bg-surface border-2 border-border text-text rounded-xl font-medium text-base transition-all duration-300 hover:border-brand hover:bg-brand/5 hover:shadow-lg hover:-translate-y-1 min-h-[60px]"
-                >
-                  <Download className="mr-2 w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                  <span>No time? Download Resume</span>
-                </button>
+                <TerminalContainer
+                  className="shadow-xl scale-95"
+                />
               </motion.div>
             </div>
           </div>

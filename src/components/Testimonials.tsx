@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { testimonials } from '@/lib/content'
 import ScrollFloat from '@/components/animations/ScrollFloat'
+import DecryptedText from '@/components/DecryptedText'
 
 export default function Testimonials() {
   const ref = useRef<HTMLElement>(null)
@@ -13,13 +14,22 @@ export default function Testimonials() {
     <section 
       id="testimonials" 
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 relative overflow-hidden"
+      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative overflow-hidden z-10"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <ScrollFloat containerClassName="mb-6">
-            What People Say
-          </ScrollFloat>
+          <div className="mb-6">
+            <DecryptedText
+              text="What People Say"
+              animateOn="view"
+              loopInterval={10000}
+              sequential={true}
+              revealDirection="center"
+              speed={60}
+              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+            />
+          </div>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}

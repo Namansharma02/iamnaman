@@ -58,7 +58,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="snap-section bg-surface border-t border-border" suppressHydrationWarning>
+    <footer className="relative bg-background border-t border-border z-10" suppressHydrationWarning>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {/* Left: Brand & Copyright */}

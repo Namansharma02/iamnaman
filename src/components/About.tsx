@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { about } from '@/lib/content'
 import ScrollFloat from '@/components/animations/ScrollFloat'
+import DecryptedText from '@/components/DecryptedText'
 
 export default function About() {
   const ref = useRef<HTMLElement>(null)
@@ -15,14 +16,24 @@ export default function About() {
     <section 
       id="about" 
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 bg-surface/50 relative overflow-hidden"
+      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative overflow-hidden z-10 rounded-t-3xl shadow-2xl"
+      style={{ marginTop: '60vh' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mb-16 text-center">
-          <ScrollFloat containerClassName="mb-4">
-            {about.headline}
-          </ScrollFloat>
+          <div className="mb-4">
+            <DecryptedText
+              text={about.headline}
+              animateOn="view"
+              loopInterval={10000}
+              sequential={true}
+              revealDirection="center"
+              speed={60}
+              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+            />
+          </div>
           
           {/* Decorative Marquee Line */}
           <div className="relative h-1 bg-border rounded-full overflow-hidden mt-8 max-w-xs mx-auto">

@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import { Calendar, MapPin, Award, Users, TrendingUp } from 'lucide-react'
 import { experience } from '@/lib/content'
 import ScrollFloat from '@/components/animations/ScrollFloat'
+import DecryptedText from '@/components/DecryptedText'
 
 interface TimelineItemProps {
   item: typeof experience[0]
@@ -127,14 +128,23 @@ export default function Experience() {
     <section 
       id="experience" 
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 relative"
+      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative z-10"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <ScrollFloat containerClassName="mb-6">
-            Experience
-          </ScrollFloat>
+          <div className="mb-6">
+            <DecryptedText
+              text="Experience"
+              animateOn="view"
+              loopInterval={10000}
+              sequential={true}
+              revealDirection="center"
+              speed={60}
+              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+            />
+          </div>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
