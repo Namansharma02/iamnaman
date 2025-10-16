@@ -1,10 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Calendar, MapPin, Award, Users, TrendingUp } from 'lucide-react'
+import { Calendar } from 'lucide-react'
 import { experience } from '@/lib/content'
-import ScrollFloat from '@/components/animations/ScrollFloat'
 import DecryptedText from '@/components/DecryptedText'
 
 interface TimelineItemProps {
@@ -43,77 +42,12 @@ function TimelineItem({ item, index, isInView }: TimelineItemProps) {
             
             <h3 className="text-2xl font-bold text-text mb-2">{item.company}</h3>
             <h4 className="text-xl text-brand font-semibold mb-4">{item.role}</h4>
-            
-            {/* Badges */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              {item.badges.map((badge, badgeIndex) => (
-                <motion.span
-                  key={badge}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.3, delay: index * 0.2 + badgeIndex * 0.1 }}
-                  className="px-3 py-1 bg-brand/10 text-brand text-sm font-medium rounded-full border border-brand/20"
-                >
-                  {badge}
-                </motion.span>
-              ))}
-            </div>
           </div>
 
           {/* Summary */}
-          <p className="text-text/90 leading-relaxed mb-6 text-lg">
+          <p className="text-text/90 leading-relaxed text-lg">
             {item.summary}
           </p>
-
-          {/* Collaboration (if exists) */}
-          {item.collaboration && (
-            <div className="mb-6 p-4 bg-surface rounded-lg border-l-4 border-brand">
-              <div className="flex items-center gap-2 mb-2">
-                <Users size={16} className="text-brand" />
-                <span className="text-sm font-medium text-brand">Collaboration</span>
-              </div>
-              <p className="text-text/90">{item.collaboration}</p>
-            </div>
-          )}
-
-          {/* Key Highlights */}
-          <div className="mb-6">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp size={16} className="text-brand" />
-              <h5 className="font-semibold text-text">Key Highlights</h5>
-            </div>
-            <div className="space-y-4">
-              {item.highlights.map((highlight, highlightIndex) => (
-                <motion.div
-                  key={highlight.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, delay: index * 0.2 + highlightIndex * 0.1 }}
-                  className="flex gap-3"
-                >
-                  <div className="flex-shrink-0 w-2 h-2 bg-brand rounded-full mt-2" />
-                  <div>
-                    <h6 className="font-medium text-text mb-1">{highlight.title}</h6>
-                    <p className="text-subtle text-sm leading-relaxed">
-                      {highlight.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Closing (if exists) */}
-          {item.closing && (
-            <div className="pt-4 border-t border-border">
-              <div className="flex items-start gap-3">
-                <Award size={16} className="text-brand mt-1" />
-                <p className="text-text/90 italic leading-relaxed">
-                  {item.closing}
-                </p>
-              </div>
-            </div>
-          )}
         </motion.div>
       </div>
     </motion.div>
@@ -141,8 +75,8 @@ export default function Experience() {
               sequential={true}
               revealDirection="center"
               speed={60}
-              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
-              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+              className="text-[clamp(2rem,7vw,5rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(2rem,7vw,5rem)] leading-[1.2] font-bold text-brand"
             />
           </div>
           <motion.p
@@ -159,7 +93,7 @@ export default function Experience() {
         <div className="relative">
           {experience.map((item, index) => (
             <div key={item.id} className="mb-16 last:mb-0">
-              <TimelineItem 
+              <TimelineItem
                 item={item}
                 index={index}
                 isInView={isInView}
@@ -167,6 +101,30 @@ export default function Experience() {
             </div>
           ))}
         </div>
+
+        {/* Download Resume CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mt-16 text-center"
+        >
+          <p className="text-subtle text-lg mb-6">
+            For detailed information about my experience and achievements
+          </p>
+          <motion.a
+            href="/resume.pdf"
+            download="Naman_Sharma_Resume.pdf"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-brand text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download Resume
+          </motion.a>
+        </motion.div>
       </div>
 
       {/* Background Decoration */}

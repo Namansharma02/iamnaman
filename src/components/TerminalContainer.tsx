@@ -16,7 +16,7 @@ export default function TerminalContainer({
   title = "🍳 COOKING INNOVATION",
   subtitle = "→ through strategic thinking",
   exploreText = "$ ./explore.sh",
-  downloadText = "$ wget strategy.zip",
+  downloadText = "$ ./in_hurry/? --download resume",
   className = ""
 }: TerminalContainerProps) {
   const [typedCommand, setTypedCommand] = useState('')
@@ -30,17 +30,33 @@ export default function TerminalContainer({
   const [rotatingWordIndex, setRotatingWordIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const commandText = "$ cat innovation.txt"
+  const commandText = "$ cat automation.exe"
   const statusText = "[STATUS: Ready for exploration]"
   const rotatingWords = ["Strategy", "Technology", "Automation"]
   const subtitlePrefix = "→ through "
 
   const handleExplore = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const handleDownload = () => {
-    window.open('/resume.pdf', '_blank')
+    // Download PDF
+    const pdfLink = document.createElement('a')
+    pdfLink.href = '/resume.pdf'
+    pdfLink.download = 'Naman_Sharma_Resume.pdf'
+    document.body.appendChild(pdfLink)
+    pdfLink.click()
+    document.body.removeChild(pdfLink)
+
+    // Download Word doc with a slight delay
+    setTimeout(() => {
+      const docLink = document.createElement('a')
+      docLink.href = '/resume.docx'
+      docLink.download = 'Naman_Sharma_Resume.docx'
+      document.body.appendChild(docLink)
+      docLink.click()
+      document.body.removeChild(docLink)
+    }, 500)
   }
 
   // Cursor blinking effect
@@ -173,7 +189,7 @@ export default function TerminalContainer({
             <div className="w-3 h-3 bg-yellow-500 rounded-full" />
             <div className="w-3 h-3 bg-green-500 rounded-full" />
           </div>
-          <span className="text-gray-400 text-sm font-mono">innovation-terminal</span>
+          <span className="text-gray-400 text-sm font-mono">hello-world-terminal</span>
         </div>
 
         <div className="p-6 2xl:p-7 3xl:p-9 font-mono">
@@ -290,18 +306,6 @@ export default function TerminalContainer({
               </motion.button>
             )}
           </div>
-
-          {/* Final cursor */}
-          {currentPhase > 5 && (
-            <motion.div
-              className="mt-4 text-green-400 text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <span className="animate-pulse">█</span>
-            </motion.div>
-          )}
         </div>
       </motion.div>
     </motion.div>

@@ -8,10 +8,9 @@ const navItems = [
   { label: 'Home', href: '#hero', number: '01' },
   { label: 'About', href: '#about', number: '02' },
   { label: 'Experience', href: '#experience', number: '03' },
-  { label: 'Projects', href: '#projects', number: '04' },
-  { label: 'Skills', href: '#skills', number: '05' },
-  { label: 'Photography', href: '#photography', number: '06' },
-  { label: 'Contact', href: '#contact', number: '07' }
+  { label: 'Testimonials & Recognitions', href: '#recognition', number: '04' },
+  { label: 'Photography', href: '#photography', number: '05' },
+  { label: 'Contact', href: '#contact', number: '06' }
 ]
 
 const themes = [

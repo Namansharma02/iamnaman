@@ -26,12 +26,12 @@ export default function About() {
             <DecryptedText
               text={about.headline}
               animateOn="view"
-              loopInterval={10000}
+              loopInterval={5000}
               sequential={true}
               revealDirection="center"
               speed={60}
-              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
-              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+              className="text-[clamp(2rem,7vw,5rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(2rem,7vw,5rem)] leading-[1.2] font-bold text-brand"
             />
           </div>
           
@@ -53,10 +53,10 @@ export default function About() {
             initial={{ opacity: 0, scale: 0.95, x: -30 }}
             animate={isInView ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.95, x: -30 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="lg:col-span-4 flex justify-center lg:justify-start order-2 lg:order-1"
+            className="lg:col-span-4 flex justify-center lg:justify-start order-1"
           >
             <div className="relative group">
-              <div className="relative w-80 h-80 sm:w-96 sm:h-96 rounded-2xl overflow-hidden">
+              <div className="relative w-96 h-96 sm:w-[28rem] sm:h-[28rem] lg:w-[32rem] lg:h-[32rem] rounded-2xl overflow-hidden">
                 {/* Image placeholder until loaded */}
                 {!imageLoaded && (
                   <div className="absolute inset-0 bg-surface border border-border rounded-2xl flex items-center justify-center">
@@ -65,11 +65,11 @@ export default function About() {
                 )}
                 
                 <Image
-                  src="/portrait.jpg"
+                  src="/About_Photo.png"
                   alt={about.portraitAlt}
                   fill
                   className={`object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                  sizes="(max-width: 768px) 320px, 384px"
+                  sizes="(max-width: 920px) 520px, 520px"
                   onLoad={() => setImageLoaded(true)}
                   priority
                 />
@@ -89,7 +89,7 @@ export default function About() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            className="lg:col-span-8 order-1 lg:order-2"
+            className="lg:col-span-8 order-2"
           >
             <div className="prose prose-lg lg:prose-xl max-w-none">
               {about.content.split('\n\n').map((paragraph, index) => (
@@ -110,21 +110,30 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-              className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8"
+              className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8"
             >
               {[
-                { label: "Years Experience", value: "5+" },
-                { label: "Professionals Trained", value: "500+" },
-                { label: "Awards Received", value: "8+" }
+                { label: "Photos Clicked", value: "∞" },
+                { label: "Years Experience", value: "6+" },
+                { label: "Hours Saved Annually", value: "1300+" },
+                { label: "Global Professionals Impacted", value: "500+" },
+                { label: "Professionals Mentored", value: "200+" },
+                { label: "Awards & Recognitions", value: "50+" }
               ].map((stat, index) => (
-                <div key={stat.label} className="text-center">
+                <motion.div
+                  key={stat.label}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
+                >
                   <div className="text-3xl sm:text-4xl font-bold text-brand mb-2">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-subtle font-medium">
+                  <div className="text-xs sm:text-sm text-subtle font-medium leading-tight">
                     {stat.label}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </motion.div>

@@ -108,8 +108,8 @@ export default function Contact() {
               sequential={true}
               revealDirection="center"
               speed={60}
-              className="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-text"
-              encryptedClassName="text-[clamp(3rem,9vw,7rem)] leading-[1.2] font-bold text-brand"
+              className="text-[clamp(2rem,7vw,5rem)] leading-[1.2] font-bold text-text"
+              encryptedClassName="text-[clamp(2rem,7vw,5rem)] leading-[1.2] font-bold text-brand"
             />
           </div>
           <motion.p
