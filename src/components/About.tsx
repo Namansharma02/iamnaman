@@ -13,8 +13,8 @@ export default function About() {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
-    <section 
-      id="about" 
+    <section
+      id="about"
       ref={ref}
       className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative overflow-hidden z-10 rounded-t-3xl shadow-2xl"
       style={{ marginTop: '60vh' }}

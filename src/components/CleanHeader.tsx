@@ -8,7 +8,7 @@ import { personalInfo } from '@/lib/content'
 const navItems = [
   { label: 'About', href: '#about' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Testimonials & Recognitions', href: '#recognition' },
+  { label: 'Work Testimonials', href: '#recognition' },
   { label: 'Photography', href: '#photography' },
   { label: 'Contact', href: '#contact' }
 ]

@@ -39,24 +39,36 @@ export default function TerminalContainer({
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const handleDownload = () => {
-    // Download PDF
-    const pdfLink = document.createElement('a')
-    pdfLink.href = '/resume.pdf'
-    pdfLink.download = 'Naman_Sharma_Resume.pdf'
-    document.body.appendChild(pdfLink)
-    pdfLink.click()
-    document.body.removeChild(pdfLink)
+  const handleDownload = async () => {
+    // Download PDF with proper filename
+    try {
+      const pdfResponse = await fetch('/resume.pdf')
+      const pdfBlob = await pdfResponse.blob()
+      const pdfUrl = window.URL.createObjectURL(pdfBlob)
+      const pdfLink = document.createElement('a')
+      pdfLink.href = pdfUrl
+      pdfLink.download = 'Naman_Sharma_Resume.pdf'
+      document.body.appendChild(pdfLink)
+      pdfLink.click()
+      document.body.removeChild(pdfLink)
+      window.URL.revokeObjectURL(pdfUrl)
 
-    // Download Word doc with a slight delay
-    setTimeout(() => {
-      const docLink = document.createElement('a')
-      docLink.href = '/resume.docx'
-      docLink.download = 'Naman_Sharma_Resume.docx'
-      document.body.appendChild(docLink)
-      docLink.click()
-      document.body.removeChild(docLink)
-    }, 500)
+      // Download Word doc with a slight delay
+      setTimeout(async () => {
+        const docResponse = await fetch('/resume.docx')
+        const docBlob = await docResponse.blob()
+        const docUrl = window.URL.createObjectURL(docBlob)
+        const docLink = document.createElement('a')
+        docLink.href = docUrl
+        docLink.download = 'Naman_Sharma_Resume.docx'
+        document.body.appendChild(docLink)
+        docLink.click()
+        document.body.removeChild(docLink)
+        window.URL.revokeObjectURL(docUrl)
+      }, 500)
+    } catch (error) {
+      console.error('Error downloading resume:', error)
+    }
   }
 
   // Cursor blinking effect

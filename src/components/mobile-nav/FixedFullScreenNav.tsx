@@ -8,7 +8,7 @@ const navItems = [
   { label: 'Home', href: '#hero', number: '01' },
   { label: 'About', href: '#about', number: '02' },
   { label: 'Experience', href: '#experience', number: '03' },
-  { label: 'Testimonials & Recognitions', href: '#recognition', number: '04' },
+  { label: 'Work Testimonials', href: '#recognition', number: '04' },
   { label: 'Photography', href: '#photography', number: '05' },
   { label: 'Contact', href: '#contact', number: '06' }
 ]

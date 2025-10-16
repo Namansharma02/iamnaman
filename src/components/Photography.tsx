@@ -60,7 +60,7 @@ export default function Photography({ photos }: PhotographyProps) {
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
             className="mb-20"
           >
-            <InfinitePhotoReel photos={photos} speed={120} />
+            <InfinitePhotoReel photos={photos} speed={300} />
           </motion.div>
         )}
 
@@ -81,7 +81,7 @@ export default function Photography({ photos }: PhotographyProps) {
                 )}
 
                 <Image
-                  src="/photography/featured-quote.jpg"
+                  src="/photography/feature/featured-quote.jpg"
                   alt="Featured photography"
                   fill
                   className={`object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}

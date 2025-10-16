@@ -31,14 +31,14 @@ export const experience = [
     company: "JP Morgan Chase",
     period: "2021 – Present",
     role: "Automation Manager",
-    summary: "Leading automation for one of the bank's largest platform. Build Python/Alteryx ETL pipelines and Tableau dashboards powering daily reporting for 500+ professionals."
+    summary: "Leading automation for one of the bank's largest platform. Building Python, Alteryx ETL pipelines and dashboards powering daily reporting and testing for 500+ professionals."
   },
   {
     id: 2,
     company: "Deloitte USI",
     period: "2019 – 2021",
     role: "Business Technology Analyst",
-    summary: "Large-scale healthcare automation for Louisiana Department of Health. Ranked #1 among 500+ new hires nationwide."
+    summary: "Worked on the healthcare automation for Louisiana Department of Health. Also Ranked #1 among 500+ new hires nationwide."
   },
   {
     id: 3,
