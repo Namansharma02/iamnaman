@@ -106,7 +106,7 @@ export default function Appreciations() {
                           {item.from}
                         </div>
                         <div className="text-xs text-subtle">
-                          {item.company} • {item.year}
+                          {item.company}
                         </div>
                       </div>
                     </motion.div>
