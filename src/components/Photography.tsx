@@ -27,7 +27,7 @@ export default function Photography({ photos }: PhotographyProps) {
       ref={ref}
       className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative z-10"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-20">
           <div className="mb-6">
@@ -95,7 +95,7 @@ export default function Photography({ photos }: PhotographyProps) {
             {/* Quote - Desktop: Left, Mobile: Bottom */}
             <div className="order-2 lg:order-1">
               <div className="bg-gradient-to-r from-brand/5 to-brand/10 rounded-2xl p-8 lg:p-10 border border-brand/20">
-                <blockquote className="text-xl sm:text-2xl lg:text-3xl font-light text-text leading-relaxed mb-6">
+                <blockquote className="text-xl sm:text-2xl lg:text-3xl font-light text-text leading-relaxed mb-6 break-words">
                   "Creativity has always been my compass. Whether through code, camera, or strategy,
                   I believe the best solutions emerge when technical precision meets creative vision."
                 </blockquote>

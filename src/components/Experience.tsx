@@ -45,7 +45,7 @@ function TimelineItem({ item, index, isInView }: TimelineItemProps) {
           </div>
 
           {/* Summary */}
-          <p className="text-text/90 leading-relaxed text-lg">
+          <p className="text-text/90 leading-relaxed text-lg break-words">
             {item.summary}
           </p>
         </motion.div>
@@ -82,7 +82,7 @@ export default function Experience() {
       ref={ref}
       className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative z-10"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-20">
           <div className="mb-6">

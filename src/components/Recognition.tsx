@@ -75,7 +75,7 @@ export default function Recognition() {
             >
               {/* Quote */}
               <div className="mb-6">
-                <p className="text-base text-text leading-relaxed italic">
+                <p className="text-base text-text leading-relaxed italic break-words">
                   "{item.text}"
                 </p>
               </div>
@@ -102,7 +102,7 @@ export default function Recognition() {
       ref={ref}
       className="relative py-24 sm:py-32 lg:py-40 bg-background"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <div className="mb-4">
@@ -151,7 +151,7 @@ export default function Recognition() {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 className="bg-surface border border-border rounded-2xl p-8 hover:border-brand hover:shadow-xl transition-all duration-300"
               >
-                <blockquote className="text-text text-lg leading-relaxed mb-6 italic">
+                <blockquote className="text-text text-lg leading-relaxed mb-6 italic break-words">
                   "{item.text}"
                 </blockquote>
 

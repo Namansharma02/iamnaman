@@ -16,10 +16,10 @@ export default function About() {
     <section
       id="about"
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative overflow-hidden z-10 rounded-t-3xl shadow-2xl"
+      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative overflow-hidden z-10 rounded-t-3xl shadow-2xl w-full"
       style={{ marginTop: '60vh' }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Section Header */}
         <div className="mb-16 text-center">
           <div className="mb-4">
@@ -91,14 +91,14 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
             className="lg:col-span-8 order-2"
           >
-            <div className="prose prose-lg lg:prose-xl max-w-none">
+            <div className="max-w-none w-full">
               {about.content.split('\n\n').map((paragraph, index) => (
                 <motion.p
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.6, delay: 0.5 + index * 0.1, ease: "easeOut" }}
-                  className="text-text leading-relaxed mb-6 text-lg sm:text-xl"
+                  className="text-text leading-relaxed mb-6 text-lg sm:text-xl break-words"
                 >
                   {paragraph}
                 </motion.p>

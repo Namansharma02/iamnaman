@@ -204,7 +204,9 @@ export default function FixedFullScreenNav() {
               bottom: 0,
               zIndex: 999999,
               background: 'rgb(var(--color-background))',
-              overflow: 'hidden'
+              overflow: 'auto',
+              paddingBottom: 'env(safe-area-inset-bottom, 20px)',
+              paddingTop: 'env(safe-area-inset-top, 0px)'
             }}
           >
             {/* Close Button */}
@@ -220,9 +222,9 @@ export default function FixedFullScreenNav() {
               <X size={20} />
             </motion.button>
 
-            <div className="flex flex-col justify-center min-h-screen p-8">
+            <div className="flex flex-col justify-center min-h-full max-h-screen p-8 py-20">
               {/* Main Navigation */}
-              <div className="space-y-4 mb-12">
+              <div className="space-y-2 mb-8 flex-shrink-0">
                 {navItems.map((item, index) => (
                   <motion.button
                     key={item.label}
@@ -233,12 +235,12 @@ export default function FixedFullScreenNav() {
                     whileHover={{ x: 20, scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleNavClick(item.href)}
-                    className="group flex items-center gap-6 text-left w-full py-3"
+                    className="group flex items-center gap-4 text-left w-full py-2"
                   >
-                    <div className="text-2xl font-mono text-brand opacity-60 group-hover:opacity-100 transition-opacity">
+                    <div className="text-xl font-mono text-brand opacity-60 group-hover:opacity-100 transition-opacity">
                       {item.number}
                     </div>
-                    <div className="text-4xl font-bold text-text group-hover:text-brand transition-colors">
+                    <div className="text-3xl font-bold text-text group-hover:text-brand transition-colors">
                       {item.label}
                     </div>
                   </motion.button>
@@ -250,11 +252,11 @@ export default function FixedFullScreenNav() {
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -30, opacity: 0 }}
-                transition={{ 
+                transition={{
                   delay: isOpen ? 0.8 : 0,
                   duration: isOpen ? 0.6 : 0.3
                 }}
-                className="border-t border-border pt-8 mb-8"
+                className="border-t border-border pt-6 pb-8 flex-shrink-0"
               >
                 <h3 className="text-sm font-medium text-subtle uppercase tracking-wider mb-4">
                   Theme
@@ -268,7 +270,7 @@ export default function FixedFullScreenNav() {
                         initial={{ scale: 0, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0, opacity: 0 }}
-                        transition={{ 
+                        transition={{
                           delay: isOpen ? 0.9 + (index * 0.1) : 0,
                           duration: 0.3
                         }}
@@ -276,8 +278,8 @@ export default function FixedFullScreenNav() {
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleThemeChange(t.id)}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
-                          theme === t.id 
-                            ? 'bg-brand text-brandOn shadow-lg' 
+                          theme === t.id
+                            ? 'bg-brand text-brandOn shadow-lg'
                             : 'bg-surface text-text hover:bg-border'
                         }`}
                       >
