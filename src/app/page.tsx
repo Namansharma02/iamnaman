@@ -3,6 +3,7 @@ import SimpleMobileNav from '@/components/SimpleMobileNav'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Experience from '@/components/Experience'
+import Skills from '@/components/Skills'
 import Recognition from '@/components/Recognition'
 import Photography from '@/components/Photography'
 import Contact from '@/components/Contact'
@@ -23,6 +24,7 @@ export default function Home() {
         <div className="h-[60vh] w-full"></div>
         <About />
         <Experience />
+        <Skills />
         <Recognition />
         <Photography photos={photos} />
         <Contact />
