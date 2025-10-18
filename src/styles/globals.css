@@ -55,34 +55,25 @@
 }
 
 /* Prevent horizontal overflow on mobile */
-* {
-  max-width: 100%;
-}
-
-/* Allow specific elements to exceed if needed */
-.watermark-line,
-.animate-marquee-left,
-.animate-marquee-right {
-  max-width: none;
-}
-
-/* Specific mobile constraints */
 @media (max-width: 1023px) {
-  * {
-    max-width: 100vw !important;
-  }
-  
-  .watermark-line,
-  .animate-marquee-left,
-  .animate-marquee-right {
-    max-width: none !important;
-  }
-  
   /* Ensure no element causes horizontal scroll */
   html, body {
     overflow-x: hidden !important;
     width: 100% !important;
     max-width: 100vw !important;
+  }
+
+  /* Prevent main content from overflowing */
+  #main-content {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Allow marquee animations to exceed */
+  .watermark-line,
+  .animate-marquee-left,
+  .animate-marquee-right {
+    max-width: none !important;
   }
 }
 
@@ -264,6 +255,20 @@ body {
   min-height: 100vh;
   box-sizing: border-box;
   scroll-margin-top: 1rem; /* Minimal offset for header positioning */
+}
+
+@media (max-width: 1023px) {
+  .snap-section {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Ensure all text content wraps properly */
+  p, h1, h2, h3, h4, h5, h6, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
 }
 
 /* Reduce excessive section padding */

@@ -53,34 +53,34 @@ export default function About() {
             initial={{ opacity: 0, scale: 0.95, x: -30 }}
             animate={isInView ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.95, x: -30 }}
             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-            className="lg:col-span-4 flex justify-center lg:justify-start order-1"
+            className="lg:col-span-5 flex justify-center lg:justify-start order-1 w-full"
           >
-            <div className="relative group">
-              <div className="relative w-96 h-96 sm:w-[28rem] sm:h-[28rem] lg:w-[32rem] lg:h-[32rem] rounded-2xl overflow-hidden">
+            <div className="relative group w-full max-w-sm sm:max-w-md lg:max-w-5xl px-4 sm:px-0">
+              <div className="relative w-full aspect-square rounded-2xl overflow-hidden">
                 {/* Image placeholder until loaded */}
                 {!imageLoaded && (
                   <div className="absolute inset-0 bg-surface border border-border rounded-2xl flex items-center justify-center">
                     <div className="w-16 h-16 border-4 border-brand border-t-transparent rounded-full animate-spin" />
                   </div>
                 )}
-                
+
                 <Image
                   src="/About_Photo.png"
                   alt={about.portraitAlt}
                   fill
                   className={`object-cover transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                  sizes="(max-width: 920px) 520px, 520px"
+                  sizes="(max-width: 640px) 320px, (max-width: 920px) 448px, 512px"
                   onLoad={() => setImageLoaded(true)}
                   priority
                 />
-                
+
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-brand/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
               </div>
-              
-              {/* Decorative Elements */}
-              <div className="absolute -top-4 -right-4 w-8 h-8 bg-brand rounded-full opacity-60 animate-pulse" />
-              <div className="absolute -bottom-6 -left-6 w-12 h-12 border-2 border-brand rounded-full opacity-40" />
+
+              {/* Decorative Elements - Hidden on mobile to prevent overflow */}
+              <div className="hidden sm:block absolute -top-4 -right-4 w-8 h-8 bg-brand rounded-full opacity-60 animate-pulse" />
+              <div className="hidden sm:block absolute -bottom-6 -left-6 w-12 h-12 border-2 border-brand rounded-full opacity-40" />
             </div>
           </motion.div>
 
@@ -89,7 +89,7 @@ export default function About() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            className="lg:col-span-8 order-2"
+            className="lg:col-span-7 order-2"
           >
             <div className="max-w-none w-full">
               {about.content.split('\n\n').map((paragraph, index) => (
@@ -104,40 +104,40 @@ export default function About() {
                 </motion.p>
               ))}
             </div>
-
-            {/* Stats or Highlights */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
-              className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-6 lg:gap-8"
-            >
-              {[
-                { label: "Photos Clicked", value: "∞" },
-                { label: "Years Experience", value: "6+" },
-                { label: "Hours Saved Annually", value: "1300+" },
-                { label: "Global Professionals Impacted", value: "500+" },
-                { label: "Professionals Mentored", value: "200+" },
-                { label: "Awards & Recognitions", value: "50+" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  className="text-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
-                >
-                  <div className="text-3xl sm:text-4xl font-bold text-brand mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs sm:text-sm text-subtle font-medium leading-tight">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
           </motion.div>
         </div>
+
+        {/* Stats or Highlights - Full Width Below Image & Text */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+          className="mt-12 lg:mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 lg:gap-8"
+        >
+          {[
+            { label: "Photos Clicked", value: "∞" },
+            { label: "Years Experience", value: "6+" },
+            { label: "Hours Saved Annually", value: "1300+" },
+            { label: "Global Professionals Impacted", value: "500+" },
+            { label: "Professionals Mentored", value: "200+" },
+            { label: "Awards & Recognitions", value: "50+" }
+          ].map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              className="text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
+            >
+              <div className="text-3xl sm:text-4xl font-bold text-brand mb-2">
+                {stat.value}
+              </div>
+              <div className="text-xs sm:text-sm text-subtle font-medium leading-tight">
+                {stat.label}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
 
       {/* Background Pattern */}
