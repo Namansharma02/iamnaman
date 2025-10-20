@@ -1,5 +1,4 @@
 import CleanHeader from '@/components/CleanHeader'
-import SimpleMobileNav from '@/components/SimpleMobileNav'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
 import Experience from '@/components/Experience'
