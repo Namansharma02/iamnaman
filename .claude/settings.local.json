@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(npm run build)",
-      "Bash(npm run dev)"
+      "Bash(npm run dev)",
+      "Bash(for dir in skills recognition photography contact)",
+      "Bash(do mkdir -p $dir/mobile $dir/desktop)",
+      "Bash(done)",
+      "Bash(do cp experience/mobile/front.png $dir/mobile/front1.png)",
+      "Bash(tasklist)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []

@@ -100,7 +100,7 @@ export default function Recognition() {
     <section
       id="recognition"
       ref={ref}
-      className="relative py-24 sm:py-32 lg:py-40 bg-background"
+      className="relative py-16 sm:py-20 lg:py-24 bg-background"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Section Header */}

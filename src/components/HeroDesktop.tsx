@@ -68,7 +68,13 @@ export default function HeroDesktop() {
     document.body.removeChild(link)
   }
 
-  const avatarSrc = mounted && theme === 'dark' ? '/naman-avatar-dark.png' : '/naman-avatar-light.png'
+  const avatarSrc = mounted
+    ? theme === 'dark'
+      ? '/naman-avatar-dark.png'
+      : theme === 'green'
+        ? '/naman-avatar-green.png'
+        : '/naman-avatar-light.png'
+    : '/naman-avatar-light.png'
 
   return (
     <section id="hero" className="snap-section fixed inset-0 min-h-screen flex items-center justify-center overflow-hidden w-full max-w-full z-0">

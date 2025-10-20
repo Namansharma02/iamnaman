@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { about } from '@/lib/content'
 import ScrollFloat from '@/components/animations/ScrollFloat'
 import DecryptedText from '@/components/DecryptedText'
+import AnimatedCounter from '@/components/AnimatedCounter'
 
 export default function About() {
   const ref = useRef<HTMLElement>(null)
@@ -129,9 +130,11 @@ export default function About() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
             >
-              <div className="text-3xl sm:text-4xl font-bold text-brand mb-2">
-                {stat.value}
-              </div>
+              <AnimatedCounter
+                value={stat.value}
+                duration={2000}
+                className="text-3xl sm:text-4xl font-bold text-brand mb-2"
+              />
               <div className="text-xs sm:text-sm text-subtle font-medium leading-tight">
                 {stat.label}
               </div>

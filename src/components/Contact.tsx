@@ -14,7 +14,7 @@ export default function Contact() {
     <section
       id="contact"
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative z-[100] min-h-screen flex items-center"
+      className="snap-section py-16 sm:py-20 lg:py-24 bg-background relative z-[100] min-h-screen flex items-center"
     >
       <div className="max-w-5xl mx-auto px-6 sm:px-8 lg:px-8 w-full">
         {/* Section Header */}

@@ -195,19 +195,19 @@ export default function TerminalContainer({
         transition={{ duration: 0.3 }}
       >
         {/* Terminal header */}
-        <div className="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full" />
-            <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-            <div className="w-3 h-3 bg-green-500 rounded-full" />
+        <div className="flex items-center justify-between p-2 sm:p-4 bg-gray-800 border-b border-gray-700">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full" />
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full" />
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full" />
           </div>
-          <span className="text-gray-400 text-sm font-mono">hello-world-terminal</span>
+          <span className="text-gray-400 text-xs sm:text-sm font-mono">hello-world-terminal</span>
         </div>
 
-        <div className="p-6 2xl:p-7 3xl:p-9 font-mono">
-          <div className="mb-6">
+        <div className="p-4 sm:p-6 2xl:p-7 3xl:p-9 font-mono">
+          <div className="mb-3 sm:mb-6">
             {/* Command line */}
-            <div className="text-green-400 mb-2 min-h-[1.5rem]">
+            <div className="text-green-400 text-xs sm:text-sm mb-1 sm:mb-2 min-h-[1.25rem] sm:min-h-[1.5rem]">
               {typedCommand}
               {currentPhase === 0 && (
                 <span
@@ -221,7 +221,7 @@ export default function TerminalContainer({
 
             {/* Title */}
             {typedTitle && (
-              <div className="text-white text-xl 2xl:text-xl 3xl:text-2xl mb-2 min-h-[1.75rem]">
+              <div className="text-white text-base sm:text-xl 2xl:text-xl 3xl:text-2xl mb-1 sm:mb-2 min-h-[1.5rem] sm:min-h-[1.75rem]">
                 {typedTitle}
                 {currentPhase === 1 && (
                   <span
@@ -236,7 +236,7 @@ export default function TerminalContainer({
 
             {/* Subtitle */}
             {typedSubtitle && (
-              <div className="text-blue-400 text-lg 2xl:text-lg 3xl:text-xl mb-4 min-h-[1.5rem]">
+              <div className="text-blue-400 text-sm sm:text-lg 2xl:text-lg 3xl:text-xl mb-2 sm:mb-4 min-h-[1.25rem] sm:min-h-[1.5rem]">
                 {typedSubtitle}
                 {(currentPhase === 2 || currentPhase >= 6) && (
                   <span
@@ -251,7 +251,7 @@ export default function TerminalContainer({
 
             {/* Status */}
             {typedStatus && (
-              <div className="text-gray-400 text-sm 2xl:text-sm 3xl:text-base min-h-[1.25rem]">
+              <div className="text-gray-400 text-xs sm:text-sm 2xl:text-sm 3xl:text-base min-h-[1rem] sm:min-h-[1.25rem]">
                 {typedStatus}
                 {currentPhase === 3 && (
                   <span
@@ -265,11 +265,11 @@ export default function TerminalContainer({
             )}
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {/* Explore button */}
             {typedExplore && (
               <motion.button
-                className="w-full px-4 py-3 2xl:px-5 2xl:py-3 3xl:px-7 3xl:py-4 bg-green-600 text-black font-bold rounded hover:bg-green-500 transition-colors duration-200 font-mono text-sm 2xl:text-sm 3xl:text-base"
+                className="w-full px-3 py-2 sm:px-4 sm:py-3 2xl:px-5 2xl:py-3 3xl:px-7 3xl:py-4 bg-green-600 text-black font-bold rounded hover:bg-green-500 transition-colors duration-200 font-mono text-xs sm:text-sm 2xl:text-sm 3xl:text-base"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleExplore}
@@ -287,7 +287,7 @@ export default function TerminalContainer({
                       |
                     </span>
                   )}
-                  {currentPhase > 4 && <ExternalLink className="w-4 h-4 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" />}
+                  {currentPhase > 4 && <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" />}
                 </span>
               </motion.button>
             )}
@@ -295,7 +295,7 @@ export default function TerminalContainer({
             {/* Download button */}
             {typedDownload && (
               <motion.button
-                className="w-full px-4 py-3 2xl:px-5 2xl:py-3 3xl:px-7 3xl:py-4 border border-gray-600 bg-gray-800 text-gray-300 font-bold rounded hover:bg-gray-700 transition-colors duration-200 font-mono text-sm 2xl:text-sm 3xl:text-base"
+                className="w-full px-3 py-2 sm:px-4 sm:py-3 2xl:px-5 2xl:py-3 3xl:px-7 3xl:py-4 border border-gray-600 bg-gray-800 text-gray-300 font-bold rounded hover:bg-gray-700 transition-colors duration-200 font-mono text-xs sm:text-sm 2xl:text-sm 3xl:text-base"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleDownload}
@@ -313,7 +313,7 @@ export default function TerminalContainer({
                       |
                     </span>
                   )}
-                  {currentPhase > 5 && <Download className="w-4 h-4 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" />}
+                  {currentPhase > 5 && <Download className="w-3 h-3 sm:w-4 sm:h-4 2xl:w-4 2xl:h-4 3xl:w-5 3xl:h-5" />}
                 </span>
               </motion.button>
             )}

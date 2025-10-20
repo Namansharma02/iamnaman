@@ -203,10 +203,10 @@ export default function Skills() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section 
-      id="skills" 
+    <section
+      id="skills"
       ref={ref}
-      className="snap-section py-24 sm:py-32 lg:py-40 bg-background relative z-10"
+      className="snap-section py-16 sm:py-20 lg:py-24 bg-background relative z-10"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
         {/* Section Header */}

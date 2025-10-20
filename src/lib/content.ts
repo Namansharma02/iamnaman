@@ -100,7 +100,7 @@ export const skills = {
 }
 
 export const photography = {
-  headline: "Photography & Passions",
+  headline: "Photography",
   items: [
     {
       title: "Photography",
@@ -197,13 +197,13 @@ export const appreciations = {
       id: 12,
       company: "JPMorgan Chase",
       text: "Thank you, Naman, for all the excellent help and suggestions you have provided with my UiPath project as SME. You have not only guided but provided solutions while always having a pleasing and calm demeanor. You have also been an asset to the firm with your deep knowledge in automation, which has helped in building a winning culture at JP Morgan.",
-      from: "WC, Asst. Vice President"
+      from: "W.C., Asst. Vice President"
     },
 	{
       id: 13,
       company: "JPMorgan Chase",
       text: "Naman has been a fantastic colleague to work with and a great boon to the team. His enthusiasm, always willing to help, and out-of-box innovation solutions have helped my team out a lot through the year. He has also been a part of *** workstream and has helped to drive the agenda with the same spirit that he does for his daily BAU. Looking forward to stronger partnerships and an even more fruitful year.",
-      from: "W.C., Asst. Vice President,JP Morgan"
+      from: "W.C., Asst. Vice President"
     },
 	{
       id: 14,
@@ -250,8 +250,8 @@ export const appreciations = {
 	{
       id: 21,
       company: "JPMorgan Chase",
-      text: "N.S., Vice President",
-      from: "Appreciate all the efforts and support you have provided throughout which has helped us achieve desired results."
+      text: "Appreciate all the efforts and support you have provided throughout which has helped us achieve desired results.",
+      from: "N.S., Vice President"
     },
 	{
       id: 22,
@@ -293,7 +293,7 @@ export const appreciations = {
       id: 28,
       company: "JPMorgan Chase",
       text: "I would like to extend a heartfelt thank you to **, ** and Naman for their invaluable support and insights throughout the campaign. Your dedication and expertise have been instrumental in driving our progress. Your consistent participation in majority of the Central **** team calls and for effectively managing department. Your collective contributions and commitment from each of you have played a pivotal role in shaping this initiative and ensuring the successful launch in Frankfurt. Thank you for all your work and collaboration.",
-      from: "M.B. Vice President"
+      from: "M.B., Vice President"
     },
 	{
       id: 29,
