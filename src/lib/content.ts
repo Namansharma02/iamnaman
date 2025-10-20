@@ -304,7 +304,7 @@ export const appreciations = {
 	{
       id: 30,
       company: "JPMorgan Chase",
-      text: "SS wanted to thank you for the fantastic training sessions on automation that you are taking. Your expertise and clear explanations have made a significant impact on my learning. Thank you for your dedication and support.",
+      text: "Naman, I wanted to thank you for the fantastic training sessions on automation that you are taking. Your expertise and clear explanations have made a significant impact on my learning. Thank you for your dedication and support.",
       from: "S.S., Associate"
     },
 	{
