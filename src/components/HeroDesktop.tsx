@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Linkedin, Github, Download } from 'lucide-react'
 import { personalInfo } from '@/lib/content'
 import TypingName from './TypingName'
-import RotatingText from './RotatingText'
 import TerminalContainer from './TerminalContainer'
 
 const socialLinks = [
