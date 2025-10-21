@@ -149,7 +149,7 @@ export default function FixedFullScreenNav() {
               </motion.div>
             </div>
             <div className="text-left">
-              <h1 className="text-lg font-bold text-text">Naman</h1>
+              <h1 className="text-lg font-bold text-text">Naman's</h1>
               <p className="text-xs text-subtle">Portfolio</p>
             </div>
           </motion.button>
