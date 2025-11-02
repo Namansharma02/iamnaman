@@ -2,13 +2,45 @@
 
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Mail, Linkedin } from 'lucide-react'
+import { Mail, Linkedin, Download } from 'lucide-react'
 import { contact } from '@/lib/content'
 import DecryptedText from '@/components/DecryptedText'
 
 export default function Contact() {
   const ref = useRef<HTMLElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  const handleDownload = async () => {
+    try {
+      // Download PDF
+      const pdfResponse = await fetch('/resume.pdf')
+      const pdfBlob = await pdfResponse.blob()
+      const pdfUrl = window.URL.createObjectURL(pdfBlob)
+      const pdfLink = document.createElement('a')
+      pdfLink.href = pdfUrl
+      pdfLink.download = 'Naman_Sharma_Resume.pdf'
+      document.body.appendChild(pdfLink)
+      pdfLink.click()
+      document.body.removeChild(pdfLink)
+      window.URL.revokeObjectURL(pdfUrl)
+
+      // Download Word doc with a slight delay
+      setTimeout(async () => {
+        const docResponse = await fetch('/resume.docx')
+        const docBlob = await docResponse.blob()
+        const docUrl = window.URL.createObjectURL(docBlob)
+        const docLink = document.createElement('a')
+        docLink.href = docUrl
+        docLink.download = 'Naman_Sharma_Resume.docx'
+        document.body.appendChild(docLink)
+        docLink.click()
+        document.body.removeChild(docLink)
+        window.URL.revokeObjectURL(docUrl)
+      }, 500)
+    } catch (error) {
+      console.error('Error downloading resume:', error)
+    }
+  }
 
   return (
     <section
@@ -42,21 +74,21 @@ export default function Contact() {
         </div>
 
         {/* Contact Pills */}
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-4">
           {/* Email Pill */}
           <a
             href="mailto:namans0297@gmail.com"
-            className="block bg-background border-4 border-red-500 rounded-2xl p-6 sm:p-8 md:p-10 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all duration-300 relative z-10"
+            className="block bg-background border-3 border-red-500 rounded-xl p-4 sm:p-5 md:p-6 hover:bg-red-50 hover:border-red-600 dark:hover:bg-red-500/10 dark:hover:border-red-400 transition-all duration-300 relative z-10 group"
           >
-            <div className="flex items-center gap-4 sm:gap-6">
-              <div className="flex-shrink-0 p-4 bg-red-500 rounded-xl">
-                <Mail className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex-shrink-0 p-3 bg-red-500 rounded-lg group-hover:bg-red-600 dark:group-hover:bg-red-400 transition-colors duration-300">
+                <Mail className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-2xl sm:text-3xl font-bold text-text mb-2">
+                <h3 className="text-xl sm:text-2xl font-bold text-text group-hover:text-red-600 dark:group-hover:text-red-400 mb-1 transition-colors duration-300">
                   Email Me
                 </h3>
-                <p className="text-base sm:text-xl text-subtle truncate">namans0297@gmail.com</p>
+                <p className="text-sm sm:text-base text-subtle group-hover:text-red-500 dark:group-hover:text-red-300 truncate transition-colors duration-300">namans0297@gmail.com</p>
               </div>
             </div>
           </a>
@@ -66,20 +98,38 @@ export default function Contact() {
             href="https://www.linkedin.com/in/namansharma0297"
             target="_blank"
             rel="noopener noreferrer"
-            className="block bg-background border-4 border-blue-500 rounded-2xl p-6 sm:p-8 md:p-10 hover:bg-blue-50 dark:hover:bg-red-950/20 transition-all duration-300 relative z-10"
+            className="block bg-background border-3 border-blue-500 rounded-xl p-4 sm:p-5 md:p-6 hover:bg-blue-50 hover:border-blue-600 dark:hover:bg-blue-500/10 dark:hover:border-blue-400 transition-all duration-300 relative z-10 group"
           >
-            <div className="flex items-center gap-4 sm:gap-6">
-              <div className="flex-shrink-0 p-4 bg-blue-500 rounded-xl">
-                <Linkedin className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex-shrink-0 p-3 bg-blue-500 rounded-lg group-hover:bg-blue-600 dark:group-hover:bg-blue-400 transition-colors duration-300">
+                <Linkedin className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-2xl sm:text-3xl font-bold text-text mb-2">
+                <h3 className="text-xl sm:text-2xl font-bold text-text group-hover:text-blue-600 dark:group-hover:text-blue-400 mb-1 transition-colors duration-300">
                   Connect on LinkedIn
                 </h3>
-                <p className="text-base sm:text-xl text-subtle truncate">/in/namansharma0297</p>
+                <p className="text-sm sm:text-base text-subtle group-hover:text-blue-500 dark:group-hover:text-blue-300 truncate transition-colors duration-300">/in/namansharma0297</p>
               </div>
             </div>
           </a>
+
+          {/* Download CV Pill */}
+          <button
+            onClick={handleDownload}
+            className="w-full bg-background border-3 border-green-500 rounded-xl p-4 sm:p-5 md:p-6 hover:bg-green-50 hover:border-green-600 dark:hover:bg-green-500/10 dark:hover:border-green-400 transition-all duration-300 relative z-10 group"
+          >
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex-shrink-0 p-3 bg-green-500 rounded-lg group-hover:bg-green-600 dark:group-hover:bg-green-400 transition-colors duration-300">
+                <Download className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+              </div>
+              <div className="flex-1 min-w-0 text-left">
+                <h3 className="text-xl sm:text-2xl font-bold text-text group-hover:text-green-600 dark:group-hover:text-green-400 mb-1 transition-colors duration-300">
+                  Download CV
+                </h3>
+                <p className="text-sm sm:text-base text-subtle group-hover:text-green-500 dark:group-hover:text-green-300 truncate transition-colors duration-300">PDF & Word formats</p>
+              </div>
+            </div>
+          </button>
 
           {/* Response Time Note */}
           <motion.div
