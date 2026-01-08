@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink, Download } from 'lucide-react'
 
@@ -30,10 +30,10 @@ export default function TerminalContainer({
   const [rotatingWordIndex, setRotatingWordIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const commandText = "$ cat automation.exe"
-  const statusText = "[STATUS: Ready for exploration]"
-  const rotatingWords = ["Strategy", "Technology", "Automation"]
-  const subtitlePrefix = "→ through "
+  const commandText = useMemo(() => "$ cat automation.exe", [])
+  const statusText = useMemo(() => "[STATUS: Ready for exploration]", [])
+  const rotatingWords = useMemo(() => ["Strategy", "Technology", "Automation"], [])
+  const subtitlePrefix = useMemo(() => "→ through ", [])
 
   const handleExplore = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
@@ -118,7 +118,7 @@ export default function TerminalContainer({
     return () => {
       if (timeoutId) clearTimeout(timeoutId)
     }
-  }, [currentPhase, typedSubtitle, rotatingWordIndex, isDeleting])
+  }, [currentPhase, typedSubtitle, rotatingWordIndex, isDeleting, rotatingWords, subtitlePrefix])
 
   // Sequential typing animation
   useEffect(() => {
@@ -177,7 +177,7 @@ export default function TerminalContainer({
     return () => {
       if (timeoutId) clearTimeout(timeoutId)
     }
-  }, [currentPhase, commandText, title, exploreText, downloadText])
+  }, [currentPhase, commandText, title, exploreText, downloadText, rotatingWords, subtitlePrefix, statusText])
 
   return (
     <motion.div
