@@ -91,7 +91,7 @@ export const projects = [
 export const skills = {
   technical: {
     title: "Languages & Tools",
-    items: ["Python", "Java", "JavaScript", "UiPath", "Alteryx", "Playwright", "SQL", "Tableau", "ETL Pipelines"]
+    items: ["Python", "Java", "Alteryx", "Playwright", "SQL", "JavaScript", "UiPath", "Tableau","Power BI", "ETL Pipelines"]
   },
   finance: {
     title: "Finance & Analytics",
