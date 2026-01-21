@@ -8,7 +8,8 @@
       "Bash(done)",
       "Bash(do cp experience/mobile/front.png $dir/mobile/front1.png)",
       "Bash(tasklist)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(npm install)"
     ],
     "deny": [],
     "ask": []
