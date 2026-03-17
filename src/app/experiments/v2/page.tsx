@@ -394,6 +394,19 @@ function Hero() {
 // ABOUT
 // ═══════════════════════════════════════════════════════════════
 
+function StatCard({ stat: s, index: i, inView }: { stat: { v: number; s: string; l: string; c: string }; index: number; inView: boolean }) {
+  const count = useCounter(s.v, inView)
+  return (
+    <Reveal delay={0.12 + i * 0.06}>
+      <motion.div whileHover={{ y: -4, rotate: -1 }} transition={SPRING}
+        style={{ border: `3px solid ${C.ink}`, boxShadow: `4px 4px 0 ${C.ink}`, padding: '18px 14px', background: C.white, cursor: 'default' }}>
+        <div style={{ fontFamily: F.mono, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 700, color: s.c, lineHeight: 1 }}>{count}{s.s}</div>
+        <div style={{ fontFamily: F.mono, fontSize: '0.62rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: C.muted, marginTop: 6 }}>{s.l}</div>
+      </motion.div>
+    </Reveal>
+  )
+}
+
 function About() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
@@ -417,18 +430,9 @@ function About() {
 
         {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 14, marginBottom: 50 }}>
-          {stats.map((s, i) => {
-            const count = useCounter(s.v, inView)
-            return (
-              <Reveal key={s.l} delay={0.12 + i * 0.06}>
-                <motion.div whileHover={{ y: -4, rotate: -1 }} transition={SPRING}
-                  style={{ border: `3px solid ${C.ink}`, boxShadow: `4px 4px 0 ${C.ink}`, padding: '18px 14px', background: C.white, cursor: 'default' }}>
-                  <div style={{ fontFamily: F.mono, fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 700, color: s.c, lineHeight: 1 }}>{count}{s.s}</div>
-                  <div style={{ fontFamily: F.mono, fontSize: '0.62rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: C.muted, marginTop: 6 }}>{s.l}</div>
-                </motion.div>
-              </Reveal>
-            )
-          })}
+          {stats.map((s, i) => (
+            <StatCard key={s.l} stat={s} index={i} inView={inView} />
+          ))}
         </div>
 
         {/* Bio grid */}
