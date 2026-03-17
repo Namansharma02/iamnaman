@@ -171,12 +171,6 @@ export default function Footer() {
               Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion
             </div>
             <div className="flex items-center gap-4">
-              <a href="/privacy" className="hover:text-text transition-colors">
-                Privacy Policy
-              </a>
-              <a href="/terms" className="hover:text-text transition-colors">
-                Terms of Use
-              </a>
               <a href="/sitemap.xml" className="hover:text-text transition-colors">
                 Sitemap
               </a>

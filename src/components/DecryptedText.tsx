@@ -204,12 +204,19 @@ export default function DecryptedText({
     <motion.span
       ref={containerRef}
       className={`inline-block whitespace-pre-wrap ${parentClassName}`}
+      style={{ position: 'relative', overflow: 'hidden' }}
       {...hoverProps}
       {...props}
     >
-      <span className="sr-only">{displayText}</span>
+      <span className="sr-only">{text}</span>
 
-      <span aria-hidden="true">
+      {/* Invisible spacer — reserves the exact layout dimensions of the final text */}
+      <span aria-hidden="true" className={className} style={{ visibility: 'hidden' }}>
+        {text}
+      </span>
+
+      {/* Animated text overlaid — cannot cause layout shift */}
+      <span aria-hidden="true" style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}>
         {displayText.split('').map((char, index) => {
           const isRevealedOrDone = revealedIndices.has(index) || !isScrambling || !isHovering;
 
