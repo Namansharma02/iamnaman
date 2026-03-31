@@ -403,7 +403,7 @@ export default function DomeGallery({
     };
 
     el.style.visibility = 'hidden';
-    (el.style as Record<string, unknown>).zIndex = 0;
+    el.style.zIndex = '0';
 
     const overlay = document.createElement('div');
     overlay.className = 'enlarge';
@@ -534,7 +534,7 @@ export default function DomeGallery({
         parent.style.setProperty('--rot-y-delta', `0deg`);
         parent.style.setProperty('--rot-x-delta', `0deg`);
         el.style.visibility = '';
-        (el.style as Record<string, unknown>).zIndex = 0;
+        el.style.zIndex = '0';
         focusedElRef.current = null;
         rootRef.current?.removeAttribute('data-enlarging');
         openingRef.current = false;
@@ -611,7 +611,7 @@ export default function DomeGallery({
         requestAnimationFrame(() => {
           el.style.visibility = '';
           el.style.opacity = '0';
-          (el.style as Record<string, unknown>).zIndex = 0;
+          el.style.zIndex = '0';
           focusedElRef.current = null;
           rootRef.current?.removeAttribute('data-enlarging');
 
