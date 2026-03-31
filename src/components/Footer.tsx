@@ -59,10 +59,72 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-background border-t border-border z-10" suppressHydrationWarning>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-3 gap-8 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+        {/* Mobile: Compact single-column layout */}
+        <div className="md:hidden">
+          {/* Name + Social on same row */}
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-base font-bold text-text">
+              {personalInfo.name}
+            </h3>
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social) => {
+                const Icon = social.icon
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target={social.href.startsWith('mailto:') ? undefined : '_blank'}
+                    rel={social.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                    className={`text-subtle transition-all duration-300 ${social.color}`}
+                    aria-label={social.label}
+                  >
+                    <Icon size={16} />
+                  </a>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Time + Location inline */}
+          <div className="flex items-center gap-2 text-xs text-subtle mb-3">
+            <Clock size={12} className="text-brand" />
+            <span>Mumbai, India</span>
+            <span className="font-mono font-medium text-text">
+              {mounted ? currentTime : '--:--:--'}
+            </span>
+            <span>IST</span>
+          </div>
+
+          {/* Copyright + Made with + Links */}
+          <div className="flex items-center justify-between text-xs text-subtle">
+            <div className="flex items-center gap-1">
+              <span>© {currentYear}</span>
+              <span>·</span>
+              <span className="flex items-center gap-1">
+                Made with <Heart size={10} className="text-error fill-error" />
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <a href="/sitemap.xml" className="hover:text-text transition-colors">
+                Sitemap
+              </a>
+              <button
+                onClick={scrollToTop}
+                className="inline-flex items-center gap-1 text-subtle hover:text-brand transition-colors"
+                aria-label="Back to top"
+              >
+                <span>Top</span>
+                <ArrowUp size={12} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: Original 3-column layout */}
+        <div className="hidden md:grid md:grid-cols-3 gap-8 items-center">
           {/* Left: Brand & Copyright */}
-          <div className="text-center md:text-left">
+          <div className="text-left">
             <motion.h3
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -86,7 +148,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-subtle text-sm mt-2 flex items-center justify-center md:justify-start gap-1"
+              className="text-subtle text-sm mt-2 flex items-center justify-start gap-1"
             >
               Made with <Heart size={14} className="text-error fill-error" /> and lots of coffee
             </motion.p>
@@ -115,13 +177,13 @@ export default function Footer() {
           </div>
 
           {/* Right: Social Links & Back to Top */}
-          <div className="text-center md:text-right">
+          <div className="text-right">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex items-center justify-center md:justify-end gap-4 mb-4"
+              className="flex items-center justify-end gap-4 mb-4"
             >
               {socialLinks.map((social) => {
                 const Icon = social.icon
@@ -158,15 +220,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar - Desktop only */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-8 pt-8 border-t border-border text-center"
+          className="hidden sm:block mt-8 pt-8 border-t border-border text-center"
         >
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-subtle">
+          <div className="flex flex-row items-center justify-between gap-4 text-xs text-subtle">
             <div>
               Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion
             </div>

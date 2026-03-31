@@ -9,11 +9,7 @@ import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import ScrollImageMerge from '@/components/ScrollImageMerge'
 import {FixedFullScreenNav }  from '@/components/mobile-nav'
-import { getPhotographyImages } from '@/lib/getPhotos'
-
 export default function Home() {
-  const photos = getPhotographyImages()
-
   return (
     <>
       <CleanHeader />
@@ -82,7 +78,7 @@ export default function Home() {
           ]}
         />
 
-        <Photography photos={photos} />
+        <Photography />
 
         {/* Divider 5: Photography → Contact */}
         <ScrollImageMerge

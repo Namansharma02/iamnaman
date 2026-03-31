@@ -1,8 +1,8 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Calendar } from 'lucide-react'
+import { useRef, useState } from 'react'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { Calendar, ChevronDown } from 'lucide-react'
 import { experience } from '@/lib/content'
 import DecryptedText from '@/components/DecryptedText'
 
@@ -13,6 +13,11 @@ interface TimelineItemProps {
 }
 
 function TimelineItem({ item, index, isInView }: TimelineItemProps) {
+  const hasRoles = item.roles && item.roles.length > 0
+  const allSkills = hasRoles
+    ? [...new Set(item.roles.flatMap(r => r.skills || []))]
+    : []
+
   return (
     <motion.div
       initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
@@ -22,32 +27,42 @@ function TimelineItem({ item, index, isInView }: TimelineItemProps) {
     >
       {/* Timeline Connector */}
       <div className="absolute left-8 top-0 bottom-0 w-px bg-border hidden lg:block" />
-      
+
       {/* Timeline Node */}
       <div className="absolute left-6 top-8 w-4 h-4 bg-brand rounded-full border-4 border-background shadow-lg hidden lg:block" />
 
       {/* Content Card */}
       <div className={`lg:pl-20 ${index % 2 === 0 ? 'lg:pr-8' : 'lg:pl-20'}`}>
         <motion.div
-          whileHover={{ scale: 1.02, y: -5 }}
+          whileHover={{ scale: 1.01, y: -2 }}
           transition={{ duration: 0.3 }}
           className="bg-background border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
         >
-          {/* Header */}
+          {/* Company Header */}
           <div className="mb-6">
             <div className="flex flex-wrap items-center gap-2 mb-3">
               <Calendar size={16} className="text-brand" />
               <span className="text-sm font-medium text-brand">{item.period}</span>
             </div>
-            
             <h3 className="text-2xl font-bold text-text mb-2">{item.company}</h3>
-            <h4 className="text-xl text-brand font-semibold mb-4">{item.role}</h4>
+            <h4 className="text-xl text-brand font-semibold">{item.role}</h4>
           </div>
 
           {/* Summary */}
-          <p className="text-text/90 leading-relaxed text-lg break-words">
+          <p className="text-text/90 leading-relaxed text-lg break-words mb-5">
             {item.summary}
           </p>
+
+          {/* Skills */}
+          {allSkills.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {allSkills.map((skill) => (
+                <span key={skill} className="text-xs font-medium px-2.5 py-1 rounded-full bg-brand/10 text-brand/80">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </motion.div>

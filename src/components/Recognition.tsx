@@ -1,11 +1,295 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { X, Trophy, Medal } from 'lucide-react'
 import Image from 'next/image'
 import DecryptedText from '@/components/DecryptedText'
 import { appreciations, award } from '@/lib/content'
+
+/* ------------------------------------------------------------------ */
+/*  Carousel sub-component                                             */
+/* ------------------------------------------------------------------ */
+
+function useSwipe(onNext: () => void, onPrev: () => void) {
+  const touchStart = useRef<{ x: number; y: number } | null>(null)
+  const deltaRef = useRef({ x: 0, y: 0 })
+  const [dragOffset, setDragOffset] = useState(0)
+  const isDragging = useRef(false)
+
+  const onTouchStart = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+    touchStart.current = { x: clientX, y: clientY }
+    deltaRef.current = { x: 0, y: 0 }
+    isDragging.current = true
+  }, [])
+
+  const onTouchMove = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    if (!touchStart.current || !isDragging.current) return
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY
+    deltaRef.current = {
+      x: clientX - touchStart.current.x,
+      y: clientY - touchStart.current.y,
+    }
+    const isMobile = window.innerWidth <= 640
+    setDragOffset(isMobile ? deltaRef.current.y : deltaRef.current.x)
+  }, [])
+
+  const onTouchEnd = useCallback(() => {
+    isDragging.current = false
+    const threshold = 50
+    const isMobile = window.innerWidth <= 640
+    const delta = isMobile ? deltaRef.current.y : deltaRef.current.x
+    if (delta < -threshold) onNext()
+    else if (delta > threshold) onPrev()
+    touchStart.current = null
+    deltaRef.current = { x: 0, y: 0 }
+    setDragOffset(0)
+  }, [onNext, onPrev])
+
+  return { dragOffset, onTouchStart, onTouchMove, onTouchEnd }
+}
+
+function TestimonialsCarousel({
+  items,
+  totalRecognitions,
+  onViewAll,
+}: {
+  items: typeof appreciations.items
+  totalRecognitions: number
+  onViewAll: () => void
+}) {
+  const displayItems = items.slice(0, 10)
+  const total = displayItems.length
+  const [current, setCurrent] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [expandedCard, setExpandedCard] = useState<number | null>(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (isAnimating) return
+      setIsAnimating(true)
+      setExpandedCard(null)
+      setCurrent(index)
+      setTimeout(() => setIsAnimating(false), 500)
+    },
+    [isAnimating],
+  )
+
+  const next = useCallback(() => goTo((current + 1) % total), [current, total, goTo])
+  const prev = useCallback(() => goTo((current - 1 + total) % total), [current, total, goTo])
+
+  useEffect(() => {
+    if (isPaused) {
+      if (timerRef.current) clearInterval(timerRef.current)
+      return
+    }
+    timerRef.current = setInterval(next, 8000)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [isPaused, next])
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowRight') next()
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [next, prev])
+
+  const { dragOffset, onTouchStart, onTouchMove, onTouchEnd } = useSwipe(next, prev)
+
+  const getOffset = (index: number) => {
+    let diff = index - current
+    if (diff > total / 2) diff -= total
+    if (diff < -total / 2) diff += total
+    return diff
+  }
+
+  return (
+    <>
+      <style>{`
+        .rc-stage {
+          position: relative;
+          width: 100%;
+          max-width: 900px;
+          height: 420px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          touch-action: pan-x;
+          user-select: none;
+          margin: 0 auto;
+        }
+        .rc-card {
+          position: absolute;
+          width: 92%;
+          max-width: 800px;
+          background: #fffdf9;
+          border: 1px solid #e6ddd0;
+          border-radius: 20px;
+          padding: 2.5rem 2.2rem 2rem;
+          box-shadow: 0 4px 24px rgba(60,46,28,0.06), 0 1px 4px rgba(60,46,28,0.04);
+          transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s cubic-bezier(0.34,1.56,0.64,1), filter 0.5s ease;
+          will-change: transform, opacity, filter;
+        }
+        .rc-card[data-offset="0"] { z-index:10; transform:translateX(0) scale(1); opacity:1; filter:blur(0); }
+        .rc-card[data-offset="-1"] { z-index:5; transform:translateX(-105%) scale(0.85); opacity:0.4; filter:blur(3px); pointer-events:none; }
+        .rc-card[data-offset="1"] { z-index:5; transform:translateX(105%) scale(0.85); opacity:0.4; filter:blur(3px); pointer-events:none; }
+        .rc-card[data-offset="-2"], .rc-card[data-offset="2"] { z-index:2; opacity:0; pointer-events:none; }
+        .rc-card[data-offset="-2"] { transform:translateX(-120%) scale(0.78); }
+        .rc-card[data-offset="2"] { transform:translateX(120%) scale(0.78); }
+        .rc-card.rc-hidden { opacity:0; pointer-events:none; z-index:0; transform:translateX(0) scale(0.7); }
+        .rc-readmore { display: none; }
+        .rc-text-clamp { }
+
+        @media (min-width: 641px) {
+          .rc-stage { height: auto; min-height: 420px; }
+          .rc-card { max-width: 860px; }
+          .rc-text-clamp { display: -webkit-box !important; -webkit-line-clamp: unset !important; -webkit-box-orient: vertical !important; overflow: visible !important; }
+          .rc-readmore { display: none !important; }
+        }
+        @media (max-width: 640px) {
+          .rc-stage { height:440px; perspective:1200px; }
+          .rc-readmore { display: block; }
+          .rc-card { width:92%; padding:2rem 1.5rem 1.5rem; border-radius:16px; left:4%; }
+          .rc-card[data-offset="0"] { z-index:10; transform:translateY(60px) scale(1); opacity:1; filter:blur(0); background:#fffdf9; box-shadow:0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); }
+          .rc-card[data-offset="-1"], .rc-card[data-offset="1"] { z-index:8; transform:translateY(20px) scale(0.92) translateX(0); opacity:0.55; filter:blur(2px); pointer-events:none; }
+          .rc-card[data-offset="-2"], .rc-card[data-offset="2"] { z-index:6; transform:translateY(-14px) scale(0.84) translateX(0); opacity:0.3; filter:blur(4px); pointer-events:none; }
+          .rc-card.rc-hidden { transform:translateY(-40px) scale(0.76) translateX(0); opacity:0; pointer-events:none; z-index:0; }
+          .rc-arrows { display:none !important; }
+          .rc-dots { display:none !important; }
+        }
+        @media (min-width: 641px) {
+          .rc-mobile-counter { display:none !important; }
+        }
+      `}</style>
+
+      <div
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Carousel Stage */}
+        <div
+          className="rc-stage"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onMouseDown={onTouchStart}
+          onMouseMove={onTouchMove}
+          onMouseUp={onTouchEnd}
+          onMouseLeave={onTouchEnd}
+        >
+          {displayItems.map((item, i) => {
+            const offset = getOffset(i)
+            const absOffset = Math.abs(offset)
+            const isVisible = absOffset <= 2
+
+            let extraStyle: React.CSSProperties | undefined
+            if (offset === 0 && dragOffset !== 0) {
+              const isMobileView = typeof window !== 'undefined' && window.innerWidth <= 640
+              extraStyle = {
+                transform: `${isMobileView ? `translateY(${60 + dragOffset}px)` : `translateX(${dragOffset}px)`} scale(1)`,
+                transition: 'none',
+              }
+            }
+
+            return (
+              <div
+                key={item.id}
+                className={`rc-card ${!isVisible ? 'rc-hidden' : ''}`}
+                data-offset={isVisible ? offset : undefined}
+                style={{ ...extraStyle, ...(expandedCard === item.id ? { maxHeight: '80vh', overflowY: 'auto' as const } : {}) }}
+              >
+                <span style={{ fontFamily: 'Georgia, serif', fontSize: '5rem', lineHeight: 1, color: '#d4c9b8', position: 'absolute', top: '0.6rem', left: '1.6rem', pointerEvents: 'none', opacity: 0.5 }}>&ldquo;</span>
+                <p className="rc-text-clamp" style={{
+                  fontSize: 'clamp(0.95rem, 2.2vw, 1.12rem)', fontWeight: 400, lineHeight: 1.75, margin: '0 0 0.8rem', position: 'relative', zIndex: 1, color: '#3a3024',
+                  ...(expandedCard === item.id ? {} : { display: '-webkit-box', WebkitLineClamp: 8, WebkitBoxOrient: 'vertical' as const, overflow: 'hidden' })
+                }}>
+                  {item.text}
+                </p>
+                {item.text.length > 280 && (
+                  <button
+                    className="rc-readmore"
+                    onClick={(e) => { e.stopPropagation(); setExpandedCard(expandedCard === item.id ? null : item.id) }}
+                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, color: '#6b5c4c', marginBottom: '0.8rem' }}
+                  >
+                    {expandedCard === item.id ? 'Read less' : 'Read more'}
+                  </button>
+                )}
+                <hr style={{ width: 48, height: 2, background: '#d4c9b8', border: 'none', margin: '0 0 1rem' }} />
+                <div>
+                  <span style={{ fontWeight: 600, fontSize: '1rem', display: 'block', color: '#2c2418' }}>{item.from}</span>
+                  <span style={{ fontSize: '0.82rem', fontWeight: 500, letterSpacing: '0.03em', color: '#8a7d6e' }}>{item.company}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-center gap-4 mt-8">
+          <button
+            onClick={prev}
+            className="rc-arrows w-12 h-12 rounded-full border border-border bg-surface text-subtle flex items-center justify-center hover:bg-text hover:text-background hover:border-text transition-all duration-200"
+            aria-label="Previous"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+          </button>
+
+          <div className="rc-dots flex gap-2 items-center">
+            {displayItems.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className={`rounded-full border-0 cursor-pointer transition-all duration-300 ${i === current ? 'bg-text w-6 h-2' : 'bg-border w-2 h-2 hover:bg-subtle'}`}
+                aria-label={`Go to testimonial ${i + 1}`}
+              />
+            ))}
+          </div>
+          <span className="rc-mobile-counter text-subtle text-sm font-semibold tracking-wide">{current + 1} / {total}</span>
+
+          <button
+            onClick={next}
+            className="rc-arrows w-12 h-12 rounded-full border border-border bg-surface text-subtle flex items-center justify-center hover:bg-text hover:text-background hover:border-text transition-all duration-200"
+            aria-label="Next"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 6 15 12 9 18" /></svg>
+          </button>
+        </div>
+
+        {/* Progress + View All */}
+        <div className="flex flex-col items-center mt-6 gap-4">
+          <div className="w-full max-w-[640px] h-0.5 bg-border rounded-full overflow-hidden">
+            <div className="h-full bg-text rounded-full transition-all duration-500" style={{ width: `${((current + 1) / total) * 100}%` }} />
+          </div>
+
+          <p className="text-subtle text-sm">
+            <strong className="text-text">{current + 1}</strong> of {total} &middot; showing a curated selection
+          </p>
+
+          <p className="text-subtle text-xs sm:hidden">Swipe up or down to navigate</p>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onViewAll}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-brand text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            View All {totalRecognitions}+ Recognitions
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </motion.button>
+        </div>
+      </div>
+    </>
+  )
+}
 
 export default function Recognition() {
   const ref = useRef<HTMLElement>(null)
@@ -225,52 +509,12 @@ export default function Recognition() {
           </motion.div>
         </div>
 
-        {/* Top 4 Testimonial Cards — 2-column grid */}
-        <div className="mb-12">
-          <div className="grid md:grid-cols-2 gap-8">
-            {appreciations.items.slice(0, 4).map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ duration: 0.6, delay: 0.15 + index * 0.15 }}
-                className="bg-surface border border-border rounded-2xl p-8 hover:border-brand hover:shadow-xl transition-all duration-300"
-              >
-                <blockquote className="text-text text-lg leading-relaxed mb-6 italic break-words">
-                  &ldquo;{item.text}&rdquo;
-                </blockquote>
-
-                <div className="flex items-center space-x-4 border-t border-border pt-6">
-                  <div className="w-12 h-12 rounded-full bg-brand/10 flex items-center justify-center">
-                    <span className="text-brand font-bold text-lg">
-                      {item.from.charAt(0)}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h4 className="text-text font-semibold">{item.from}</h4>
-                    <p className="text-brand text-sm font-medium">{item.company}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsModalOpen(true)}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-brand text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            View All {totalRecognitions}+ Recognitions
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </motion.button>
-        </div>
+        {/* Testimonials Carousel */}
+        <TestimonialsCarousel
+          items={appreciations.items}
+          totalRecognitions={totalRecognitions}
+          onViewAll={() => setIsModalOpen(true)}
+        />
       </div>
 
       {/* Modal */}

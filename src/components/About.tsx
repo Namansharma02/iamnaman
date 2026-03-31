@@ -117,7 +117,7 @@ export default function About() {
         >
           {[
             { label: "Photos Clicked", value: "∞" },
-            { label: "Years Experience", value: "6+" },
+            { label: "Years Experience", value: "7+" },
             { label: "Hours Saved Annually", value: "1300+" },
             { label: "Global Professionals Impacted", value: "500+" },
             { label: "Professionals Mentored", value: "200+" },
