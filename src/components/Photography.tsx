@@ -1,11 +1,10 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import DecryptedText from '@/components/DecryptedText'
 import { photography } from '@/lib/content'
-import DomeGallery from '@/components/reactbits/DomeGallery'
 
 const allPhotos = [
   '/photography/1 (1).jpg',
@@ -51,27 +50,186 @@ const allPhotos = [
   '/photography/3 (8).jpg',
 ]
 
+// Split photos into two rows
+const row1Photos = allPhotos.filter((_, i) => i % 2 === 0)
+const row2Photos = allPhotos.filter((_, i) => i % 2 !== 0)
+
+interface MarqueeRowProps {
+  photos: string[]
+  direction: 1 | -1 // 1 = left-to-right, -1 = right-to-left
+  speed?: number
+}
+
+function MarqueeRow({ photos, direction, speed = 0.5 }: MarqueeRowProps) {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const offsetRef = useRef(0)
+  const velocityRef = useRef(direction * speed)
+  const isDraggingRef = useRef(false)
+  const dragStartXRef = useRef(0)
+  const dragOffsetStartRef = useRef(0)
+  const lastDragXRef = useRef(0)
+  const lastDragTimeRef = useRef(0)
+  const dragVelocityRef = useRef(0)
+  const rafRef = useRef<number>(0)
+  const singleSetWidthRef = useRef(0)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const clickCandidateRef = useRef(true)
+
+  // Measure one set of images width
+  useEffect(() => {
+    if (!trackRef.current) return
+    const items = trackRef.current.querySelectorAll('.marquee-item')
+    const perSet = photos.length
+    let w = 0
+    for (let i = 0; i < perSet && i < items.length; i++) {
+      w += (items[i] as HTMLElement).offsetWidth + 12 // 12px gap
+    }
+    singleSetWidthRef.current = w
+  }, [photos.length])
+
+  // Animation loop
+  useEffect(() => {
+    let lastTime = performance.now()
+
+    const animate = (now: number) => {
+      const dt = Math.min(now - lastTime, 50) // cap delta
+      lastTime = now
+
+      if (!isDraggingRef.current) {
+        // Ease velocity back toward natural direction
+        const target = direction * speed
+        velocityRef.current += (target - velocityRef.current) * 0.02
+        offsetRef.current += velocityRef.current * dt * 0.06
+      }
+
+      // Wrap offset to prevent overflow
+      const setW = singleSetWidthRef.current
+      if (setW > 0) {
+        if (offsetRef.current > 0) offsetRef.current -= setW
+        if (offsetRef.current < -setW) offsetRef.current += setW
+      }
+
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`
+      }
+
+      rafRef.current = requestAnimationFrame(animate)
+    }
+
+    rafRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [direction, speed])
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    isDraggingRef.current = true
+    clickCandidateRef.current = true
+    dragStartXRef.current = e.clientX
+    dragOffsetStartRef.current = offsetRef.current
+    lastDragXRef.current = e.clientX
+    lastDragTimeRef.current = performance.now()
+    dragVelocityRef.current = 0
+    ;(e.target as HTMLElement).setPointerCapture?.(e.pointerId)
+  }, [])
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDraggingRef.current) return
+
+    const dx = e.clientX - dragStartXRef.current
+    if (Math.abs(dx) > 5) clickCandidateRef.current = false
+
+    offsetRef.current = dragOffsetStartRef.current + dx
+
+    // Track drag velocity
+    const now = performance.now()
+    const dtDrag = now - lastDragTimeRef.current
+    if (dtDrag > 0) {
+      dragVelocityRef.current = (e.clientX - lastDragXRef.current) / dtDrag
+    }
+    lastDragXRef.current = e.clientX
+    lastDragTimeRef.current = now
+  }, [])
+
+  const handlePointerUp = useCallback(() => {
+    if (!isDraggingRef.current) return
+    isDraggingRef.current = false
+    // Apply fling velocity then let it ease back to auto-scroll
+    velocityRef.current = dragVelocityRef.current * 15
+  }, [])
+
+  const handleImageClick = useCallback((src: string) => {
+    if (clickCandidateRef.current) {
+      setSelectedImage(src)
+    }
+  }, [])
+
+  // Render 3 copies for seamless looping
+  const tripled = [...photos, ...photos, ...photos]
+
+  return (
+    <>
+      <div className="overflow-hidden select-none touch-pan-y" style={{ cursor: isDraggingRef.current ? 'grabbing' : 'grab' }}>
+        <div
+          ref={trackRef}
+          className="flex gap-3 will-change-transform"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          style={{ touchAction: 'pan-y' }}
+        >
+          {tripled.map((src, i) => (
+            <div
+              key={`${src}-${i}`}
+              className="marquee-item flex-shrink-0 rounded-xl overflow-hidden relative"
+              style={{ width: 280, height: 200 }}
+              onClick={() => handleImageClick(src)}
+            >
+              <Image
+                src={src}
+                alt="Photography"
+                fill
+                className="object-cover pointer-events-none"
+                sizes="280px"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Lightbox */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            className="absolute top-6 right-6 text-white text-4xl font-light hover:opacity-70 transition-opacity z-10"
+            onClick={() => setSelectedImage(null)}
+          >
+            &times;
+          </button>
+          <div className="relative max-w-[90vw] max-h-[85vh] w-auto h-auto">
+            <Image
+              src={selectedImage}
+              alt="Photography enlarged"
+              width={1200}
+              height={900}
+              className="object-contain max-h-[85vh] w-auto rounded-lg"
+              sizes="90vw"
+              priority
+            />
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
 export default function Photography() {
   const ref = useRef<HTMLElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [imageLoaded, setImageLoaded] = useState(false)
-  const getThemeColor = () => {
-    if (typeof document === 'undefined') return '#ffffff'
-    const theme = document.documentElement.getAttribute('data-theme')
-    if (theme === 'dark') return '#09090b'
-    if (theme === 'green') return '#f8fafc'
-    return '#ffffff'
-  }
-
-  const [overlayColor, setOverlayColor] = useState(getThemeColor)
-
-  // Sync overlay color with theme changes
-  useEffect(() => {
-    setOverlayColor(getThemeColor())
-    const observer = new MutationObserver(() => setOverlayColor(getThemeColor()))
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <section
@@ -95,25 +253,19 @@ export default function Photography() {
         </div>
       </div>
 
-      {/* Dome Gallery */}
+      {/* Photo Marquee Rows */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        style={{ width: '100%', height: '80vh', position: 'relative' }}
+        className="space-y-3 relative"
       >
-        <DomeGallery
-          images={allPhotos}
-          fit={1}
-          minRadius={1000}
-          maxVerticalRotationDeg={11}
-          segments={30}
-          dragDampening={2.5}
-          grayscale={false}
-          overlayBlurColor={overlayColor}
-          openedImageWidth="500px"
-          openedImageHeight="500px"
-        />
+        {/* Edge fades */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-40 z-10 bg-gradient-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 z-10 bg-gradient-to-l from-background to-transparent" />
+
+        <MarqueeRow photos={row1Photos} direction={1} speed={0.5} />
+        <MarqueeRow photos={row2Photos} direction={-1} speed={0.5} />
       </motion.div>
 
       {/* Quote Section with Featured Photo */}
