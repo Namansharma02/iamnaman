@@ -153,6 +153,11 @@ body {
   display: inline-block;
 }
 
+/* Denser watermark variant — smaller font for more lines */
+.watermark-line.watermark-dense {
+  font-size: clamp(2rem, 6vw, 8rem);
+}
+
 /* Continuous marquee animations */
 @keyframes marquee-left {
   0% {
